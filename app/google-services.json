@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "2388776029",
+    "project_id": "apolloclinic-fsm",
+    "storage_bucket": "apolloclinic-fsm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:2388776029:android:dc2143269f08bfb5e969b4",
+        "android_client_info": {
+          "package_name": "com.apolloclinicfsm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "2388776029-i7i724f62iqfqb2lbgaq3j74gaej5osf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3oV8qS4VmnozO9Fv5GiuJnBx5I0-eENA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "2388776029-i7i724f62iqfqb2lbgaq3j74gaej5osf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
