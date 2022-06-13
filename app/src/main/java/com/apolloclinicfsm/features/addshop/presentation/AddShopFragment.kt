@@ -6519,12 +6519,12 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
 
 
         when (isDOB) {
-            0 -> {
+            1 -> {
                 addShopData.date_aniversary = AppUtils.getFormattedDateForApi(myCalendar.time)
                 date_aniverdary_EDT.setText(AppUtils.changeAttendanceDateFormat(AppUtils.getDobFormattedDate(myCalendar.time)))
                 shopDataModel.dateOfAniversary = AppUtils.getDobFormattedDate(myCalendar.time)
             }
-            1 -> {
+            0 -> {
                 addShopData.dob = AppUtils.getFormattedDateForApi(myCalendar.time)
                 dob_EDT.setText(AppUtils.changeAttendanceDateFormat(AppUtils.getDobFormattedDate(myCalendar.time)))
                 shopDataModel.dateOfBirth = AppUtils.getDobFormattedDate(myCalendar.time)
