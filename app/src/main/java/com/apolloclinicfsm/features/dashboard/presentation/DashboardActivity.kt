@@ -736,7 +736,8 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                     val shopList = AppDatabase.getDBInstance()?.addShopEntryDao()?.all
                     shopList?.forEach {
                         if (!TextUtils.isEmpty(it.dateOfBirth)) {
-                            if (AppUtils.getCurrentDateForShopActi() == AppUtils.changeAttendanceDateFormatToCurrent(it.dateOfBirth)) {
+                            //if (AppUtils.getCurrentDateForShopActi() == AppUtils.changeAttendanceDateFormatToCurrent(it.dateOfBirth)) {
+                            if (AppUtils.getCurrentMonthDayForShopActi() == AppUtils.changeAttendanceDateFormatToMonthDay(it.dateOfBirth)) {
                                 val notification = NotificationUtils(getString(R.string.app_name), "", "", "")
                                 var body = ""
                                 body = if (TextUtils.isEmpty(it.ownerEmailId))
@@ -749,7 +750,8 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                         }
 
                         if (!TextUtils.isEmpty(it.dateOfAniversary)) {
-                            if (AppUtils.getCurrentDateForShopActi() == AppUtils.changeAttendanceDateFormatToCurrent(it.dateOfAniversary)) {
+                            //if (AppUtils.getCurrentDateForShopActi() == AppUtils.changeAttendanceDateFormatToCurrent(it.dateOfAniversary)) {
+                            if (AppUtils.getCurrentMonthDayForShopActi() == AppUtils.changeAttendanceDateFormatToMonthDay(it.dateOfAniversary)) {
                                 val notification = NotificationUtils(getString(R.string.app_name), "", "", "")
                                 var body = ""
                                 body = if (TextUtils.isEmpty(it.ownerEmailId))

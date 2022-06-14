@@ -133,7 +133,8 @@ class NotificationFragment : BaseFragment() {
         no_shop_tv.visibility = View.GONE
         /*new work*/
         val shopList = AppDatabase.getDBInstance()?.addShopEntryDao()?.all
-        var body = ""
+        var bodyDOB = ""
+        var bodyAni = ""
         for(i in 0..shopList!!.size-1){
             var dob = ""
             if(shopList[i].dateOfBirth!=null){
@@ -143,28 +144,43 @@ class NotificationFragment : BaseFragment() {
             if(shopList[i].dateOfAniversary!=null){
                 anni = shopList[i].dateOfAniversary.split("T").get(0)
             }
-            var todayDate = AppUtils.getCurrentDateForShopActi()
+            var todayDate = AppUtils.getCurrentMonthDayForShopActi()
 
-            var obj : NotificationListDataModel = NotificationListDataModel()
+            var objDOB : NotificationListDataModel = NotificationListDataModel()
+            var objAnni : NotificationListDataModel = NotificationListDataModel()
 
-            if (todayDate.equals(dob)){
-                body ="Please wish Mr. " + shopList[i].ownerName + " of " + shopList[i].shopName +
+            var dobMonthDay = AppUtils.changeAttendanceDateFormatToMonthDay(dob+"T00:00:00")
+            if (todayDate.equals(dobMonthDay)){
+                bodyDOB ="Please wish Mr. " + shopList[i].ownerName + " of " + shopList[i].shopName +
                         ", Contact Number: " + shopList[i].ownerContactNumber + " for birthday today."
-                obj.phoneNo = shopList[i].ownerContactNumber
+                objDOB.phoneNo = shopList[i].ownerContactNumber
             }
-            if (todayDate.equals(anni)){
-                body = "Please wish Mr. " + shopList[i].ownerName + " of " + shopList[i].shopName+
+            var anniMonthDay = AppUtils.changeAttendanceDateFormatToMonthDay(anni+"T00:00:00")
+            if (todayDate.equals(anniMonthDay)){
+                bodyAni = "Please wish Mr. " + shopList[i].ownerName + " of " + shopList[i].shopName+
                         ", Contact Number: " + shopList[i].ownerContactNumber + " for Anniversary today."
-                obj.phoneNo = shopList[i].ownerContactNumber
+                objAnni.phoneNo = shopList[i].ownerContactNumber
             }
 
+            objDOB.id=""
+            objAnni.id=""
+            objDOB.date_time=AppUtils.getCurrentDateTime().replace(" ","T")
+            objAnni.date_time=AppUtils.getCurrentDateTime().replace(" ","T")
+            if(!bodyDOB.equals("")){
+                objDOB.notificationmessage=bodyDOB
+                notification_list!!.add(objDOB)
+            }
 
-            obj.notificationmessage=body
-            obj.id=""
-            obj.date_time=AppUtils.getCurrentDateTime().replace(" ","T")
-            body = ""
-            if(!obj.notificationmessage.equals(""))
-                notification_list!!.add(obj)
+            if(!bodyAni.equals("")){
+                objAnni.notificationmessage=bodyAni
+                notification_list!!.add(objAnni)
+            }
+
+            bodyDOB = ""
+            bodyAni = ""
+
+            /*if(!obj.notificationmessage.equals(""))
+                notification_list!!.add(obj)*/
         }
 
         if(notification_list!!.size==0){

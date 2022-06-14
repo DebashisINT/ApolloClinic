@@ -1380,6 +1380,20 @@ class AppUtils {
 
         }
 
+        fun changeAttendanceDateFormatToMonthDay(dateString: String): String {
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
+            var convertedDate = Date()
+            try {
+                convertedDate = dateFormat.parse(dateString) //"20130526160000"
+            } catch (e: ParseException) {
+                // TODO Auto-generated catch block
+                e.printStackTrace()
+            }
+            val f = SimpleDateFormat("MM-dd", Locale.ENGLISH)
+            return f.format(convertedDate)
+
+        }
+
         fun convertDateStringToLong(dateString: String?): Long {
             return try {
                 val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
@@ -1637,6 +1651,12 @@ class AppUtils {
             val df = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
             return df.format(Date()).toString()
         }
+
+        fun getCurrentMonthDayForShopActi(): String {
+            val df = SimpleDateFormat("MM-dd", Locale.ENGLISH)
+            return df.format(Date()).toString()
+        }
+
 
         fun getCurrentDateMonth(): String {
             val df = SimpleDateFormat("ddMMyy", Locale.ENGLISH)
