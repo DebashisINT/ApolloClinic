@@ -66,7 +66,8 @@
                     android:text="@string/name_filed_managenent_system"
                     android:textColor="#287fb2"
                     android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone"/>
 
                 <com.apolloclinicfsm.widgets.AppCustomTextView
                     android:id="@+id/app_title_TV"
