@@ -500,6 +500,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
                                 if (!TextUtils.isEmpty(configResponse.dateOfAnniversaryText))
                                     Pref.dateOfAnniversaryText = configResponse.dateOfAnniversaryText
 
+                                if (configResponse.ShopScreenAftVisitRevisit != null)
+                                    Pref.ShopScreenAftVisitRevisitGlobal = configResponse.ShopScreenAftVisitRevisit!!
+
 
                                 /*if (configResponse.willShowUpdateDayPlan != null)
                                     Pref.willShowUpdateDayPlan = configResponse.willShowUpdateDayPlan!!
@@ -5614,6 +5617,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
                                                     Pref.ShowPurposeInShopVisit = response.getconfigure?.get(i)?.Value == "1"
                                                 }
                                             }
+
+                                            else if (response.getconfigure?.get(i)?.Key.equals("ShopScreenAftVisitRevisit", ignoreCase = true)) {
+                                                Pref.ShopScreenAftVisitRevisit = response.getconfigure!![i].Value == "1"
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.ShopScreenAftVisitRevisit = response.getconfigure?.get(i)?.Value == "1"
+                                                }
+                                            }
                                           
 
 
@@ -5918,7 +5928,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
             shopObj.whatsappNoForCustomer=shop_list[i].whatsappNoForCustomer
             shopObj.isShopDuplicate=shop_list[i].isShopDuplicate
 
-
+            shopObj.purpose=shop_list[i].purpose
             list.add(shopObj)
             AppDatabase.getDBInstance()!!.addShopEntryDao().insert(shopObj)
         }

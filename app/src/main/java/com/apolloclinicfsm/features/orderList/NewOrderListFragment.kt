@@ -1287,6 +1287,8 @@ class NewOrderListFragment : BaseFragment() {
         // duplicate shop api call
         addShopData.isShopDuplicate=mAddShopDBModelEntity.isShopDuplicate
 
+        addShopData.purpose=mAddShopDBModelEntity.purpose
+
         callAddShopApi(addShopData, mAddShopDBModelEntity.shopImageLocalPath, shop_id, collection_id, amount, collection,
                 currentDateForShopActi, desc, billId, mAddShopDBModelEntity.doc_degree, orderId, collectionDetails)
     }
@@ -1882,6 +1884,7 @@ class NewOrderListFragment : BaseFragment() {
 
         // duplicate shop api call
         addShopData.isShopDuplicate=shop.isShopDuplicate
+        addShopData.purpose=shop.purpose
 
 
         callAddShopApi(addShopData, shop.shopImageLocalPath, position, list, shop.doc_degree)
@@ -2631,6 +2634,8 @@ class NewOrderListFragment : BaseFragment() {
 
         // duplicate shop api call
         addShopData.isShopDuplicate=mAddShopDBModelEntity.isShopDuplicate
+
+        addShopData.purpose=mAddShopDBModelEntity.purpose
 
         callAddShopApi(addShopData, mAddShopDBModelEntity.shopImageLocalPath, shopList, orderDetailsList,
                 mAddShopDBModelEntity.doc_degree)

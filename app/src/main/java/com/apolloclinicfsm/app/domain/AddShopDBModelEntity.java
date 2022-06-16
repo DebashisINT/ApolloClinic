@@ -277,6 +277,16 @@ public class AddShopDBModelEntity {
     @ColumnInfo(name = "isShopDuplicate")
     private boolean isShopDuplicate = false;
 
+    @ColumnInfo(name = "purpose")
+    private String purpose = null;
+
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
+    }
 
     public boolean getIsShopDuplicate() {
         return isShopDuplicate;

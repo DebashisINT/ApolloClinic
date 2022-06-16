@@ -9323,8 +9323,14 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
 
     private fun showShopVerificationDialog() {
 
-        if (!Pref.isShowOTPVerificationPopup)
-            loadFragment(FragType.ShopDetailFragment, true, mShopId)
+        if (!Pref.isShowOTPVerificationPopup) {
+            if (Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal) {
+                (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, mShopId)
+            } else {
+                (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment, true, "")
+            }
+//            loadFragment(FragType.ShopDetailFragment, true, mShopId)
+        }
         else {
             ShopVerificationDialog.getInstance(mShopId, object : ShopVerificationDialog.OnOTPButtonClickListener {
                 override fun onEditClick(number: String) {

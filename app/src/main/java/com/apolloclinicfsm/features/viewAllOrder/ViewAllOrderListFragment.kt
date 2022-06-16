@@ -870,6 +870,9 @@ class ViewAllOrderListFragment : BaseFragment(), View.OnClickListener {
         // duplicate shop api call
         addShopData.isShopDuplicate=mAddShopDBModelEntity.isShopDuplicate
 
+        addShopData.purpose=mAddShopDBModelEntity.purpose
+
+
         callAddShopApi(addShopData, mAddShopDBModelEntity.shopImageLocalPath, shop_id, order_id, amount, collection,
                 currentDateForShopActi, desc, mAddShopDBModelEntity.doc_degree)
     }
@@ -1821,6 +1824,8 @@ class ViewAllOrderListFragment : BaseFragment(), View.OnClickListener {
         // duplicate shop api call
         addShopData.isShopDuplicate=mAddShopDBModelEntity.isShopDuplicate
 
+        addShopData.purpose=mAddShopDBModelEntity.purpose
+
         callAddShopApi(addShopData, mAddShopDBModelEntity.shopImageLocalPath, shop_id, collection_id, amount, collection,
                 currentDateForShopActi, desc, billId, mAddShopDBModelEntity.doc_degree, orderId, collectionDetails)
     }
@@ -2263,6 +2268,7 @@ class ViewAllOrderListFragment : BaseFragment(), View.OnClickListener {
 
         // duplicate shop api call
         addShopData.isShopDuplicate=mAddShopDBModelEntity.isShopDuplicate
+        addShopData.purpose=mAddShopDBModelEntity.purpose
 
         callAddShopApiForSync(addShopData, mAddShopDBModelEntity.shopImageLocalPath, shop_id, order_id, amount, collection,
                 currentDateForShopActi, desc, mAddShopDBModelEntity.doc_degree, remarks, signature, orderLat, orderLong, orderDetailsListEntity)

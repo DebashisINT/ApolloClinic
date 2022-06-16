@@ -1063,6 +1063,8 @@ class NearByShopsListFragment : BaseFragment(), View.OnClickListener {
                     // duplicate shop api call
                     addShopData.isShopDuplicate=mAddShopDBModelEntity.isShopDuplicate
 
+                    addShopData.purpose=mAddShopDBModelEntity.purpose
+
 
                     callAddShopApi(addShopData, mAddShopDBModelEntity.shopImageLocalPath, null, true,
                             mAddShopDBModelEntity.doc_degree)
@@ -1386,6 +1388,8 @@ class NearByShopsListFragment : BaseFragment(), View.OnClickListener {
 
         // duplicate shop api call
         addShopData.isShopDuplicate=mAddShopDBModelEntity.isShopDuplicate
+
+        addShopData.purpose=mAddShopDBModelEntity.purpose
 
 
         callAddShopApi(addShopData, mAddShopDBModelEntity.shopImageLocalPath, shop_id, order_id, amount, collection,
@@ -3212,6 +3216,8 @@ class NearByShopsListFragment : BaseFragment(), View.OnClickListener {
         // duplicate shop api call
         addShopData.isShopDuplicate=mAddShopDBModelEntity.isShopDuplicate
 
+        addShopData.purpose=mAddShopDBModelEntity.purpose
+
 
         callAddShopApi(addShopData, mAddShopDBModelEntity.shopImageLocalPath, shopList, true,
                 mAddShopDBModelEntity.doc_degree)
@@ -3356,6 +3362,8 @@ class NearByShopsListFragment : BaseFragment(), View.OnClickListener {
 
             // duplicate shop api call
             addShopData.isShopDuplicate=mAddShopDBModelEntity.isShopDuplicate
+
+            addShopData.purpose=mAddShopDBModelEntity.purpose
 
 
             addShopData

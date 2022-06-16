@@ -88,6 +88,7 @@ class ConfigFetchResponseModel : BaseResponse() {
     var emailText: String = ""
     var dobText: String = ""
     var dateOfAnniversaryText: String = ""
+    var ShopScreenAftVisitRevisit:Boolean? = null
 
 
 

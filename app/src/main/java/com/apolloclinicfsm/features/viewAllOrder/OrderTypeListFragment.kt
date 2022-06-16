@@ -1761,6 +1761,8 @@ class OrderTypeListFragment : BaseFragment(), View.OnClickListener {
         // duplicate shop api call
         addShopData.isShopDuplicate=mAddShopDBModelEntity.isShopDuplicate
 
+        addShopData.purpose=mAddShopDBModelEntity.purpose
+
         callAddShopApi(addShopData, mAddShopDBModelEntity.shopImageLocalPath, shop_id, order_id, amount, collection, currentDateForShopActi, desc, order_lat,
                 order_long, stock_id, mAddShopDBModelEntity.doc_degree, remarks, signature, orderListDetails)
         //callAddShopApi(addShopData, "")

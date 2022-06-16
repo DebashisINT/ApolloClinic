@@ -1890,7 +1890,15 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
 //                                (mContext as DashboardActivity).showSnackMessage(getString(R.string.shop_added_successfully))
                                     (mContext as DashboardActivity).onBackPressed()
                                     //(mContext as DashboardActivity).loadFragment(FragType.NearByShopsListFragment, false, "")
-                                    (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
+                                    Pref.ShopScreenAftVisitRevisit = true
+                                    Pref.ShopScreenAftVisitRevisitGlobal = true
+
+                                    if(Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal){
+                                        (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
+                                    }else{
+                                        (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment,true,"")
+                                    }
+                                 //   (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
                                 }
                                 BaseActivity.isApiInitiated = false
 //                            isApiCall=true
@@ -1910,7 +1918,12 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
                                 (mContext as DashboardActivity).showSnackMessage(getString(R.string.shop_added_successfully))
                                 voiceAttendanceMsg(getString(R.string.shop_added_successfully))
                                 //(mContext as DashboardActivity).loadFragment(FragType.NearByShopsListFragment, false, "")
-                                (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
+                                if(Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal){
+                                    (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
+                                }else{
+                                    (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment,true,"")
+                                }
+//                                (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
                                 if (error != null) {
                                     XLog.d("AddShop : " + ", SHOP: " + addShop.shop_name + ", ERROR: " + error.localizedMessage)
                                 }
@@ -1977,7 +1990,12 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
 //                                (mContext as DashboardActivity).showSnackMessage(getString(R.string.shop_added_successfully))
                                     (mContext as DashboardActivity).onBackPressed()
                                     //(mContext as DashboardActivity).loadFragment(FragType.NearByShopsListFragment, false, "")
-                                    (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
+//                                    (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
+                                    if(Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal){
+                                        (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
+                                    }else{
+                                        (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment,true,"")
+                                    }
                                 }
                                 BaseActivity.isApiInitiated = false
 //                            isApiCall=true
@@ -1997,7 +2015,12 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
                                 (mContext as DashboardActivity).showSnackMessage(getString(R.string.shop_added_successfully))
                                 voiceAttendanceMsg(getString(R.string.shop_added_successfully))
                                 //(mContext as DashboardActivity).loadFragment(FragType.NearByShopsListFragment, false, "")
-                                (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
+//                                (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
+                                if(Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal){
+                                    (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
+                                }else{
+                                    (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment,true,"")
+                                }
                                 if (error != null) {
                                     XLog.d("AddShop : " + ", SHOP: " + addShop.shop_name + ", ERROR: " + error.localizedMessage)
                                 }
@@ -2110,7 +2133,12 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
 
         if (!Pref.isShowOTPVerificationPopup) {
             (mContext as DashboardActivity).onBackPressed()
-            (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, shop_id)
+            if(Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal){
+                (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, shop_id!!)
+            }else{
+                (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment,true,"")
+            }
+//            (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, shop_id)
         } else {
             ShopVerificationDialog.getInstance(shop_id, object : ShopVerificationDialog.OnOTPButtonClickListener {
                 override fun onEditClick(number: String) {
@@ -2572,6 +2600,9 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
         if (!TextUtils.isEmpty(feedback_EDT.text.toString().trim()))
             shopActivityEntity.feedback = feedback_EDT.text.toString().trim()
 
+        if (!TextUtils.isEmpty(feedbackValue))
+            shopActivityEntity.feedback = feedbackValue
+
         shopActivityEntity.next_visit_date = nextVisitDate
 
         var distance = 0.0
@@ -2681,7 +2712,7 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
         shopActivityEntity.updated_by=Pref.user_id
         shopActivityEntity.updated_on= AppUtils.getCurrentDateForShopActi()
 
-        shopActivityEntity.feedback =  feedbackValue
+//        shopActivityEntity.feedback =  feedbackValue
 
         AppDatabase.getDBInstance()!!.shopActivityDao().insertAll(shopActivityEntity)
 
@@ -5378,6 +5409,8 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
                 }
             }
         }
+        //feeback shop_details table
+        shopDataModel.purpose = feedbackValue
 
 
 
@@ -5628,6 +5661,8 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
 
         // duplicate shop api call
         addShopData.isShopDuplicate=shopDataModel.isShopDuplicate
+
+        addShopData.purpose=shopDataModel.purpose
 
         addShopApi(addShopData, shopDataModel.shopImageLocalPath, shopDataModel.doc_degree)
     }

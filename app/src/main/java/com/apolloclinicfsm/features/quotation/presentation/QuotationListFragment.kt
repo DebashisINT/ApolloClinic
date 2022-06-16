@@ -621,6 +621,7 @@ class QuotationListFragment : BaseFragment() {
 
             // duplicate shop api call
             addShopData.isShopDuplicate=isShopDuplicate
+            addShopData.purpose=purpose
 
 
 

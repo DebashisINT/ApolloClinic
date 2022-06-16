@@ -423,4 +423,7 @@ object Pref : PreferenceHolder() {
 
     var IsTodayDOBDOA: Boolean by bindToPreferenceField(false, "IsTodayDOBDOA")
 
+    var ShopScreenAftVisitRevisit: Boolean by bindToPreferenceField(true, "ShopScreenAftVisitRevisit")
+    var ShopScreenAftVisitRevisitGlobal: Boolean by bindToPreferenceField(true, "ShopScreenAftVisitRevisit")
+
 }

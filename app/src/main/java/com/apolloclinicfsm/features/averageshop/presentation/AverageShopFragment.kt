@@ -1308,6 +1308,8 @@ class AverageShopFragment : BaseFragment(), DatePickerListener, View.OnClickList
             // duplicate shop api call
             addShopData.isShopDuplicate=shop.isShopDuplicate
 
+            addShopData.purpose=shop.purpose
+
             callAddShopApi(addShopData, shop.shopImageLocalPath, shop.doc_degree, position)
             //}
         } catch (e: Exception) {
@@ -2491,6 +2493,8 @@ class AverageShopFragment : BaseFragment(), DatePickerListener, View.OnClickList
 
                // duplicate shop api call
                addShopData.isShopDuplicate=mAddShopDBModelEntity.isShopDuplicate
+
+               addShopData.purpose=mAddShopDBModelEntity.purpose
 
 
                callAddShopApi(addShopData, mAddShopDBModelEntity.shopImageLocalPath, shopList, true,

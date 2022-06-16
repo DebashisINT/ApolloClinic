@@ -864,6 +864,8 @@ class DateWiseQuotationList : BaseFragment(), DatePickerListener {
 
             // duplicate shop api call
             addShopData.isShopDuplicate=isShopDuplicate
+
+            addShopData.purpose=purpose
         }
         callAddShopApi(addShopData, shop?.shopImageLocalPath!!, quot, isEdit, shop.doc_degree!!)
     }

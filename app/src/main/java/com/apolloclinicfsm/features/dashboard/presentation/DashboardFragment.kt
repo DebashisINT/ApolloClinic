@@ -3427,6 +3427,14 @@ class DashboardFragment : BaseFragment(), View.OnClickListener, HBRecorderListen
                                                     Pref.ShowPurposeInShopVisit = response.getconfigure?.get(i)?.Value == "1"
                                                 }
                                             }
+                                            else if (response.getconfigure?.get(i)?.Key.equals("ShopScreenAftVisitRevisit", ignoreCase = true)) {
+                                                Pref.ShopScreenAftVisitRevisit = response.getconfigure!![i].Value == "1"
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.ShopScreenAftVisitRevisit = response.getconfigure?.get(i)?.Value == "1"
+                                                }
+                                            }
+                                            
+                                            
 
 
                                         }
@@ -3667,6 +3675,9 @@ class DashboardFragment : BaseFragment(), View.OnClickListener, HBRecorderListen
 
                                 if (!TextUtils.isEmpty(configResponse.dateOfAnniversaryText))
                                     Pref.dateOfAnniversaryText = configResponse.dateOfAnniversaryText
+
+                                if (configResponse.ShopScreenAftVisitRevisit != null)
+                                    Pref.ShopScreenAftVisitRevisitGlobal = configResponse.ShopScreenAftVisitRevisit!!
 
 
                             }

@@ -2216,6 +2216,8 @@ val revisitStatusList : MutableList<ShopRevisitStatusRequestData> = ArrayList()
             // duplicate shop api call
             addShopData.isShopDuplicate=mAddShopDBModelEntity.isShopDuplicate
 
+            addShopData.purpose=mAddShopDBModelEntity.purpose
+
 
             callAddShopApi(addShopData, mAddShopDBModelEntity.shopImageLocalPath, shopList, true,
                     mAddShopDBModelEntity.doc_degree)

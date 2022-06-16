@@ -81,6 +81,7 @@ class ShopData {
     var whatsappNoForCustomer = ""
 
     var isShopDuplicate = false
+    var purpose = ""
 
 //    "shop_id": "1639_1512128366843",
 //    "shop_name": "company 1",

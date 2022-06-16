@@ -1746,6 +1746,7 @@ class NewDateWiseOrderListFragment : BaseFragment(), DatePickerListener, View.On
         // duplicate shop api call
         addShopData.isShopDuplicate=mAddShopDBModelEntity.isShopDuplicate
 
+        addShopData.purpose=mAddShopDBModelEntity.purpose
 
 
         callAddShopApi(addShopData, mAddShopDBModelEntity.shopImageLocalPath, shop_id, collection_id, amount, collection,
@@ -2368,6 +2369,8 @@ class NewDateWiseOrderListFragment : BaseFragment(), DatePickerListener, View.On
 
         // duplicate shop api call
         addShopData.isShopDuplicate=shop.isShopDuplicate
+
+        addShopData.purpose=shop.purpose
 
 
 

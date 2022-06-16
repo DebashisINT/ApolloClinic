@@ -549,6 +549,8 @@ class AddBillingFragment : BaseFragment(), View.OnClickListener {
         // duplicate shop api call
         addShopData.isShopDuplicate=shop.isShopDuplicate
 
+        addShopData.purpose=shop.purpose
+
         callAddShopApi(addShopData, shop.shopImageLocalPath, shop.doc_degree, billing)
         //}
     }

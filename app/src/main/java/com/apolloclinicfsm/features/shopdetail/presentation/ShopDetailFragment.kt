@@ -2487,6 +2487,16 @@ class ShopDetailFragment : BaseFragment(), View.OnClickListener {
                     }
                 }
 
+                /*AutoDDSelect Feature*/
+                if(Pref.AutoDDSelect){
+                    rl_assigned_to_dd.visibility = View.VISIBLE
+                }
+                else{
+                    rl_assigned_to_dd.visibility = View.GONE
+                }
+
+
+
                 if (!TextUtils.isEmpty(addShopData.assigned_to_shop_id)) {
                     val shop = AppDatabase.getDBInstance()?.assignToShopDao()?.getSingleValue(addShopData.assigned_to_shop_id)
                     shop?.apply {
@@ -5723,6 +5733,7 @@ class ShopDetailFragment : BaseFragment(), View.OnClickListener {
                     rl_amount.visibility = View.VISIBLE
                 }
             }
+
         }
 
         tv_shop_type.setOnClickListener(View.OnClickListener {
@@ -5775,6 +5786,13 @@ class ShopDetailFragment : BaseFragment(), View.OnClickListener {
             popup.dismiss()
         })
 
+        /*AutoDDSelect Feature*/
+        if(Pref.AutoDDSelect){
+            rl_assigned_to_dd.visibility = View.VISIBLE
+        }
+        else{
+            rl_assigned_to_dd.visibility = View.GONE
+        }
 
         popup.setBackgroundDrawable(ColorDrawable(Color.WHITE))
 //        popup.showAsDropDown(view)
@@ -6274,6 +6292,14 @@ class ShopDetailFragment : BaseFragment(), View.OnClickListener {
                     rl_amount.visibility = View.GONE
                     rl_type.visibility = View.GONE
                 }
+            }
+
+            /*AutoDDSelect Feature*/
+            if(Pref.AutoDDSelect){
+                rl_assigned_to_dd.visibility = View.VISIBLE
+            }
+            else{
+                rl_assigned_to_dd.visibility = View.GONE
             }
         } else {
             rl_assigned_to_pp.visibility = View.GONE
