@@ -1890,12 +1890,39 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
 //                                (mContext as DashboardActivity).showSnackMessage(getString(R.string.shop_added_successfully))
                                     (mContext as DashboardActivity).onBackPressed()
                                     //(mContext as DashboardActivity).loadFragment(FragType.NearByShopsListFragment, false, "")
-                                    Pref.ShopScreenAftVisitRevisit = true
-                                    Pref.ShopScreenAftVisitRevisitGlobal = true
+//                                    Pref.ShopScreenAftVisitRevisit = true
+//                                    Pref.ShopScreenAftVisitRevisitGlobal = true
 
                                     if(Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal){
                                         (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
                                     }else{
+                                        val shopList = AppDatabase.getDBInstance()!!.addShopEntryDao().getShopByIdN(addShop.shop_id)
+                                        if (!TextUtils.isEmpty(shopList.dateOfBirth)) {
+                                            //if (AppUtils.getCurrentDateForShopActi() == AppUtils.changeAttendanceDateFormatToCurrent(it.dateOfBirth)) {
+                                            if (AppUtils.getCurrentMonthDayForShopActi() == AppUtils.changeAttendanceDateFormatToMonthDay(shopList.dateOfBirth)) {
+                                                val notification = NotificationUtils(getString(R.string.app_name), "", "", "")
+                                                var body = ""
+                                                body = if (TextUtils.isEmpty(shopList.ownerEmailId))
+                                                    "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + " for birthday today."
+                                                else
+                                                    "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + ", Email: " + shopList.ownerEmailId + " for birthday today."
+                                                (mContext as DashboardActivity).tv_noti_count.visibility=View.VISIBLE
+                                                notification.sendLocNotification(mContext, body)
+                                            }
+                                        }
+                                        if (!TextUtils.isEmpty(shopList.dateOfAniversary)) {
+                                            //if (AppUtils.getCurrentDateForShopActi() == AppUtils.changeAttendanceDateFormatToCurrent(it.dateOfAniversary)) {
+                                            if (AppUtils.getCurrentMonthDayForShopActi() == AppUtils.changeAttendanceDateFormatToMonthDay(shopList.dateOfAniversary)) {
+                                                val notification = NotificationUtils(getString(R.string.app_name), "", "", "")
+                                                var body = ""
+                                                body = if (TextUtils.isEmpty(shopList.ownerEmailId))
+                                                    "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + " for Anniversary today."
+                                                else
+                                                    "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + ", Email: " + shopList.ownerEmailId + " for Anniversary today."
+                                                (mContext as DashboardActivity).tv_noti_count.visibility=View.VISIBLE
+                                                notification.sendLocNotification(mContext, body)
+                                            }
+                                        }
                                         (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment,true,"")
                                     }
                                  //   (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
@@ -1921,6 +1948,33 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
                                 if(Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal){
                                     (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
                                 }else{
+                                    val shopList = AppDatabase.getDBInstance()!!.addShopEntryDao().getShopByIdN(addShop.shop_id)
+                                    if (!TextUtils.isEmpty(shopList.dateOfBirth)) {
+                                        //if (AppUtils.getCurrentDateForShopActi() == AppUtils.changeAttendanceDateFormatToCurrent(it.dateOfBirth)) {
+                                        if (AppUtils.getCurrentMonthDayForShopActi() == AppUtils.changeAttendanceDateFormatToMonthDay(shopList.dateOfBirth)) {
+                                            val notification = NotificationUtils(getString(R.string.app_name), "", "", "")
+                                            var body = ""
+                                            body = if (TextUtils.isEmpty(shopList.ownerEmailId))
+                                                "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + " for birthday today."
+                                            else
+                                                "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + ", Email: " + shopList.ownerEmailId + " for birthday today."
+                                            (mContext as DashboardActivity).tv_noti_count.visibility=View.VISIBLE
+                                            notification.sendLocNotification(mContext, body)
+                                        }
+                                    }
+                                    if (!TextUtils.isEmpty(shopList.dateOfAniversary)) {
+                                        //if (AppUtils.getCurrentDateForShopActi() == AppUtils.changeAttendanceDateFormatToCurrent(it.dateOfAniversary)) {
+                                        if (AppUtils.getCurrentMonthDayForShopActi() == AppUtils.changeAttendanceDateFormatToMonthDay(shopList.dateOfAniversary)) {
+                                            val notification = NotificationUtils(getString(R.string.app_name), "", "", "")
+                                            var body = ""
+                                            body = if (TextUtils.isEmpty(shopList.ownerEmailId))
+                                                "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + " for Anniversary today."
+                                            else
+                                                "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + ", Email: " + shopList.ownerEmailId + " for Anniversary today."
+                                            (mContext as DashboardActivity).tv_noti_count.visibility=View.VISIBLE
+                                            notification.sendLocNotification(mContext, body)
+                                        }
+                                    }
                                     (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment,true,"")
                                 }
 //                                (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
@@ -1994,6 +2048,33 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
                                     if(Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal){
                                         (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
                                     }else{
+                                        val shopList = AppDatabase.getDBInstance()!!.addShopEntryDao().getShopByIdN(addShop.shop_id)
+                                        if (!TextUtils.isEmpty(shopList.dateOfBirth)) {
+                                            //if (AppUtils.getCurrentDateForShopActi() == AppUtils.changeAttendanceDateFormatToCurrent(it.dateOfBirth)) {
+                                            if (AppUtils.getCurrentMonthDayForShopActi() == AppUtils.changeAttendanceDateFormatToMonthDay(shopList.dateOfBirth)) {
+                                                val notification = NotificationUtils(getString(R.string.app_name), "", "", "")
+                                                var body = ""
+                                                body = if (TextUtils.isEmpty(shopList.ownerEmailId))
+                                                    "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + " for birthday today."
+                                                else
+                                                    "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + ", Email: " + shopList.ownerEmailId + " for birthday today."
+                                                (mContext as DashboardActivity).tv_noti_count.visibility=View.VISIBLE
+                                                notification.sendLocNotification(mContext, body)
+                                            }
+                                        }
+                                        if (!TextUtils.isEmpty(shopList.dateOfAniversary)) {
+                                            //if (AppUtils.getCurrentDateForShopActi() == AppUtils.changeAttendanceDateFormatToCurrent(it.dateOfAniversary)) {
+                                            if (AppUtils.getCurrentMonthDayForShopActi() == AppUtils.changeAttendanceDateFormatToMonthDay(shopList.dateOfAniversary)) {
+                                                val notification = NotificationUtils(getString(R.string.app_name), "", "", "")
+                                                var body = ""
+                                                body = if (TextUtils.isEmpty(shopList.ownerEmailId))
+                                                    "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + " for Anniversary today."
+                                                else
+                                                    "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + ", Email: " + shopList.ownerEmailId + " for Anniversary today."
+                                                (mContext as DashboardActivity).tv_noti_count.visibility=View.VISIBLE
+                                                notification.sendLocNotification(mContext, body)
+                                            }
+                                        }
                                         (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment,true,"")
                                     }
                                 }
@@ -2019,6 +2100,33 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
                                 if(Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal){
                                     (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
                                 }else{
+                                    val shopList = AppDatabase.getDBInstance()!!.addShopEntryDao().getShopByIdN(addShop.shop_id)
+                                    if (!TextUtils.isEmpty(shopList.dateOfBirth)) {
+                                        //if (AppUtils.getCurrentDateForShopActi() == AppUtils.changeAttendanceDateFormatToCurrent(it.dateOfBirth)) {
+                                        if (AppUtils.getCurrentMonthDayForShopActi() == AppUtils.changeAttendanceDateFormatToMonthDay(shopList.dateOfBirth)) {
+                                            val notification = NotificationUtils(getString(R.string.app_name), "", "", "")
+                                            var body = ""
+                                            body = if (TextUtils.isEmpty(shopList.ownerEmailId))
+                                                "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + " for birthday today."
+                                            else
+                                                "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + ", Email: " + shopList.ownerEmailId + " for birthday today."
+                                            (mContext as DashboardActivity).tv_noti_count.visibility=View.VISIBLE
+                                            notification.sendLocNotification(mContext, body)
+                                        }
+                                    }
+                                    if (!TextUtils.isEmpty(shopList.dateOfAniversary)) {
+                                        //if (AppUtils.getCurrentDateForShopActi() == AppUtils.changeAttendanceDateFormatToCurrent(it.dateOfAniversary)) {
+                                        if (AppUtils.getCurrentMonthDayForShopActi() == AppUtils.changeAttendanceDateFormatToMonthDay(shopList.dateOfAniversary)) {
+                                            val notification = NotificationUtils(getString(R.string.app_name), "", "", "")
+                                            var body = ""
+                                            body = if (TextUtils.isEmpty(shopList.ownerEmailId))
+                                                "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + " for Anniversary today."
+                                            else
+                                                "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + ", Email: " + shopList.ownerEmailId + " for Anniversary today."
+                                            (mContext as DashboardActivity).tv_noti_count.visibility=View.VISIBLE
+                                            notification.sendLocNotification(mContext, body)
+                                        }
+                                    }
                                     (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment,true,"")
                                 }
                                 if (error != null) {
@@ -2136,6 +2244,33 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
             if(Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal){
                 (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, shop_id!!)
             }else{
+                val shopList = AppDatabase.getDBInstance()!!.addShopEntryDao().getShopByIdN(shop_id)
+                if (!TextUtils.isEmpty(shopList.dateOfBirth)) {
+                    //if (AppUtils.getCurrentDateForShopActi() == AppUtils.changeAttendanceDateFormatToCurrent(it.dateOfBirth)) {
+                    if (AppUtils.getCurrentMonthDayForShopActi() == AppUtils.changeAttendanceDateFormatToMonthDay(shopList.dateOfBirth)) {
+                        val notification = NotificationUtils(getString(R.string.app_name), "", "", "")
+                        var body = ""
+                        body = if (TextUtils.isEmpty(shopList.ownerEmailId))
+                            "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + " for birthday today."
+                        else
+                            "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + ", Email: " + shopList.ownerEmailId + " for birthday today."
+                        (mContext as DashboardActivity).tv_noti_count.visibility=View.VISIBLE
+                        notification.sendLocNotification(mContext, body)
+                    }
+                }
+                if (!TextUtils.isEmpty(shopList.dateOfAniversary)) {
+                    //if (AppUtils.getCurrentDateForShopActi() == AppUtils.changeAttendanceDateFormatToCurrent(it.dateOfAniversary)) {
+                    if (AppUtils.getCurrentMonthDayForShopActi() == AppUtils.changeAttendanceDateFormatToMonthDay(shopList.dateOfAniversary)) {
+                        val notification = NotificationUtils(getString(R.string.app_name), "", "", "")
+                        var body = ""
+                        body = if (TextUtils.isEmpty(shopList.ownerEmailId))
+                            "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + " for Anniversary today."
+                        else
+                            "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + ", Email: " + shopList.ownerEmailId + " for Anniversary today."
+                        (mContext as DashboardActivity).tv_noti_count.visibility=View.VISIBLE
+                        notification.sendLocNotification(mContext, body)
+                    }
+                }
                 (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment,true,"")
             }
 //            (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, shop_id)
