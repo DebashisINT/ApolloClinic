@@ -660,6 +660,13 @@ class NearByShopsListAdapter(context: Context, list: List<AddShopDBModelEntity>,
                             itemView.ll_dd_name.visibility = View.GONE
                         }
                     }
+                    /*AutoDDSelect Feature*/
+                    if(Pref.AutoDDSelect){
+                        itemView.ll_dd_name.visibility = View.VISIBLE
+                    }
+                    else{
+                        itemView.ll_dd_name.visibility = View.GONE
+                    }
                 }
 
                 val shopActivityList = AppDatabase.getDBInstance()?.shopActivityDao()?.getShopActivityForIdDescVisitDate(list[adapterPosition].shop_id)

@@ -197,7 +197,7 @@ class NotificationFragment : BaseFragment() {
             }
         }
 
-        if(notification_list!!.size==0){
+        if(notification_list_temp!!.size==0){
             no_shop_tv.visibility = View.VISIBLE
             return
         }
