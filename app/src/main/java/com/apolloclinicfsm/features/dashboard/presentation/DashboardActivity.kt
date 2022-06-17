@@ -745,6 +745,7 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                                 else
                                     "Please wish Mr. " + it.ownerName + " of " + it.shopName + ", Contact Number: " + it.ownerContactNumber + ", Email: " + it.ownerEmailId + " for birthday today."
                                 tv_noti_count.visibility=View.VISIBLE
+                                Pref.NotiCountFlag = true
                                 notification.sendLocNotification(this, body)
                             }
                         }
@@ -759,6 +760,7 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                                 else
                                     "Please wish Mr. " + it.ownerName + " of " + it.shopName + ", Contact Number: " + it.ownerContactNumber + ", Email: " + it.ownerEmailId + " for Anniversary today."
                                 tv_noti_count.visibility=View.VISIBLE
+                                Pref.NotiCountFlag = true
                                 notification.sendLocNotification(this, body)
                             }
                         }
@@ -2850,6 +2852,7 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                 SendBrod.stopBrodZeroOrder(this)
                 SendBrod.stopBrodDOBDOA(this)
                 tv_noti_count.visibility=View.GONE
+                Pref.NotiCountFlag = false
 
                 //Pref.IsCollectionOrderWise = true
                 //Pref.ShowCollectionAlert = true
@@ -5240,6 +5243,7 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
     }
 
     private fun setTopBarVisibility(mTopBarConfig: TopBarConfig) {
+        tv_noti_count.visibility = View.GONE
         when (mTopBarConfig) {
             TopBarConfig.HOME -> {
                 iv_home_icon.visibility = View.VISIBLE
@@ -5591,6 +5595,12 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                     iv_scan.visibility = View.VISIBLE
                 else
                     iv_scan.visibility = View.GONE
+
+                if(Pref.NotiCountFlag){
+                    tv_noti_count.visibility = View.VISIBLE
+                }else{
+                    tv_noti_count.visibility = View.GONE
+                }
 
                 supportActionBar!!.setDisplayHomeAsUpEnabled(false)
                 // Show hamburger
