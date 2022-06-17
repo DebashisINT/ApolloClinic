@@ -9353,10 +9353,19 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                 override fun onCancelClick() {
                     //(mContext as DashboardActivity).onBackPressed()
                     if (Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal) {
-                        (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, mShopId)
+                        (mContext as DashboardActivity).loadFragment(
+                            FragType.ShopDetailFragment,
+                            true,
+                            mShopId
+                        )
                     } else {
-                        (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment, true, "")
+                        (mContext as DashboardActivity).loadFragment(
+                            FragType.DashboardFragment,
+                            true,
+                            ""
+                        )
                     }
+                }
 
                 override fun onOkButtonClick(otp: String) {
                     callOtpSentApi(mShopId)
