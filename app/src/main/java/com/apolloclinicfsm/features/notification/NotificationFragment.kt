@@ -130,12 +130,14 @@ class NotificationFragment : BaseFragment() {
     }
 
     private fun initAdapter(notification_list: ArrayList<NotificationListDataModel>?) {
+        var notification_list_temp: ArrayList<NotificationListDataModel> = ArrayList()
         no_shop_tv.visibility = View.GONE
         /*new work*/
         val shopList = AppDatabase.getDBInstance()?.addShopEntryDao()?.all
         var bodyDOB = ""
         var bodyAni = ""
         for(i in 0..shopList!!.size-1){
+            var sName = shopList[i].shopName
             var dob = ""
             if(shopList[i].dateOfBirth!=null){
                 dob = shopList[i].dateOfBirth.split("T").get(0)
@@ -150,13 +152,13 @@ class NotificationFragment : BaseFragment() {
             var objAnni : NotificationListDataModel = NotificationListDataModel()
 
             var dobMonthDay = AppUtils.changeAttendanceDateFormatToMonthDay(dob+"T00:00:00")
-            if (todayDate.equals(dobMonthDay)){
+            if (todayDate.equals(dobMonthDay) && !dob.equals("")){
                 bodyDOB ="Please wish Mr. " + shopList[i].ownerName + " of " + shopList[i].shopName +
                         ", Contact Number: " + shopList[i].ownerContactNumber + " for birthday today."
                 objDOB.phoneNo = shopList[i].ownerContactNumber
             }
             var anniMonthDay = AppUtils.changeAttendanceDateFormatToMonthDay(anni+"T00:00:00")
-            if (todayDate.equals(anniMonthDay)){
+            if (todayDate.equals(anniMonthDay) && !anni.equals("")){
                 bodyAni = "Please wish Mr. " + shopList[i].ownerName + " of " + shopList[i].shopName+
                         ", Contact Number: " + shopList[i].ownerContactNumber + " for Anniversary today."
                 objAnni.phoneNo = shopList[i].ownerContactNumber
@@ -168,19 +170,31 @@ class NotificationFragment : BaseFragment() {
             objAnni.date_time=AppUtils.getCurrentDateTime().replace(" ","T")
             if(!bodyDOB.equals("")){
                 objDOB.notificationmessage=bodyDOB
-                notification_list!!.add(objDOB)
+                notification_list_temp!!.add(objDOB)
             }
 
             if(!bodyAni.equals("")){
                 objAnni.notificationmessage=bodyAni
-                notification_list!!.add(objAnni)
+                notification_list_temp!!.add(objAnni)
             }
 
             bodyDOB = ""
             bodyAni = ""
 
-            /*if(!obj.notificationmessage.equals(""))
-                notification_list!!.add(obj)*/
+        }
+
+        if(notification_list_temp.size>0){
+            if(notification_list!!.size>0){
+                for(i in 0..notification_list.size-1){
+                    notification_list_temp.add(notification_list.get(i))
+                }
+            }
+        }else{
+            if(notification_list!!.size>0){
+                for(i in 0..notification_list.size-1){
+                    notification_list_temp.add(notification_list.get(i))
+                }
+            }
         }
 
         if(notification_list!!.size==0){
@@ -188,7 +202,9 @@ class NotificationFragment : BaseFragment() {
             return
         }
 
-        rv_order_list.adapter = NotificationAdapter(mContext, notification_list, object : NotificationAdapter.OnClickListener {
+
+
+        rv_order_list.adapter = NotificationAdapter(mContext, notification_list_temp, object : NotificationAdapter.OnClickListener {
             override fun onNotificationClick(adapterPosition: Int) {
                 if(notification_list?.get(adapterPosition)!!.notificationmessage!!.contains("Please take action on it")){
                     if (!Pref.isAddAttendence)
