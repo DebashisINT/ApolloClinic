@@ -9352,40 +9352,11 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
 
                 override fun onCancelClick() {
                     //(mContext as DashboardActivity).onBackPressed()
-                    if(Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal){
+                    if (Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal) {
                         (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, mShopId)
-                    }else{
-                        val shopList = AppDatabase.getDBInstance()!!.addShopEntryDao().getShopByIdN(mShopId)
-                        if (!TextUtils.isEmpty(shopList.dateOfBirth)) {
-                            //if (AppUtils.getCurrentDateForShopActi() == AppUtils.changeAttendanceDateFormatToCurrent(it.dateOfBirth)) {
-                            if (AppUtils.getCurrentMonthDayForShopActi() == AppUtils.changeAttendanceDateFormatToMonthDay(shopList.dateOfBirth)) {
-                                val notification = NotificationUtils(getString(R.string.app_name), "", "", "")
-                                var body = ""
-                                body = if (TextUtils.isEmpty(shopList.ownerEmailId))
-                                    "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + " for birthday today."
-                                else
-                                    "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + ", Email: " + shopList.ownerEmailId + " for birthday today."
-                                (mContext as DashboardActivity).tv_noti_count.visibility=View.VISIBLE
-                                notification.sendLocNotification(mContext, body)
-                            }
-                        }
-                        if (!TextUtils.isEmpty(shopList.dateOfAniversary)) {
-                            //if (AppUtils.getCurrentDateForShopActi() == AppUtils.changeAttendanceDateFormatToCurrent(it.dateOfAniversary)) {
-                            if (AppUtils.getCurrentMonthDayForShopActi() == AppUtils.changeAttendanceDateFormatToMonthDay(shopList.dateOfAniversary)) {
-                                val notification = NotificationUtils(getString(R.string.app_name), "", "", "")
-                                var body = ""
-                                body = if (TextUtils.isEmpty(shopList.ownerEmailId))
-                                    "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + " for Anniversary today."
-                                else
-                                    "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + ", Email: " + shopList.ownerEmailId + " for Anniversary today."
-                                (mContext as DashboardActivity).tv_noti_count.visibility=View.VISIBLE
-                                notification.sendLocNotification(mContext, body)
-                            }
-                        }
-                        (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment,true,"")
+                    } else {
+                        (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment, true, "")
                     }
-//                    loadFragment(FragType.ShopDetailFragment, true, mShopId)
-                }
 
                 override fun onOkButtonClick(otp: String) {
                     callOtpSentApi(mShopId)
