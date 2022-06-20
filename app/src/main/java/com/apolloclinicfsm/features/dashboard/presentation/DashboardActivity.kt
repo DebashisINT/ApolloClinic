@@ -7298,6 +7298,8 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                 (getFragment() as CollectionNotiViewPagerFrag1).updateView()
             if (getFragment() != null && getFragment() is CollectionNotiViewPagerFrag)
                 (getFragment() as CollectionNotiViewPagerFrag).updateView()
+            if (getFragment() != null && getFragment() is CollectionNotiViewPagerFrag2)
+                (getFragment() as CollectionNotiViewPagerFrag2).updateView()
         }
         else {
             super.onBackPressed()
@@ -9292,7 +9294,12 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
     private fun afterShopRevisit() {
         if (!isOtherUsersShopRevisit) {
             cancelNotification(mShopId)
-            loadFragment(FragType.ShopDetailFragment, true, mShopId)
+            if(Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal){
+                loadFragment(FragType.ShopDetailFragment, true, mShopId)
+            }else{
+                loadFragment(FragType.DashboardFragment, false, "")
+            }
+//            loadFragment(FragType.ShopDetailFragment, true, mShopId)
         } else
             showOrderCollectionDialog()
     }

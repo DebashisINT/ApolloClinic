@@ -117,6 +117,7 @@ class CollectionPendingFrag : BaseFragment(),View.OnClickListener{
                             dueAmt="0"
                         }
                         dueAmt=String.format("%.2f", dueAmt.toDouble())
+                        if(!dueAmt.equals("0.00"))
                         pendingCollDataList.add(PendingCollData(shopList.get(i).shopName,dueAmt,shopList.get(i).shop_id.toString()))
                     }
 
