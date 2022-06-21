@@ -2403,10 +2403,15 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
         else
             micro_learning_TV.visibility = View.GONE
 
-        if (Pref.isShowNearbyCustomer)
+        if (Pref.IsShowNearByTeam)
             nearby_user_TV.visibility = View.VISIBLE
         else
             nearby_user_TV.visibility = View.GONE
+
+        if (Pref.isShowNearbyCustomer)
+            nearby_shop_TV.visibility = View.VISIBLE
+        else
+            nearby_shop_TV.visibility = View.GONE
 
         var launchIntent: Intent? = packageManager.getLaunchIntentForPackage("com.anydesk.anydeskandroid")
         if(launchIntent!=null){

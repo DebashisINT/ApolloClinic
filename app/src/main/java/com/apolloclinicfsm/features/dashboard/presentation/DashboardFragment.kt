@@ -1553,7 +1553,7 @@ class DashboardFragment : BaseFragment(), View.OnClickListener, HBRecorderListen
     }
 
 
-    @SuppressLint("WrongConstant")
+    @SuppressLint("WrongConstant", "UseRequireInsteadOfGet")
     private fun initAdapter() {
         mRouteActivityDashboardAdapter = RouteActivityDashboardAdapter(this.context!!, AppDatabase.getDBInstance()!!.userLocationDataDao().all)
         layoutManager = LinearLayoutManager(mContext, LinearLayout.VERTICAL, false)
@@ -3431,6 +3431,10 @@ class DashboardFragment : BaseFragment(), View.OnClickListener, HBRecorderListen
                                                 Pref.ShopScreenAftVisitRevisit = response.getconfigure!![i].Value == "1"
                                                 if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
                                                     Pref.ShopScreenAftVisitRevisit = response.getconfigure?.get(i)?.Value == "1"
+                                                }
+                                            }else if (response.getconfigure!![i].Key.equals("IsShowNearByTeam", ignoreCase = true)) {
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.IsShowNearByTeam = response.getconfigure!![i].Value == "1"
                                                 }
                                             }
                                             

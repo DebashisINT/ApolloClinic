@@ -86,6 +86,7 @@ import com.apolloclinicfsm.widgets.AppCustomEditText
 import com.apolloclinicfsm.widgets.AppCustomTextView
 import com.elvishew.xlog.XLog
 import com.google.android.material.textfield.TextInputLayout
+import com.itextpdf.text.pdf.parser.Line
 import com.squareup.picasso.Picasso
 import com.themechangeapp.pickimage.PermissionHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -105,6 +106,7 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
     private lateinit var shopImage: RelativeLayout
     private lateinit var mContext: Context
     private lateinit var saveTV: AppCustomTextView
+    private lateinit var ll_feedback: LinearLayout
     private var imagePath: String = ""
     private var imagePathCompetitor: String = ""
     private var imagePathupload: String = ""
@@ -558,6 +560,7 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initView(view: View) {
+        ll_feedback = view.findViewById(R.id.ll_feedback)
         assign_to_tv = view.findViewById(R.id.assign_to_tv)
         captureShopImage = view.findViewById(R.id.capture_shop_image_IV)
         shopImage = view.findViewById(R.id.shop_image_RL)
@@ -1575,6 +1578,8 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
         else {
             til_no.hint = Pref.contactNumberText + " Number"
         }
+
+        ll_feedback.visibility = View.GONE
 
     }
 
@@ -6625,6 +6630,13 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
                 assign_to_shop_tv.text = ""
                 (mContext as DashboardActivity). setTopBarTitle("Add " + Pref.shopText)
             }
+
+            if (Pref.isAreaVisible)
+                rl_area_main.visibility = View.VISIBLE
+            else
+                rl_area_main.visibility = View.GONE
+
+            ll_feedback.visibility = View.GONE
 
             popup.dismiss()
         }

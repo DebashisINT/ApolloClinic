@@ -428,4 +428,6 @@ object Pref : PreferenceHolder() {
 
     var NotiCountFlag: Boolean by bindToPreferenceField(false, "NotiCountFlag")
 
+    var IsShowNearByTeam: Boolean by bindToPreferenceField(false, "IsShowNearByTeam")
+
 }
