@@ -5,6 +5,7 @@ import com.apolloclinicfsm.app.Pref
 import com.apolloclinicfsm.base.BaseResponse
 import com.apolloclinicfsm.features.addshop.model.*
 import com.apolloclinicfsm.features.addshop.model.assigntopplist.AssignToPPListResponseModel
+import com.apolloclinicfsm.features.beatCustom.BeatTeamResponseModel
 import io.reactivex.Observable
 
 /**
@@ -37,6 +38,10 @@ class TypeListRepo(val apiService: TypeListApi) {
 
     fun beatList(): Observable<BeatListResponseModel> {
         return apiService.getBeatList(Pref.session_token!!, Pref.user_id!!)
+    }
+
+    fun beatListForTeam(usrID:String): Observable<BeatListResponseModel> {
+        return apiService.getBeatList(Pref.session_token!!, usrID!!)
     }
 
     fun updateBankDetails(shopId: String, accountHolder: String, accountNo: String, bankName: String, ifsc: String, upi: String): Observable<BaseResponse> {

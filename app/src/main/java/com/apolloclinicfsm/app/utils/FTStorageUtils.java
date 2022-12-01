@@ -55,7 +55,7 @@ import static android.content.Context.ACTIVITY_SERVICE;
 
 public class FTStorageUtils {
 
-    private static String APP_FOLDERNAME = "FTS";
+    private static String APP_FOLDERNAME = "apolloclinicfsmApp/FTS";
     private static String folderPath;
     public static Uri IMG_URI = null;
     private static final int EOF = -1;
@@ -266,6 +266,17 @@ public class FTStorageUtils {
             return " ";
         }
     }
+    public static String formatMm(String month) {
+
+        try {
+            SimpleDateFormat monthParse = new SimpleDateFormat("MM");
+            SimpleDateFormat monthDisplay = new SimpleDateFormat("MM");
+            return monthDisplay.format(monthParse.parse(month));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return " ";
+        }
+    }
 
     // Only for yyyy-MM-ddTHH:mm:ss format input
     public static Date getStringToDate(String dateString) {
@@ -321,7 +332,7 @@ public class FTStorageUtils {
         List<ActivityManager.RunningTaskInfo> alltasks = am.getRunningTasks(1);
 
         for (ActivityManager.RunningTaskInfo aTask : alltasks) {
-            if (aTask.topActivity.getClassName().equals("com.Apolloclinicfsm.features.dashboard.presentation.DashboardActivity")) {
+            if (aTask.topActivity.getClassName().equals("com.apolloclinicfsm.features.dashboard.presentation.DashboardActivity")) {
                 return true;
             }
         }

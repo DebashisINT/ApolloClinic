@@ -301,8 +301,10 @@ class NewCollectionListFragment : BaseFragment(), View.OnClickListener {
 
         // duplicate shop api call
         addShopData.isShopDuplicate=mAddShopDBModelEntity.isShopDuplicate
-
         addShopData.purpose=mAddShopDBModelEntity.purpose
+
+        addShopData.GSTN_Number=mAddShopDBModelEntity.gstN_Number
+        addShopData.ShopOwner_PAN=mAddShopDBModelEntity.shopOwner_PAN
 
 
         callAddShopApiForSync(addShopData, mAddShopDBModelEntity.shopImageLocalPath, list, adapterPosition, mAddShopDBModelEntity.doc_degree)

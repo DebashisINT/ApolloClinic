@@ -124,7 +124,7 @@
     </LinearLayout>
 
 
-<!--    <com.Apolloclinicfsm.widgets.AppCustomTextView-->
+<!--    <com.apolloclinicfsm.widgets.AppCustomTextView-->
 <!--        android:id="@+id/tv_down_text"-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="wrap_content"-->

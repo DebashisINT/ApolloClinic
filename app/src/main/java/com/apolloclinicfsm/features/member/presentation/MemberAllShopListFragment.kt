@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
-import com.apolloclinicfsm.CustomStatic
 import com.elvishew.xlog.XLog
 import com.pnikosis.materialishprogress.ProgressWheel
 import com.apolloclinicfsm.R
@@ -19,7 +18,6 @@ import com.apolloclinicfsm.app.AppDatabase
 import com.apolloclinicfsm.app.NetworkConstant
 import com.apolloclinicfsm.app.Pref
 import com.apolloclinicfsm.app.SearchListener
-import com.apolloclinicfsm.app.domain.AddShopDBModelEntity
 import com.apolloclinicfsm.app.domain.MemberShopEntity
 import com.apolloclinicfsm.app.types.FragType
 import com.apolloclinicfsm.app.utils.AppUtils
@@ -180,6 +178,8 @@ class MemberAllShopListFragment : BaseFragment() {
                                 }
 
                                 if (response.shop_list != null && response.shop_list!!.size > 0) {
+                                    //if(shopId.equals(""))
+                                        response.shop_list = response.shop_list!!.distinctBy { it.shop_id } as ArrayList<TeamShopListDataModel>
                                     shop_list = response.shop_list
                                     initAdapter(response.shop_list!!)
                                 } else {
@@ -263,6 +263,17 @@ class MemberAllShopListFragment : BaseFragment() {
             } else
                 tv_shop_count.text = "Total " + Pref.shopText + "(s): " + size
         },
+            { teamShop: TeamShopListDataModel ->
+                if (!Pref.isAddAttendence)
+                    (mContext as DashboardActivity).checkToShowAddAttendanceAlert()
+                else if(Pref.IsAllowBreakageTrackingunderTeam) {
+                    //CustomStatic.IsBreakageViewFromTeam = true
+                    //(mContext as DashboardActivity).loadFragment(FragType.ShopDamageProductListFrag, true, teamShop.shop_id+"~"+userId)
+                    teamShop.user_id = userId
+                    (mContext as DashboardActivity).loadFragment(FragType.ShopDamageProductListFrag, true, teamShop)
+                }
+
+            },
         { teamShop: TeamShopListDataModel ->
             if (!Pref.isAddAttendence)
                 (mContext as DashboardActivity).checkToShowAddAttendanceAlert()
@@ -276,7 +287,6 @@ class MemberAllShopListFragment : BaseFragment() {
                         (mContext as DashboardActivity).showSnackMessage(getString(R.string.no_internet))
                     }
                     else{
-                            var tt=CustomStatic.ShopFeedBachHisUserId
                         (mContext as DashboardActivity).loadFragment(FragType.ShopFeedbackHisFrag, true, it)
                     }
                 }

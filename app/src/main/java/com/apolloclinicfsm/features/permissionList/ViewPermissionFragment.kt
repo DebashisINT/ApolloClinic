@@ -92,7 +92,7 @@ class ViewPermissionFragment: BaseFragment(), View.OnClickListener {
             if(list1.get(i)!="android.permission.ACCESS_GPS") {
                 var obj: PermissionDetails = PermissionDetails(list1.get(i).replace("android.permission.", "").replace("_", " ")
                         .replace("com.google.android.c2dm.permission.RECEIVE", "Receive Data from Internet").
-                        replace("com.Apolloclinicfsm.permission.C2D",""), list.get(i))
+                        replace("com.apolloclinicfsm.permission.C2D",""), list.get(i))
 
                 if(list.get(i)==3){
                     permList.add(obj)

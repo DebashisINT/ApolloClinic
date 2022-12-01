@@ -73,6 +73,10 @@ import com.apolloclinicfsm.features.TA.ViewAllTAListFragment
 import com.apolloclinicfsm.features.achievement.AchievementFragment
 import com.apolloclinicfsm.features.activities.presentation.*
 import com.apolloclinicfsm.features.addAttendence.*
+import com.apolloclinicfsm.features.addAttendence.api.addattendenceapi.AddAttendenceRepoProvider
+import com.apolloclinicfsm.features.addAttendence.api.leavetytpeapi.LeaveTypeRepoProvider
+import com.apolloclinicfsm.features.addAttendence.model.GetReportToFCMResponse
+import com.apolloclinicfsm.features.addAttendence.model.GetReportToResponse
 import com.apolloclinicfsm.features.addAttendence.model.Leave_list_Response
 import com.apolloclinicfsm.features.addorder.presentation.AddOrderFragment
 import com.apolloclinicfsm.features.addshop.model.AddShopRequestData
@@ -93,6 +97,7 @@ import com.apolloclinicfsm.features.attendance.model.AttendanceResponse
 import com.apolloclinicfsm.features.averageshop.presentation.AverageShopFragment
 import com.apolloclinicfsm.features.avgorder.presentation.AverageOrderFragment
 import com.apolloclinicfsm.features.avgtimespent.presentation.AvgTimespentShopListFragment
+import com.apolloclinicfsm.features.beatCustom.TeamBeatListFragment
 import com.apolloclinicfsm.features.billing.presentation.AddBillingFragment
 import com.apolloclinicfsm.features.billing.presentation.BillingDetailsFragment
 import com.apolloclinicfsm.features.billing.presentation.BillingListFragment
@@ -114,6 +119,8 @@ import com.apolloclinicfsm.features.commondialogsinglebtn.TermsAndConditionsSing
 import com.apolloclinicfsm.features.dailyPlan.prsentation.AllShopListFragment
 import com.apolloclinicfsm.features.dailyPlan.prsentation.DailyPlanListFragment
 import com.apolloclinicfsm.features.dailyPlan.prsentation.PlanDetailsFragment
+import com.apolloclinicfsm.features.damageProduct.ShopDamageProductListFrag
+import com.apolloclinicfsm.features.damageProduct.ShopDamageProductSubmitFrag
 import com.apolloclinicfsm.features.dashboard.presentation.api.ShopVisitImageUploadRepoProvider
 import com.apolloclinicfsm.features.dashboard.presentation.api.dashboardApi.DashboardRepoProvider
 import com.apolloclinicfsm.features.dashboard.presentation.api.otpsentapi.OtpSentRepoProvider
@@ -124,6 +131,7 @@ import com.apolloclinicfsm.features.dashboard.presentation.model.ContentListResp
 import com.apolloclinicfsm.features.dashboard.presentation.model.ShopVisitImageUploadInputModel
 import com.apolloclinicfsm.features.dashboard.presentation.model.UnreadNotificationResponseModel
 import com.apolloclinicfsm.features.device_info.presentation.DeviceInfoListFragment
+import com.apolloclinicfsm.features.distributorwiseorder.DistributorwiseorderlistFragment
 import com.apolloclinicfsm.features.document.DocumentRepoFeatureNewFragment
 import com.apolloclinicfsm.features.document.presentation.DocumentListFragment
 import com.apolloclinicfsm.features.document.presentation.DocumentTypeListFragment
@@ -140,10 +148,15 @@ import com.apolloclinicfsm.features.know_your_state.KnowYourStateFragment
 import com.apolloclinicfsm.features.lead.LeadFrag
 import com.apolloclinicfsm.features.lead.ViewLeadFrag
 import com.apolloclinicfsm.features.leaveapplynew.LeaveHome
+import com.apolloclinicfsm.features.leaveapplynew.model.clearAttendanceonRejectReqModelRejectReqModel
 import com.apolloclinicfsm.features.localshops.LocalShopListFragment
 import com.apolloclinicfsm.features.localshops.LocalShopListMapFragment
 import com.apolloclinicfsm.features.localshops.NearByShopsMapFragment
 import com.apolloclinicfsm.features.location.*
+import com.apolloclinicfsm.features.location.api.LocationRepoProvider
+import com.apolloclinicfsm.features.location.model.*
+import com.apolloclinicfsm.features.location.shopRevisitStatus.ShopRevisitStatusRepositoryProvider
+import com.apolloclinicfsm.features.location.shopdurationapi.ShopDurationRepositoryProvider
 import com.apolloclinicfsm.features.login.ShopFeedbackEntity
 import com.apolloclinicfsm.features.login.model.alarmconfigmodel.AlarmConfigDataModel
 import com.apolloclinicfsm.features.login.presentation.LoginActivity
@@ -151,6 +164,7 @@ import com.apolloclinicfsm.features.logout.presentation.api.LogoutRepositoryProv
 import com.apolloclinicfsm.features.logoutsync.presentation.LogoutSyncFragment
 import com.apolloclinicfsm.features.marketing.presentation.MarketingPagerFragment
 import com.apolloclinicfsm.features.meetinglist.prsentation.MeetingListFragment
+import com.apolloclinicfsm.features.member.MapViewForTeamFrag
 import com.apolloclinicfsm.features.member.model.TeamLocDataModel
 import com.apolloclinicfsm.features.member.model.TeamShopListDataModel
 import com.apolloclinicfsm.features.member.presentation.*
@@ -162,6 +176,10 @@ import com.apolloclinicfsm.features.myjobs.model.CustomerDataModel
 import com.apolloclinicfsm.features.myjobs.presentation.*
 import com.apolloclinicfsm.features.myorder.presentation.MyOrderListFragment
 import com.apolloclinicfsm.features.myprofile.presentation.MyProfileFragment
+import com.apolloclinicfsm.features.nearbyshops.api.ShopListRepositoryProvider
+import com.apolloclinicfsm.features.nearbyshops.model.ShopData
+import com.apolloclinicfsm.features.nearbyshops.model.ShopListResponse
+import com.apolloclinicfsm.features.nearbyshops.multipleattachImage.MultipleImageFragment
 import com.apolloclinicfsm.features.nearbyshops.presentation.BeatListFragment
 import com.apolloclinicfsm.features.nearbyshops.presentation.NearByShopsListFragment
 import com.apolloclinicfsm.features.nearbyshops.presentation.NewNearByShopsListFragment
@@ -210,6 +228,9 @@ import com.apolloclinicfsm.features.stockAddCurrentStock.ViewStockDetailsFragmen
 import com.apolloclinicfsm.features.stockCompetetorStock.AddCompetetorStockFragment
 import com.apolloclinicfsm.features.stockCompetetorStock.CompetetorStockFragment
 import com.apolloclinicfsm.features.stockCompetetorStock.ViewComStockProductDetails
+import com.apolloclinicfsm.features.survey.SurveyFrag
+import com.apolloclinicfsm.features.survey.SurveyViewDtlsFrag
+import com.apolloclinicfsm.features.survey.SurveyViewFrag
 import com.apolloclinicfsm.features.task.presentation.AddTaskFragment
 import com.apolloclinicfsm.features.task.presentation.CalenderTaskFragment
 import com.apolloclinicfsm.features.task.presentation.EditTaskFragment
@@ -258,6 +279,7 @@ import java.io.*
 import java.util.*
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 
 /*
@@ -307,24 +329,15 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
-
                 return@OnCompleteListener
             }
-
-            // Get new FCM registration token
             val token = task.result
             println("fcm_token " + token.toString());
-            //check(token)
             XLog.d("token : " + token.toString())
         })
 
-
-
-        //AppDatabase.getDBInstance()?.shopActivityDao()?.trash2("2022-03-30","11984_1648452492858","12")
-       //AppDatabase.getDBInstance()!!.shopActivityDao().trash("1")
-        println("load frag " + mFragType.toString() + "     " + AppUtils.minAccuracy.toString() + " " + Pref.user_id);
-        //val contacts: List<ContactUtils.ContactData> = retrieveAllContacts("",true,-1,-1)
-        //println("load contact " + contacts + " " + Pref.user_id)
+        println("load_frag " + mFragType.toString() + "     " + Pref.user_id.toString());
+        //AppDatabase.getDBInstance()!!.userLocationDataDao().updateUnknownLocationTest(AppUtils.getCurrentDateForShopActi(),"Unknown",false)
         if (addToStack) {
             mTransaction.add(R.id.frame_layout_container, getFragInstance(mFragType, initializeObject, true)!!, mFragType.toString())
             mTransaction.addToBackStack(mFragType.toString()).commitAllowingStateLoss()
@@ -332,7 +345,9 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
             mTransaction.replace(R.id.frame_layout_container, getFragInstance(mFragType, initializeObject, true)!!, mFragType.toString())
             mTransaction.commitAllowingStateLoss()
         }
+
     }
+
 
     private fun checkByU(token: String) {
         var fbToken = "fRL4OYJgTNCLFcMPKOcPhH:APA91bHZHlJf56uD_TqnD-Pq0Rvl0ao9x1ZZhtZvu2MpbAJ5FJD_1TrrTnRhfx0ABzfj2WKaX_ji8mjx1W_eawbZs5KUOD8OM0GpTK2m8IV9863_jIvNaFVknSlnAH1T5I3X4iJBERCF"
@@ -452,6 +467,7 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
     private lateinit var iv_home_icon: ImageView
     private lateinit var nearbyShops: AppCustomTextView
     private lateinit var assignedLead: AppCustomTextView
+    private lateinit var surveyMenu: AppCustomTextView
     private lateinit var shareLogs: AppCustomTextView
     private lateinit var reimbursement_tv: AppCustomTextView
     private lateinit var achievement_tv: AppCustomTextView
@@ -503,6 +519,7 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
     private lateinit var weather_TV: AppCustomTextView
     private lateinit var doc_TV: AppCustomTextView
     private lateinit var chat_bot_TV: AppCustomTextView
+    private lateinit var distributor_wise_order_list_TV: AppCustomTextView
     private lateinit var ic_calendar: AppCompatImageView
     private lateinit var ic_chat_bot: AppCompatImageView
     private lateinit var iv_cancel_chat: AppCompatImageView
@@ -524,6 +541,7 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
 
     private lateinit var photo_registration: AppCustomTextView
     private lateinit var photo_team_attendance: AppCustomTextView
+    private lateinit var tv_clear_attendance: AppCustomTextView
 
     private lateinit var alarmCofifDataModel: AlarmConfigDataModel
     private lateinit var quo_TV: AppCustomTextView
@@ -676,6 +694,10 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
     private var prosId = ""
     private var approxValue = ""
 
+    lateinit var simpleDialogProcess : Dialog
+    lateinit var dialogHeaderProcess: AppCustomTextView
+    lateinit var dialog_yes_no_headerTVProcess: AppCustomTextView
+
 
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -792,10 +814,10 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
         if (isTermsAndConditionsPopShow) {
             callTermsAndConditionsdApi()
         } else {
-            if (!Pref.isSeenTermsConditions)
+            if (!Pref.isSeenTermsConditions){
                 showTermsConditionsPopup()
+            }
         }
-
 
         //AlarmReceiver.setAlarm(this, 12, 11, 12345)
 
@@ -874,6 +896,7 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
         LocalBroadcastManager.getInstance(this).registerReceiver(fcmReceiver, IntentFilter("FCM_ACTION_RECEIVER"))
         LocalBroadcastManager.getInstance(this).registerReceiver(fcmReceiver_leave, IntentFilter("FCM_ACTION_RECEIVER_LEAVE"))
         LocalBroadcastManager.getInstance(this).registerReceiver(fcmReceiver_leave_status, IntentFilter("FCM_ACTION_RECEIVER_LEAVE_STATUS"))
+        LocalBroadcastManager.getInstance(this).registerReceiver(fcmReceiver_quotation_approval, IntentFilter("FCM_ACTION_RECEIVER_quotation_approval"))
         LocalBroadcastManager.getInstance(this).registerReceiver(idealLocReceiver, IntentFilter("IDEAL_LOC_BROADCAST"))
         LocalBroadcastManager.getInstance(this).registerReceiver(collectionAlertReceiver, IntentFilter("ALERT_RECIEVER_BROADCAST"))
         LocalBroadcastManager.getInstance(this).registerReceiver(forceLogoutReceiver, IntentFilter("FORCE_LOGOUT_BROADCAST"))
@@ -995,7 +1018,9 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
 
     fun checkToShowHomeLocationAlert() {
         if (!Pref.isHomeLocAvailable) {
-            showHomeLocationAlert()
+            if(Pref.IsShowHomeLocationMapGlobal && Pref.IsShowHomeLocationMap){
+                showHomeLocationAlert()
+            }
         } else{
             if(Pref.IsOnLeaveForTodayApproved==false && !Pref.OnLeaveForTodayStatus.equals("PENDING"))
                 checkToShowAddAttendanceAlert()
@@ -1102,7 +1127,6 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
     }
 
     private fun showTermsConditionsPopup() {
-
         if (TextUtils.isEmpty(Pref.termsConditionsText)) {
             checkToShowHomeLocationAlert()
             return
@@ -1122,6 +1146,8 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
             }
         })//.show(supportFragmentManager, "CommonDialogSingleBtn")
         termsConditionsDialog?.show(supportFragmentManager, "CommonDialogSingleBtn")
+
+
     }
 
     fun checkLocationMode() {
@@ -1242,7 +1268,12 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                                     //loadFragment(FragType.LeaveHome, false, usrID)
                                         loadFragment(FragType.LeaveListFragment, false, "")
                                 }, 700)
-                            } else if(intent.getStringExtra("TYPE").equals("ZERO_COLL_STATUS", ignoreCase = true)) {
+                            }  else if(intent.getStringExtra("TYPE").equals("quotation_approval", ignoreCase = true)) {
+                                Handler().postDelayed(Runnable {
+                                    if (getFragment() != null && getFragment() !is ViewAllQuotListFragment)
+                                    loadFragment(FragType.MemberListFragment, false, Pref.user_id!!)
+                                }, 700)
+                            }else if(intent.getStringExtra("TYPE").equals("ZERO_COLL_STATUS", ignoreCase = true)) {
                                 Handler().postDelayed(Runnable {
                                     if (getFragment() != null && getFragment() !is CollectionNotiViewPagerFrag1 && getFragment() !is CollectionNotiViewPagerFrag) {
                                         SendBrod.stopBrodColl(this)
@@ -1680,6 +1711,10 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
         if (fcmReceiver_leave != null)
             LocalBroadcastManager.getInstance(this).unregisterReceiver(fcmReceiver_leave)
 
+        if (fcmReceiver_quotation_approval != null)
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(fcmReceiver_quotation_approval)
+
+
         if (collectionAlertReceiver != null)
             LocalBroadcastManager.getInstance(this).unregisterReceiver(collectionAlertReceiver)
 
@@ -1799,6 +1834,11 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                     loadFragment(FragType.LeaveListFragment, false, "")
                 }, 300)
                 //loadFragment(FragType.LeaveHome, false, intent.getStringExtra("USER_ID")!!)
+            }else if(intent.getStringExtra("TYPE").equals("quotation_approval", ignoreCase = true)) {
+                Handler().postDelayed(Runnable {
+                    if (getFragment() != null && getFragment() !is ViewAllQuotListFragment)
+                        loadFragment(FragType.MemberListFragment, false, Pref.user_id!!)
+                }, 700)
             }else if(intent.getStringExtra("TYPE").equals("ZERO_COLL_STATUS", ignoreCase = true)) {
                 Handler().postDelayed(Runnable {
                     if (getFragment() != null && getFragment() !is CollectionNotiViewPagerFrag1 && getFragment() !is CollectionNotiViewPagerFrag) {
@@ -1964,6 +2004,7 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
         my_orders_TV = findViewById<AppCustomTextView>(R.id.my_orders_TV)
         nearbyShops = findViewById<AppCustomTextView>(R.id.nearby_shop_TV)
         assignedLead = findViewById<AppCustomTextView>(R.id.assigned_lead_TV)
+        surveyMenu = findViewById<AppCustomTextView>(R.id.assigned_survey_TV)
 
         textArrayList.add(home_TV)
         textArrayList.add(add_shop_TV)
@@ -1994,6 +2035,7 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
         weather_TV = findViewById(R.id.weather_TV)
         doc_TV = findViewById(R.id.doc_TV)
         chat_bot_TV = findViewById(R.id.chat_bot_TV)
+        distributor_wise_order_list_TV = findViewById(R.id.distributor_wise_order_list_TV)
         alert_snack_bar = findViewById(R.id.alert_snack_bar)
         ic_calendar = findViewById(R.id.ic_calendar)
         ic_chat_bot = findViewById(R.id.ic_chat_bot)
@@ -2017,6 +2059,8 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
         photo_registration = findViewById(R.id.photo_registration)
         photo_team_attendance = findViewById(R.id.photo_team_attendance)
 
+        tv_clear_attendance = findViewById(R.id.tv_clear_attendance)
+
         home_RL.setOnClickListener(this)
         add_shop_RL.setOnClickListener(this)
         nearby_shops_RL.setOnClickListener(this)
@@ -2032,6 +2076,7 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
         logo.setOnClickListener(this)
         nearbyShops.setOnClickListener(this)
         assignedLead.setOnClickListener(this)
+        surveyMenu.setOnClickListener(this)
         shareLogs.setOnClickListener(this)
         reimbursement_tv.setOnClickListener(this)
         achievement_tv.setOnClickListener(this)
@@ -2078,6 +2123,7 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
         weather_TV.setOnClickListener(this)
         doc_TV.setOnClickListener(this)
         chat_bot_TV.setOnClickListener(this)
+        distributor_wise_order_list_TV.setOnClickListener(this)
         ic_calendar.setOnClickListener(this)
         ic_chat_bot.setOnClickListener(this)
         iv_cancel_chat.setOnClickListener(this)
@@ -2099,6 +2145,8 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
         photo_registration.setOnClickListener(this)
         photo_team_attendance.setOnClickListener(this)
         assignedLead.setOnClickListener(this)
+        surveyMenu.setOnClickListener(this)
+        tv_clear_attendance.setOnClickListener(this)
 
         drawerLL=findViewById(R.id.activity_dashboard_lnr_lyt_slide_view)
         drawerLL.setOnClickListener(this)
@@ -2111,6 +2159,13 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
         toolbar.setPadding(0, toolbar.paddingTop, 0, toolbar.paddingBottom)
         toolbar.setTitle(R.string.blank)
         toolbar.setSubtitle(R.string.blank)
+
+        simpleDialogProcess = Dialog(mContext)
+        simpleDialogProcess.setCancelable(false)
+        simpleDialogProcess.getWindow()!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        simpleDialogProcess.setContentView(R.layout.dialog_message)
+        dialogHeaderProcess = simpleDialogProcess.findViewById(R.id.dialog_message_header_TV) as AppCustomTextView
+        dialog_yes_no_headerTVProcess = simpleDialogProcess.findViewById(R.id.dialog_message_headerTV) as AppCustomTextView
 
 
         mDrawerToggle = object : ActionBarDrawerToggle(
@@ -2388,6 +2443,13 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
         else
             chat_bot_TV.visibility = View.GONE
 
+        if (Pref.Showdistributorwisepartyorderreport)
+            distributor_wise_order_list_TV.visibility = View.VISIBLE
+        else
+            distributor_wise_order_list_TV.visibility = View.GONE
+
+
+
         if (Pref.isShowTimeline)
             orderHistoryTV.visibility = View.VISIBLE
         else
@@ -2431,6 +2493,13 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
             photo_team_attendance.visibility=View.VISIBLE
         }else{
             photo_team_attendance.visibility=View.GONE
+        }
+
+        /*Clear Attendance*/
+        if(Pref.ShowAttednaceClearmenu){
+            tv_clear_attendance.visibility=View.VISIBLE
+        }else{
+            tv_clear_attendance.visibility=View.GONE
         }
 
 
@@ -2537,7 +2606,11 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
         }else{
             assignedLead.visibility=View.GONE
         }
-
+        if(Pref.IsMenuSurveyEnabled){
+            surveyMenu.visibility=View.VISIBLE
+        }else{
+            surveyMenu.visibility=View.GONE
+        }
 
         //val frag: DashboardFragment? = supportFragmentManager.findFragmentByTag("DashboardFragment") as DashboardFragment?
 
@@ -2820,7 +2893,12 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                     else {
                         isClearData = false
                         if (AppUtils.isOnline(this@DashboardActivity)) {
-                            loadFragment(FragType.LogoutSyncFragment, true, "")
+                            Handler().postDelayed(Runnable {
+                                //callShopDurationApi()
+                                //rectifyUnknownLoc()
+                                syncGpsNetData()
+                            }, 350)
+                        //loadFragment(FragType.LogoutSyncFragment, true, "")
                         } else
                             showSnackMessage("Good internet must required to sync all data, please switch on the internet and proceed.")
                     }
@@ -2857,6 +2935,7 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                 SendBrod.stopBrodZeroOrder(this)
                 SendBrod.stopBrodDOBDOA(this)
                 tv_noti_count.visibility=View.GONE
+
                 Pref.NotiCountFlag = false
 
                 //Pref.IsCollectionOrderWise = true
@@ -3021,6 +3100,13 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                 else
                     loadFragment(FragType.LeadFrag, false, "")
             }
+            R.id.assigned_survey_TV -> {
+
+                if (!Pref.isAddAttendence)
+                    (mContext as DashboardActivity).checkToShowAddAttendanceAlert()
+                else
+                    loadFragment(FragType.SurveyFrag, false, "")
+            }
 //            R.id.nearby_shop_TV -> {
 //                isChatBotLocalShop = false
 //                loadFragment(FragType.LocalShopListFragment, false, "")
@@ -3060,10 +3146,10 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                     getCurrentFragType() == FragType.OfflineAllShopListFragment -> (getFragment() as OfflineAllShopListFragment).refreshList()
                     getCurrentFragType() == FragType.OfflineShopListFragment -> (getFragment() as OfflineShopListFragment).refreshList()
                     getCurrentFragType() == FragType.TimeSheetListFragment -> (getFragment() as TimeSheetListFragment).refreshList()
-                    getCurrentFragType() == FragType.DashboardFragment ->
-                        (getFragment() as DashboardFragment).refresh()
+                    getCurrentFragType() == FragType.DashboardFragment -> (getFragment() as DashboardFragment).refresh()
 
                     getCurrentFragType() == FragType.NewReturnListFragment -> (getFragment() as NewReturnListFragment).refreshOrderList()
+                    getCurrentFragType() == FragType.MapViewForTeamFrag -> (getFragment() as MapViewForTeamFrag).refreshMap()
                 }
             }
             R.id.iv_delete_icon -> {
@@ -3258,7 +3344,11 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
 
             R.id.tv_entry -> {
                 isShopFromChatBot = false
-                loadFragment(FragType.NearByShopsListFragment, false, "")
+                if(Pref.IsCollectionOrderWise){
+                    loadFragment(FragType.NewOrderListFragment, false, "")
+                }else{
+                    loadFragment(FragType.NearByShopsListFragment, false, "")
+                }
             }
 
             R.id.share_loc_TV -> {
@@ -3296,6 +3386,9 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
             R.id.chat_bot_TV -> {
                 showLanguageAlert(true)
             }
+            R.id.distributor_wise_order_list_TV ->{
+                loadFragment(FragType.DistributorwiseorderlistFragment, true, "")
+            }
 
             R.id.photo_registration -> {
                 if (AppUtils.isOnline(mContext)) {
@@ -3308,6 +3401,59 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
             R.id.photo_team_attendance -> {
                 if (AppUtils.isOnline(mContext)) {
                     loadFragment(FragType.PhotoAttendanceFragment, false, "")
+                } else {
+                    (mContext as DashboardActivity).showSnackMessage(getString(R.string.no_internet))
+                }
+
+            }
+
+            R.id.tv_clear_attendance -> {
+                if (AppUtils.isOnline(mContext)) {
+                    //var shopCreated = AppDatabase.getDBInstance()?.addShopEntryDao()?.getShopCreatedToday(AppUtils.getCurrentDate())
+                    var shopRevit = AppDatabase.getDBInstance()!!.shopActivityDao().getTotalShopVisitedForADay(AppUtils.getCurrentDateyymmdd())
+                    var ordListToday = AppDatabase.getDBInstance()!!.orderDetailsListDao().getListAccordingDate(AppUtils.getCurrentDate())
+                    var collistToday = AppDatabase.getDBInstance()!!.collectionDetailsDao().getDateWiseCollection(AppUtils.getCurrentDate())
+                    var newOrdListToday = AppDatabase.getDBInstance()?.newOrderScrOrderDao()?.getRateListByDate(AppUtils.getCurrentDateyymmdd())
+
+                    //if(shopCreated!!.size>0 || shopRevit!!.size>0 || ordListToday.size>0 || collistToday.size>0){
+                    if(shopRevit!!.size>0 || ordListToday.size>0 || collistToday.size>0 || newOrdListToday!!.size>0){
+                    //if(shopRevit!!.size>0 || collistToday.size>0){
+                        val simpleDialog = Dialog(mContext)
+                        simpleDialog.setCancelable(false)
+                        simpleDialog.getWindow()!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                        simpleDialog.setContentView(R.layout.dialog_message)
+                        val dialogHeader = simpleDialog.findViewById(R.id.dialog_message_header_TV) as AppCustomTextView
+                        val dialog_yes_no_headerTV = simpleDialog.findViewById(R.id.dialog_message_headerTV) as AppCustomTextView
+                        dialog_yes_no_headerTV.text = AppUtils.hiFirstNameText()+"!"
+                        dialogHeader.text = "Attendance can not be clear for today."
+                        val dialogYes = simpleDialog.findViewById(R.id.tv_message_ok) as AppCustomTextView
+                        dialogYes.setOnClickListener({ view ->
+                            simpleDialog.cancel()
+                        })
+                        simpleDialog.show()
+                    }else{
+                        var simpleDialog = Dialog(mContext)
+                        simpleDialog.setCancelable(false)
+                        simpleDialog.getWindow()!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                        simpleDialog.setContentView(R.layout.dialog_yes_no)
+                        val dialogHeader = simpleDialog.findViewById(R.id.dialog_yes_no_headerTV) as AppCustomTextView
+                        val dialogBody = simpleDialog.findViewById(R.id.dialog_cancel_order_header_TV) as AppCustomTextView
+                        val btn_no = simpleDialog.findViewById(R.id.tv_dialog_yes_no_no) as AppCustomTextView
+                        val btn_yes = simpleDialog.findViewById(R.id.tv_dialog_yes_no_yes) as AppCustomTextView
+
+                        dialogHeader.text = AppUtils.hiFirstNameText() + "!"
+                        dialogBody.text = "Do you want to clear the Attendance or Leave for ${AppUtils.getCurrentDateChanged().replace("-"," ")}"
+
+                        btn_yes.setOnClickListener({ view ->
+                            simpleDialog.cancel()
+                            apiCallOnClearAttenReject()
+                        })
+                        btn_no.setOnClickListener({ view ->
+                            simpleDialog.cancel()
+                        })
+                        simpleDialog.show()
+                    }
+
                 } else {
                     (mContext as DashboardActivity).showSnackMessage(getString(R.string.no_internet))
                 }
@@ -3549,8 +3695,8 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
 
 
     fun openShareIntents() {
-        openShare()
-        return
+        //openShare()
+        //return
         try {
             val shareIntent = Intent(Intent.ACTION_SEND)
 //        val phototUri = Uri.parse(localAbsoluteFilePath)
@@ -4065,12 +4211,68 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                 setTopBarTitle("Activity Details")
                 setTopBarVisibility(TopBarConfig.BACK)
             }
+            FragType.SurveyFrag -> {
+                if (enableFragGeneration) {
+                    mFragment = SurveyFrag.getInstance(initializeObject)
+                }
+                setTopBarTitle("Survey")
+                setTopBarVisibility(TopBarConfig.HOME)
+            }
+            FragType.TeamBeatListFragment -> {
+                if (enableFragGeneration) {
+                    mFragment = TeamBeatListFragment.getInstance(initializeObject)
+                }
+                setTopBarTitle("Team Beat List")
+                setTopBarVisibility(TopBarConfig.BACK)
+            }
+            FragType.MultipleImageFragment -> {
+                if (enableFragGeneration) {
+                    mFragment = MultipleImageFragment.newInstance(initializeObject)
+                }
+                setTopBarTitle("Attach Image")
+                setTopBarVisibility(TopBarConfig.BACK)
+            }
+            FragType.SurveyViewFrag -> {
+                if (enableFragGeneration) {
+                    mFragment = SurveyViewFrag.getInstance(initializeObject)
+                }
+                setTopBarTitle("Survey Details")
+                setTopBarVisibility(TopBarConfig.BACK)
+            }
+            FragType.SurveyViewDtlsFrag -> {
+                if (enableFragGeneration) {
+                    mFragment = SurveyViewDtlsFrag.getInstance(initializeObject)
+                }
+                setTopBarTitle("Survey Details")
+                setTopBarVisibility(TopBarConfig.BACK)
+            }
             FragType.ShopFeedbackHisFrag -> {
                 if (enableFragGeneration) {
                     mFragment = ShopFeedbackHisFrag.newInstance(initializeObject)
                 }
                 setTopBarTitle("History Details")
                 setTopBarVisibility(TopBarConfig.BACK)
+            }
+            FragType.ShopDamageProductListFrag -> {
+                if (enableFragGeneration) {
+                    mFragment = ShopDamageProductListFrag.getInstance(initializeObject)
+                }
+                setTopBarTitle("Damage Product")
+                setTopBarVisibility(TopBarConfig.BACK)
+            }
+            FragType.ShopDamageProductSubmitFrag -> {
+                if (enableFragGeneration) {
+                    mFragment = ShopDamageProductSubmitFrag.getInstance(initializeObject)
+                }
+                setTopBarTitle("Add Breakage")
+                setTopBarVisibility(TopBarConfig.BACK)
+            }
+            FragType.DistributorwiseorderlistFragment -> {
+                if (enableFragGeneration) {
+                    mFragment = DistributorwiseorderlistFragment()
+                }
+                setTopBarTitle("DISTRIBUTOR WISE ORDER LIST")
+                setTopBarVisibility(TopBarConfig.DISTWISEORDER)
             }
             FragType.NearByShopsMapFragment -> {
                 if (enableFragGeneration) {
@@ -5139,7 +5341,6 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                 setTopBarVisibility(TopBarConfig.HOME)
                 setTopBarVisibility(TopBarConfig.PHOTOREG)
             }
-
             FragType.RegisTerFaceFragment -> {
                 if (enableFragGeneration) {
                     mFragment = RegisTerFaceFragment.getInstance(initializeObject)
@@ -5201,6 +5402,14 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                 setTopBarVisibility(TopBarConfig.HOME)
             }
 
+              FragType.MapViewForTeamFrag -> {
+                if (enableFragGeneration) {
+                    mFragment = MapViewForTeamFrag.newInstance(initializeObject)
+                }
+                setTopBarTitle(getString(R.string.map_view))
+                setTopBarVisibility(TopBarConfig.TEAMMAP)
+            }
+
             FragType.LeaveHome -> {
                 if (enableFragGeneration) {
                     mFragment = LeaveHome()
@@ -5247,6 +5456,7 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
          headerTV.text = title
     }
 
+    @RequiresApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     private fun setTopBarVisibility(mTopBarConfig: TopBarConfig) {
         tv_noti_count.visibility = View.GONE
         when (mTopBarConfig) {
@@ -5584,6 +5794,12 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                 else
                     logo.visibility = View.GONE
 
+                if(Pref.NotiCountFlag){
+                    tv_noti_count.visibility = View.VISIBLE
+                }else{
+                    tv_noti_count.visibility = View.GONE
+                }
+
                 iv_filter_icon.visibility = View.GONE
                 rl_confirm_btn.visibility = View.GONE
                 iv_list_party.visibility = View.GONE
@@ -5600,12 +5816,6 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                     iv_scan.visibility = View.VISIBLE
                 else
                     iv_scan.visibility = View.GONE
-
-                if(Pref.NotiCountFlag){
-                    tv_noti_count.visibility = View.VISIBLE
-                }else{
-                    tv_noti_count.visibility = View.GONE
-                }
 
                 supportActionBar!!.setDisplayHomeAsUpEnabled(false)
                 // Show hamburger
@@ -6655,7 +6865,60 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                 mDrawerToggle.setHomeAsUpIndicator(R.drawable.ic_header_back_arrow)
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
             }
+            TopBarConfig.TEAMMAP -> {
+                iv_home_icon.visibility = View.GONE
+                mDrawerToggle.isDrawerIndicatorEnabled = false
+                iv_search_icon.visibility = View.GONE
+                iv_sync_icon.visibility = View.VISIBLE
+                rl_cart.visibility = View.GONE
+                iv_filter_icon.visibility = View.GONE
+                rl_confirm_btn.visibility = View.GONE
+                logo.visibility = View.GONE
+                logo.clearAnimation()
+                logo.animate().cancel()
+                iv_list_party.visibility = View.GONE
+                iv_map.visibility = View.GONE
+                iv_settings.visibility = View.GONE
+                ic_calendar.visibility = View.GONE
+                ic_chat_bot.visibility = View.GONE
+                iv_cancel_chat.visibility = View.GONE
+                iv_people.visibility = View.GONE
+                iv_scan.visibility = View.GONE
+                iv_view_text.visibility = View.GONE
+                fl_net_status.visibility = View.GONE
 
+                // Show back button
+                supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+                mDrawerToggle.setHomeAsUpIndicator(R.drawable.ic_header_back_arrow)
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            }
+            TopBarConfig.DISTWISEORDER -> {
+                iv_home_icon.visibility = View.GONE
+                mDrawerToggle.isDrawerIndicatorEnabled = false
+                iv_search_icon.visibility = View.GONE
+                iv_sync_icon.visibility = View.GONE
+                rl_cart.visibility = View.GONE
+                iv_filter_icon.visibility = View.GONE
+                rl_confirm_btn.visibility = View.GONE
+                logo.visibility = View.GONE
+                logo.clearAnimation()
+                logo.animate().cancel()
+                iv_list_party.visibility = View.GONE
+                iv_map.visibility = View.GONE
+                iv_settings.visibility = View.GONE
+                ic_calendar.visibility = View.GONE
+                ic_chat_bot.visibility = View.GONE
+                iv_cancel_chat.visibility = View.GONE
+                iv_people.visibility = View.GONE
+                iv_scan.visibility = View.GONE
+                iv_view_text.visibility = View.GONE
+                fl_net_status.visibility = View.GONE
+
+                // Show back button
+                supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+                mDrawerToggle.setHomeAsUpIndicator(R.drawable.ic_header_back_arrow)
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            }
             TopBarConfig.NEWORDERSCRCART -> {
                 /*  if(CustomStatic.IsFromViewNewOdrScr==false){
                     rl_confirm_btn.visibility = View.VISIBLE
@@ -6950,7 +7213,19 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                 if (getFragment() is DashboardFragment)
                     (getFragment() as DashboardFragment).updateItem()
             }
-        } else if (getFragment() != null && (getFragment() is MemberAllShopListFragment || getFragment() is MemberShopListFragment || getFragment() is AreaListFragment)) {
+        }
+        else if (getFragment() != null && getFragment() is ShopDamageProductSubmitFrag) {
+            super.onBackPressed()
+            if (getFragment() != null && getFragment() is ShopDamageProductListFrag)
+                (getFragment() as ShopDamageProductListFrag).updatePage()
+        }
+        else if (getFragment() != null && getFragment() is SurveyFrag) {
+            super.onBackPressed()
+            if (getFragment() != null && getFragment() is SurveyViewFrag)
+                (getFragment() as SurveyViewFrag).updatePage()
+        }
+
+        else if (getFragment() != null && (getFragment() is MemberAllShopListFragment || getFragment() is MemberShopListFragment || getFragment() is AreaListFragment)) {
 
             if (getFragment() is MemberAllShopListFragment) {
                 if ((getFragment() as MemberAllShopListFragment).shopIdList.isNotEmpty()) {
@@ -7305,6 +7580,15 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                 (getFragment() as CollectionNotiViewPagerFrag).updateView()
             if (getFragment() != null && getFragment() is CollectionNotiViewPagerFrag2)
                 (getFragment() as CollectionNotiViewPagerFrag2).updateView()
+        }else if(getFragment() != null && getFragment() is MapViewForTeamFrag){
+            if (getFragment() != null && getFragment() is MapViewForTeamFrag)
+                MapViewForTeamFrag.timer!!.cancel()
+            super.onBackPressed()
+        }else if(getFragment() != null && getFragment() is NewOdrScrListFragment){
+            super.onBackPressed()
+            if (getFragment() != null && getFragment() is DashboardFragment){
+                (getFragment() as DashboardFragment).updateOrdAmtForNewOrd()
+            }
         }
         else {
             super.onBackPressed()
@@ -7787,6 +8071,16 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                     }
 
                 }
+                else if (getCurrentFragType() == FragType.MultipleImageFragment) {
+                    // request for camera image
+                    getCameraImage(data)
+                    if (!TextUtils.isEmpty(filePath)) {
+//                        AppUtils.getCompressImage(filePath.toString())
+                            AppUtils.getCompressOldImage(filePath.toString(),this)
+                        (getFragment() as MultipleImageFragment).setImagecapture(filePath)
+
+                    }
+                }
                 else if (getCurrentFragType() == FragType.MyProfileFragment /*&& FTStorageUtils.IMG_URI != null*/) {
                     /*AppUtils.getCompressContentImage(FTStorageUtils.IMG_URI, this)
                     (getFragment() as MyProfileFragment).setImage(FTStorageUtils.IMG_URI)*/
@@ -8263,6 +8557,45 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                             XLog.e("Error: " + e.localizedMessage)
                         }
                     }
+                } else if (getCurrentFragType() == FragType.ShopDamageProductSubmitFrag) {
+
+                    getCameraImage(data)
+                    val fileSize = AppUtils.getCompressImage(filePath)
+                    val fileSizeInKB = fileSize / 1024
+                    val file = File(filePath)
+                    (getFragment() as ShopDamageProductSubmitFrag).setImage(file)
+
+
+
+
+                    /*getCameraImage(data)
+                    if (!TextUtils.isEmpty(filePath)) {
+                        XLog.e("===========Update Review Image (DashboardActivity)===========")
+                        XLog.e("DashboardActivity :  ,  Camera Image FilePath : $filePath")
+
+                        val contentURI = FTStorageUtils.getImageContentUri(this@DashboardActivity, File(Uri.parse(filePath).path).absolutePath)
+
+                        XLog.e("DashboardActivity :  ,  contentURI FilePath : $contentURI")
+
+                        try {
+                            CropImage.activity(contentURI)
+                                .setCropShape(CropImageView.CropShape.RECTANGLE)
+                                .setMinCropWindowSize(500, 500)
+                                .setAspectRatio(1, 1)
+                                .setGuidelines(CropImageView.Guidelines.ON)
+                                .setOutputCompressQuality(100)
+                                .start(this)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            XLog.e("Error: " + e.localizedMessage)
+                        }
+                    }*/
+                }else if(getCurrentFragType() == FragType.SurveyFrag){
+                    getCameraImage(data)
+                    val fileSize = AppUtils.getCompressImage(filePath)
+                    val fileSizeInKB = fileSize / 1024
+                    val file = File(filePath)
+                    (getFragment() as SurveyFrag).setImage(file)
                 }
                 else if(getCurrentFragType() == FragType.RegisTerFaceFragment){
                     getCameraImage(data)
@@ -8325,7 +8658,8 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                         (getFragment() as ViewAllTAListFragment).showPickedFileFromGalleryFetch(data)
                 }
 
-            } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            }
+            else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
                 val result = CropImage.getActivityResult(data)
                 if (resultCode == RESULT_OK) {
                     val resultUri = result.uri
@@ -8355,7 +8689,10 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                                 //(getFragment() as RegisTerFaceFragment).setImageData(result!!)
                                 getAddFacePic(fileSize, resultUri)
                             }
-
+                            getCurrentFragType() == FragType.ShopDamageProductSubmitFrag -> {
+                                val fileSize = AppUtils.getCompressOldImage(resultUri.toString(), this)
+                                getDamagedPic(fileSize, resultUri)
+                            }
 
                             getCurrentFragType() == FragType.AddShopFragment -> {
                                 var fileSize = AppUtils.getCompressOldImage(resultUri.toString(), this)
@@ -8372,6 +8709,7 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
 
                                 getAddShopPic(fileSize, resultUri)
                             }
+
                             getCurrentFragType() == FragType.ShopDetailFragment -> {
                                 //AppUtils.getCompressImage(resultUri.toString())
                                 val fileSize = AppUtils.getCompressOldImage(resultUri.toString(), this)
@@ -8463,8 +8801,28 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                     var error = result.error
                 }
 //
-            } else if (requestCode == PermissionHelper.REQUEST_CODE_STORAGE) {
-                if (getCurrentFragType() == FragType.MyProfileFragment) {
+            }
+            else if (requestCode == PermissionHelper.REQUEST_CODE_STORAGE) {
+                if(getCurrentFragType() == FragType.MultipleImageFragment) {
+                    /*AppUtils.getCompressImage(data!!.data.toString())
+                    var newUri = data.data!!
+                    //new image compress
+                    var qlty=30
+                    var fileSize : Long = 0
+                    while((fileSize/1024)>50) {
+                        fileSize = AppUtils.getCompressOldImagev1(newUri.toString(), this, qlty)
+                    }
+                    (getFragment() as MultipleImageFragment).setImage(newUri,fileSize)
+                    //getAddMultiPic(fileSize, resultUri)
+
+                    //AppUtils.getCompressImage(data!!.data.toString())
+                    //(getFragment() as MultipleImageFragment).setImageFromPath(data.data!!)*/
+
+                    getGalleryImage(this, data)
+                    (getFragment() as MultipleImageFragment).setImageFromPath(filePath)
+
+                }
+                else if (getCurrentFragType() == FragType.MyProfileFragment) {
                     //AppUtils.getCompressContentImage(data!!.data, this)
 
                     /*getGalleryImage(this, data)
@@ -8477,10 +8835,12 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                             .start(this)
 
                     //(getFragment() as MyProfileFragment).setImage(data.data)
-                } else if (getCurrentFragType() == FragType.MarketingPagerFragment) {
+                }
+                else if (getCurrentFragType() == FragType.MarketingPagerFragment) {
                     AppUtils.getCompressImage(data!!.data.toString())
                     (getFragment() as MarketingPagerFragment).setImage(data.data!!)
-                } else if (getCurrentFragType() == FragType.AddShopFragment) {
+                }
+                else if (getCurrentFragType() == FragType.AddShopFragment) {
 
                     XLog.d("DashboardActivity : " + " , " + " Gallery Image FilePath :" + data!!.data)
                     /*14-12-2021*/
@@ -8495,32 +8855,38 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                                 .start(this)
                     }
 
-                } else if (getCurrentFragType() == FragType.ShopDetailFragment) {
+                }
+                else if (getCurrentFragType() == FragType.ShopDetailFragment) {
                     XLog.d("DashboardActivity : " + " , " + " Gallery Image FilePath :" + data!!.data)
                     CropImage.activity(data.data)
                             .setAspectRatio(40, 21)
                             .start(this)
-                } else if (getCurrentFragType() == FragType.AddBillingFragment) {
+                }
+                else if (getCurrentFragType() == FragType.AddBillingFragment) {
                     XLog.d("DashboardActivity : " + " , " + " Gallery Image FilePath :" + data!!.data)
                     CropImage.activity(data.data)
                             .setAspectRatio(40, 21)
                             .start(this)
-                } else if (getCurrentFragType() == FragType.AddDynamicFragment) {
+                }
+                else if (getCurrentFragType() == FragType.AddDynamicFragment) {
                     XLog.d("DashboardActivity : " + " , " + " Gallery Image FilePath :" + data!!.data)
                     CropImage.activity(data.data)
                             .setAspectRatio(40, 21)
                             .start(this)
-                } else if (getCurrentFragType() == FragType.EditDynamicFragment) {
+                }
+                else if (getCurrentFragType() == FragType.EditDynamicFragment) {
                     XLog.d("DashboardActivity : " + " , " + " Gallery Image FilePath :" + data!!.data)
                     CropImage.activity(data.data)
                             .setAspectRatio(40, 21)
                             .start(this)
-                } else if (getCurrentFragType() == FragType.AddActivityFragment) {
+                }
+                else if (getCurrentFragType() == FragType.AddActivityFragment) {
                     XLog.d("DashboardActivity : " + " , " + " Gallery Image FilePath :" + data!!.data)
                     CropImage.activity(data.data)
                             .setAspectRatio(40, 21)
                             .start(this)
-                } else if (getCurrentFragType() == FragType.EditActivityFragment) {
+                }
+                else if (getCurrentFragType() == FragType.EditActivityFragment) {
                     XLog.d("DashboardActivity : " + " , " + " Gallery Image FilePath :" + data!!.data)
                     CropImage.activity(data.data)
                             .setAspectRatio(40, 21)
@@ -8567,7 +8933,8 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                     (getFragment() as ReimbursementFragment).setImage(filePath)
 
                     //(getFragment() as MyProfileFragment).setImage(data.data)
-                } else if (getCurrentFragType() == FragType.EditReimbursementFragment) {
+                }
+                else if (getCurrentFragType() == FragType.EditReimbursementFragment) {
                     //AppUtils.getCompressContentImage(data!!.data, this)
 
                     getGalleryImage(this, data)
@@ -8633,7 +9000,8 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                     CropImage.activity(data.data)
                             .setAspectRatio(40, 21)
                             .start(this)
-                }else if(getCurrentFragType() == FragType.RegisTerFaceFragment){
+                }
+                else if(getCurrentFragType() == FragType.RegisTerFaceFragment){
                     CropImage.activity(data?.data)
                             .setCropShape(CropImageView.CropShape.RECTANGLE)
                             .setMinCropWindowSize(400, 400)
@@ -8642,7 +9010,8 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                             .setAllowRotation(false)
                             .setOutputCompressQuality(100)
                             .start(this)
-                }else if(getCurrentFragType() == FragType.ProtoRegistrationFragment){
+                }
+                else if(getCurrentFragType() == FragType.ProtoRegistrationFragment){
                     // for gallary image
                     getGalleryImage(this, data)
                     if (!TextUtils.isEmpty(filePath)) {
@@ -8655,6 +9024,10 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
 
                     }
                 }
+                else if (getCurrentFragType() == FragType.SurveyFrag) {
+                    getGalleryImage(this, data)
+                    (getFragment() as SurveyFrag).setImageFromPath(filePath)
+                }
                 else {
                     XLog.d("DashboardActivity : " + " , " + " Gallery Image FilePath :" + data!!.data)
                     CropImage.activity(data.data)
@@ -8663,7 +9036,8 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
 
                 }
 
-            } else if (requestCode == REQUEST_CODE_DOCUMENT) {
+            }
+            else if (requestCode == REQUEST_CODE_DOCUMENT) {
                 try {
                     if (data != null && data.data != null) {
                         filePath = NewFileUtils.getRealPath(this@DashboardActivity, data.data)
@@ -8849,6 +9223,11 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                                             loadFragment(FragType.LeaveListFragment, false, "")
                                         }, 300)
                                         //loadFragment(FragType.LeaveHome, false, intent.getStringExtra("USER_ID")!!)
+                                    }else if(intent.getStringExtra("TYPE").equals("quotation_approval", ignoreCase = true)) {
+                                        Handler().postDelayed(Runnable {
+                                            if (getFragment() != null && getFragment() !is ViewAllQuotListFragment)
+                                            loadFragment(FragType.MemberListFragment, false, Pref.user_id!!)
+                                        }, 700)
                                     }else if(intent.getStringExtra("TYPE").equals("ZERO_COLL_STATUS", ignoreCase = true)) {
                                         Handler().postDelayed(Runnable {
                                             if (getFragment() != null && getFragment() !is CollectionNotiViewPagerFrag1 && getFragment() !is CollectionNotiViewPagerFrag) {
@@ -9300,13 +9679,27 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
         if (!isOtherUsersShopRevisit) {
             cancelNotification(mShopId)
             if(Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal){
-                loadFragment(FragType.ShopDetailFragment, true, mShopId)
+            loadFragment(FragType.ShopDetailFragment, true, mShopId)
             }else{
-                loadFragment(FragType.DashboardFragment, false, "")
+                AppUtils.isRevisit = false
+                Handler().postDelayed(Runnable {
+                    loadFragment(FragType.DashboardFragment, true, "")
+                    if(getCurrentFragType() == FragType.DashboardFragment)
+                        (getFragment() as DashboardFragment).initBottomAdapter()
+                }, 300)
             }
-//            loadFragment(FragType.ShopDetailFragment, true, mShopId)
-        } else
-            showOrderCollectionDialog()
+        } else {
+            /*Team new work*/
+            if (Pref.isOrderAvailableForPopup) {
+                showOrderCollectionDialog()
+            }
+            else{
+                if (getFragment() != null && getFragment() is MemberShopListFragment)
+                    (getFragment() as MemberShopListFragment).updateAdapter()
+                else if (getFragment() != null && getFragment() is OfflineShopListFragment)
+                    (getFragment() as OfflineShopListFragment).updateAdapter()
+            }
+        }
     }
 
     private fun showOrderCollectionDialog() {
@@ -9344,15 +9737,19 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
     }
 
     private fun showShopVerificationDialog() {
-
         if (!Pref.isShowOTPVerificationPopup) {
             if (Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal) {
                 (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, mShopId)
             } else {
-                (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment, true, "")
+                AppUtils.isRevisit = false
+                Handler().postDelayed(Runnable {
+                    (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment, true, "")
+                    if(getCurrentFragType() == FragType.DashboardFragment)
+                        (getFragment() as DashboardFragment).initBottomAdapter()
+                }, 300)
             }
-//            loadFragment(FragType.ShopDetailFragment, true, mShopId)
         }
+//            loadFragment(FragType.ShopDetailFragment, true, mShopId)
         else {
             ShopVerificationDialog.getInstance(mShopId, object : ShopVerificationDialog.OnOTPButtonClickListener {
                 override fun onEditClick(number: String) {
@@ -9375,18 +9772,12 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                 override fun onCancelClick() {
                     //(mContext as DashboardActivity).onBackPressed()
                     if (Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal) {
-                        (mContext as DashboardActivity).loadFragment(
-                            FragType.ShopDetailFragment,
-                            true,
-                            mShopId
-                        )
+                        (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, mShopId)
                     } else {
-                        (mContext as DashboardActivity).loadFragment(
-                            FragType.DashboardFragment,
-                            true,
-                            ""
-                        )
+                        AppUtils.isRevisit = false
+                        (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment, true, "")
                     }
+//                    loadFragment(FragType.ShopDetailFragment, true, mShopId)
                 }
 
                 override fun onOkButtonClick(otp: String) {
@@ -9490,6 +9881,9 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
         addShopReqData.beat_id = addShopData.beat_id
         addShopReqData.assigned_to_shop_id = addShopData.assigned_to_shop_id
         addShopReqData.actual_address = addShopData.actual_address
+
+        addShopReqData.GSTN_Number = addShopData.gstN_Number
+        addShopReqData.ShopOwner_PAN = addShopData.shopOwner_PAN
 
         /*val addShop = AddShopRequest()
         addShop.data = addShopReqData*/
@@ -10050,6 +10444,16 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
         }*/
     }
 
+    private fun getDamagedPic(fileSize: Long, resultUri: Uri) {
+        val fileSizeInKB = fileSize / 1024
+        Log.e("Dashboard", "image file size after compression-----------------> $fileSizeInKB KB")
+        //if (fileSizeInKB <= 200)
+        (getFragment() as ShopDamageProductSubmitFrag).setImage(resultUri, fileSizeInKB)
+        /*else {
+            getAddShopPic(AppUtils.getCompressOldImage(resultUri.toString(), this), resultUri)
+        }*/
+    }
+
     private fun getAddShopPic(fileSize: Long, resultUri: Uri) {
         val fileSizeInKB = fileSize / 1024
         Log.e("Dashboard", "image file size after compression-----------------> $fileSizeInKB KB")
@@ -10506,7 +10910,8 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                     revisitShop(image)*/
             }
 
-            override fun onCloseClick() {
+            override fun onCloseClick(mfeedback: String) {
+                feedback = mfeedback
                 if (Pref.isFingerPrintMandatoryForVisit) {
                     if (isFingerPrintSupported)
                         showFingerprintPopup()
@@ -10569,12 +10974,52 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
                 if (Pref.isShowShopVisitReason)
                     return
 
-                startRevisitOnlineTeamShop(teamShop)
+                callExtraTeamShopListApi(teamShop)
+                //startRevisitOnlineTeamShop(teamShop)
             }
 
         }).show(supportFragmentManager, "CommonDialog")
     }
 
+    private fun callExtraTeamShopListApi(teamShop: TeamShopListDataModel) {
+        try{
+                val repository = ShopListRepositoryProvider.provideShopListRepository()
+                progress_wheel.spin()
+                BaseActivity.compositeDisposable.add(
+                        repository.getExtraTeamShopList(Pref.session_token!!, Pref.user_id!!)
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribeOn(Schedulers.io())
+                                .subscribe({ result ->
+                                    var shopList = result as ShopListResponse
+                                    if (shopList.status == NetworkConstant.SUCCESS) {
+                                        progress_wheel.stopSpinning()
+                                        var obj = shopList.data!!.shop_list!!.filter { it.shop_id.equals(teamShop.shop_id) } as ArrayList<ShopData>
+                                        if(obj.size>0){
+                                            teamShop.total_visit_count = obj.get(obj.size-1).total_visit_count!!
+                                        }
+                                        startRevisitOnlineTeamShop(teamShop)
+
+                                    }  else {
+                                        progress_wheel.stopSpinning()
+                                        startRevisitOnlineTeamShop(teamShop)
+                                    }
+                                }, { error ->
+                                    error.printStackTrace()
+                                    progress_wheel.stopSpinning()
+                                    startRevisitOnlineTeamShop(teamShop)
+                                })
+                )
+            }
+        catch(ex:Exception){
+                ex.printStackTrace()
+            progress_wheel.stopSpinning()
+            startRevisitOnlineTeamShop(teamShop)
+            }
+        }
+
+
+
+    @SuppressLint("SuspiciousIndentation")
     private fun startRevisitOnlineTeamShop(teamShop: TeamShopListDataModel) {
         mShopId = teamShop.shop_id
         mStoreName = teamShop.shop_name
@@ -10588,7 +11033,19 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
         mAddShopDBModelEntity?.shopLong = teamShop.shop_long.toDouble()
         mAddShopDBModelEntity?.isUploaded = true
         mAddShopDBModelEntity?.ownerContactNumber = teamShop.shop_contact
-        mAddShopDBModelEntity?.totalVisitCount = teamShop.total_visited
+//        mAddShopDBModelEntity?.totalVisitCount = teamShop.total_visited
+        try{
+            /*Team new work*/
+            if(teamShop.total_visit_count!!.equals("")){
+                mAddShopDBModelEntity?.totalVisitCount = "1"
+            }else{
+                mAddShopDBModelEntity?.totalVisitCount = teamShop.total_visit_count!!.toString()
+            }
+//            mAddShopDBModelEntity?.totalVisitCount = teamShop.total_visit_count!!.toString()
+
+        }catch(ex:Exception){
+          ex.printStackTrace()
+        }
         mAddShopDBModelEntity?.lastVisitedDate = teamShop.last_visit_date
         mAddShopDBModelEntity?.type = teamShop.shop_type
 
@@ -10596,7 +11053,6 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
             mAddShopDBModelEntity?.entity_code = ""
         else
             mAddShopDBModelEntity?.entity_code = teamShop.entity_code
-
 
         if (teamShop.area_id == null)
             mAddShopDBModelEntity?.area_id = ""
@@ -10643,6 +11099,24 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
             mAddShopDBModelEntity?.type_id = ""
         else
             mAddShopDBModelEntity?.type_id = teamShop.type_id
+
+        /*Team new work*/
+        if (TextUtils.isEmpty(teamShop.owner_name))
+            mAddShopDBModelEntity?.ownerName = ""
+        else
+            mAddShopDBModelEntity?.ownerName = teamShop.owner_name
+
+        /*Team new work*/
+        try{
+            var shopisExistTblbyThisId = AppDatabase.getDBInstance()!!.addShopEntryDao().getShopByIdN(mAddShopDBModelEntity?.shop_id)
+            if(shopisExistTblbyThisId!=null)
+            //delete by shop id
+            AppDatabase.getDBInstance()!!.addShopEntryDao().deleteShopById(mAddShopDBModelEntity?.shop_id)
+        }catch (ex:Exception){
+            ex.printStackTrace()
+        }
+
+        mAddShopDBModelEntity?.isOwnshop = false
 
         AppDatabase.getDBInstance()!!.addShopEntryDao().insert(mAddShopDBModelEntity)
 
@@ -10773,6 +11247,7 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
             mAddShopDBModelEntity?.type_id = ""
         else
             mAddShopDBModelEntity?.type_id = teamShop.type_id
+
 
         AppDatabase.getDBInstance()!!.addShopEntryDao().insert(mAddShopDBModelEntity)
 
@@ -11581,6 +12056,12 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
         }
     }
 
+    private val fcmReceiver_quotation_approval = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            logo.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.shake))
+        }
+    }
+
     private val fcmClearDataReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             isClearData = true
@@ -11859,5 +12340,709 @@ class DashboardActivity : BaseActivity(), View.OnClickListener, BaseNavigation, 
             screen_record_info_TV.text="Screen Recorder"
         }
     }
+
+    private fun apiCallOnClearAttenReject() {  // clearing leave if isOnLeave is true
+        var req : clearAttendanceonRejectReqModelRejectReqModel = clearAttendanceonRejectReqModelRejectReqModel()
+        req.user_id=Pref.user_id
+        req.leave_apply_date=AppUtils.getCurrentDateForShopActi()
+        req.isOnLeave=true
+        req.IsLeaveDelete = "1"
+
+        val repository = LeaveTypeRepoProvider.leaveTypeListRepoProvider()
+        progress_wheel.spin()
+        BaseActivity.compositeDisposable.add(
+            repository.clearAttendanceonRejectclick(req)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({ result ->
+                    val response = result as BaseResponse
+                    progress_wheel.stopSpinning()
+                    if (response.status == NetworkConstant.SUCCESS) {
+                        apiCallOnClearAttenReject1()
+                    }
+                }, { error ->
+                    progress_wheel.stopSpinning()
+                    (mContext as DashboardActivity).showSnackMessage("ERROR")
+                })
+        )
+    }
+
+    private fun apiCallOnClearAttenReject1() { // clearing attendance if isOnLeave is false
+        var req : clearAttendanceonRejectReqModelRejectReqModel = clearAttendanceonRejectReqModelRejectReqModel()
+        req.user_id=Pref.user_id
+        req.leave_apply_date=AppUtils.getCurrentDateForShopActi()
+        req.isOnLeave=false
+        req.IsLeaveDelete = "1"
+
+        val repository = LeaveTypeRepoProvider.leaveTypeListRepoProvider()
+        progress_wheel.spin()
+        BaseActivity.compositeDisposable.add(
+            repository.clearAttendanceonRejectclick(req)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({ result ->
+                    val response = result as BaseResponse
+                    progress_wheel.stopSpinning()
+                    if (response.status == NetworkConstant.SUCCESS) {
+                        getSupervisorIDInfo()
+                    }
+                }, { error ->
+                    progress_wheel.stopSpinning()
+                    (mContext as DashboardActivity).showSnackMessage("ERROR")
+                })
+        )
+    }
+
+    private fun getSupervisorIDInfo(){
+        try{
+            progress_wheel.spin()
+            val repository = AddAttendenceRepoProvider.addAttendenceRepo()
+            BaseActivity.compositeDisposable.add(
+                repository.getReportToUserID(Pref.user_id.toString(),Pref.session_token.toString())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe({ result ->
+                        val response = result as GetReportToResponse
+                        progress_wheel.stopSpinning()
+                        if (response.status == NetworkConstant.SUCCESS) {
+                            getSupervisorFCMInfo(response.report_to_user_id!!)
+                        }
+
+                    }, { error ->
+                        XLog.d("Apply Leave Response ERROR=========> " + error.message)
+                        BaseActivity.isApiInitiated = false
+                        progress_wheel.stopSpinning()
+                        (mContext as DashboardActivity).showSnackMessage(getString(R.string.something_went_wrong))
+                    })
+            )
+        }catch (ex:Exception){
+            ex.printStackTrace()
+            progress_wheel.stopSpinning()
+        }
+
+    }
+
+    private fun getSupervisorFCMInfo(usrID:String){
+        try{
+            progress_wheel.spin()
+            val repository = AddAttendenceRepoProvider.addAttendenceRepo()
+            BaseActivity.compositeDisposable.add(
+                repository.getReportToFCMInfo(usrID,Pref.session_token.toString())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe({ result ->
+                        val response = result as GetReportToFCMResponse
+                        progress_wheel.stopSpinning()
+                        if (response.status == NetworkConstant.SUCCESS) {
+                            sendFCMNotiSupervisor(response.device_token!!)
+                        }
+                    }, { error ->
+                        XLog.d("Apply Leave Response ERROR=========> " + error.message)
+                        BaseActivity.isApiInitiated = false
+                        progress_wheel.stopSpinning()
+                        (mContext as DashboardActivity).showSnackMessage(getString(R.string.something_went_wrong))
+                    })
+            )
+        }catch (ex:Exception){
+            ex.printStackTrace()
+            progress_wheel.stopSpinning()
+        }
+
+    }
+
+    private fun sendFCMNotiSupervisor(superVisor_fcmToken:String){
+        if (superVisor_fcmToken != "") {
+            try {
+                progress_wheel.spin()
+                val jsonObject = JSONObject()
+                val notificationBody = JSONObject()
+                notificationBody.put("body","Attendance/Leave cleared by : "+Pref.user_name!!)
+                notificationBody.put("flag", "flag_att_leave_clear")
+                jsonObject.put("data", notificationBody)
+                val jsonArray = JSONArray()
+                jsonArray.put(0,superVisor_fcmToken)
+                jsonObject.put("registration_ids", jsonArray)
+                progress_wheel.stopSpinning()
+                sendCustomNotificationForAttLeavClear(jsonObject)
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+                progress_wheel.stopSpinning()
+            }
+        }
+
+    }
+
+    fun sendCustomNotificationForAttLeavClear(notification: JSONObject) {
+        progress_wheel.spin()
+        val jsonObjectRequest: JsonObjectRequest = object : JsonObjectRequest("https://fcm.googleapis.com/fcm/send", notification,
+            object : Response.Listener<JSONObject?> {
+                override fun onResponse(response: JSONObject?) {
+                    progress_wheel.stopSpinning()
+                    AttendClearMsg()
+                }
+            },
+            object : Response.ErrorListener {
+                override fun onErrorResponse(error: VolleyError?) {
+                    progress_wheel.stopSpinning()
+                }
+            }) {
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): Map<String, String> {
+                val params: MutableMap<String, String> = HashMap()
+                params["Authorization"] = getString(R.string.firebase_key)
+                params["Content-Type"] = "application/json"
+                return params
+            }
+        }
+
+        MySingleton.getInstance(mContext)!!.addToRequestQueue(jsonObjectRequest)
+    }
+
+    fun AttendClearMsg(){
+        drawerLayout.closeDrawers()
+        Pref.isAddAttendence=false
+        val simpleDialog = Dialog(mContext)
+        simpleDialog.setCancelable(false)
+        simpleDialog.getWindow()!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        simpleDialog.setContentView(R.layout.dialog_message)
+        val dialogHeader = simpleDialog.findViewById(R.id.dialog_message_header_TV) as AppCustomTextView
+        val dialog_yes_no_headerTV = simpleDialog.findViewById(R.id.dialog_message_headerTV) as AppCustomTextView
+        dialog_yes_no_headerTV.text = AppUtils.hiFirstNameText()+"!"
+        dialogHeader.text = "Attendance/Leave cleared for today."
+        val dialogYes = simpleDialog.findViewById(R.id.tv_message_ok) as AppCustomTextView
+        dialogYes.setOnClickListener({ view ->
+            simpleDialog.cancel()
+        })
+        simpleDialog.show()
+    }
+
+
+
+    private fun syncGpsNetData() {
+        val unSyncData = AppDatabase.getDBInstance()?.newGpsStatusDao()?.getNotUploaded(false)
+        if (unSyncData == null || unSyncData.isEmpty()){
+            rectifyUnknownLoc()
+        }else{
+            progress_wheel.spin()
+            val gps_net_status_list = ArrayList<NewGpsStatusEntity>()
+            unSyncData.forEach {
+                var obj :NewGpsStatusEntity = NewGpsStatusEntity()
+                obj.apply {
+                    id=it.id
+                    date_time = it.date_time
+                    gps_service_status = it.gps_service_status
+                    network_status = it.network_status
+                }
+                gps_net_status_list.add(obj)
+            }
+
+            var sendObj : GpsNetInputModel = GpsNetInputModel()
+            sendObj.user_id = Pref.user_id!!
+            sendObj.session_token = Pref.session_token!!
+            sendObj.gps_net_status_list = gps_net_status_list
+
+            val repository = LocationRepoProvider.provideLocationRepository()
+            compositeDisposable.add(
+                repository.gpsNetInfo(sendObj)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe({ result ->
+                        val response = result as BaseResponse
+                        progress_wheel.stopSpinning()
+                        if (response.status == NetworkConstant.SUCCESS) {
+                            doAsync {
+                                unSyncData.forEach {
+                                    AppDatabase.getDBInstance()?.newGpsStatusDao()?.updateIsUploadedAccordingToId(true, it.id)
+                                }
+                                uiThread {
+                                    rectifyUnknownLoc()
+                                }
+                            }
+                        }else{
+                            rectifyUnknownLoc()
+                        }
+                    }, { error ->
+                        if (error == null) {
+                            XLog.d("App Info : ERROR : " + "UNEXPECTED ERROR IN LOCATION ACTIVITY API")
+                        } else {
+                            XLog.d("App Info : ERROR : " + error.localizedMessage)
+                            error.printStackTrace()
+                        }
+                        progress_wheel.stopSpinning()
+                        rectifyUnknownLoc()
+                    })
+            )
+        }
+
+    }
+
+    fun rectifyUnknownLoc(){
+        dialogHeaderProcess.text = "Syncing Important Data. Please wait..."
+        val dialogYes = simpleDialogProcess.findViewById(R.id.tv_message_ok) as AppCustomTextView
+        simpleDialogProcess.show()
+
+        try {
+            doAsync {
+
+                var unknownList = AppDatabase.getDBInstance()!!.userLocationDataDao().getUnknownLocation(AppUtils.getCurrentDateForShopActi(),"Unknown",false)
+                if(unknownList.size>0){
+                    for(i in 0..unknownList.size-1){
+                        var updatedLoc = LocationWizard.getLocationName(this@DashboardActivity, unknownList.get(i).latitude.toDouble(), unknownList.get(i).longitude.toDouble())
+                        if(!updatedLoc.equals("Unknown")){
+                            AppDatabase.getDBInstance()!!.userLocationDataDao().updateUnknownLocation(unknownList.get(i).locationId.toString(),updatedLoc)
+                        }
+                    }
+                }
+                uiThread {
+                    callShopDurationApi()
+                }
+            }
+
+        }catch (ex:Exception){
+            ex.printStackTrace()
+            callShopDurationApi()
+        }
+    }
+
+    private fun callShopDurationApi() {
+        //dialogHeaderProcess.text = "Syncing Important Data. Please wait..."
+        //val dialogYes = simpleDialogProcess.findViewById(R.id.tv_message_ok) as AppCustomTextView
+        //simpleDialogProcess.show()
+
+        var shopId = ""
+        var previousShopVisitDateNumber = 0L
+        var shopVisitDate = ""
+        var i = 0
+
+        if (Pref.user_id.isNullOrEmpty() || BaseActivity.isShopActivityUpdating){
+            simpleDialogProcess.dismiss()
+            (mContext as DashboardActivity).loadFragment(FragType.LogoutSyncFragment, false, "")
+        }else{
+            val syncedShopList = AppDatabase.getDBInstance()!!.addShopEntryDao().getUnSyncedShops(true)
+            if (syncedShopList.isEmpty()){
+                simpleDialogProcess.dismiss()
+                (mContext as DashboardActivity).loadFragment(FragType.LogoutSyncFragment, false, "")
+            }else{
+                BaseActivity.isShopActivityUpdating = true
+
+                val shopDataList: MutableList<ShopDurationRequestData> = ArrayList()
+                val syncedShop = ArrayList<ShopActivityEntity>()
+
+                val revisitStatusList : MutableList<ShopRevisitStatusRequestData> = ArrayList()
+
+                doAsync {
+
+                    for (k in 0 until syncedShopList.size) {
+
+                        if (!Pref.isMultipleVisitEnable) {
+                            /* Get shop activity that has completed time duration calculation*/
+                            val shopActivity = AppDatabase.getDBInstance()!!.shopActivityDao().durationAvailableForShop(syncedShopList[k].shop_id, true, false)
+
+                            if (shopActivity == null) {
+                                val shop_activity = AppDatabase.getDBInstance()!!.shopActivityDao().durationAvailableForTodayShop(syncedShopList[k].shop_id,true, true,
+                                    AppUtils.getCurrentDateForShopActi())
+                                if (shop_activity != null)
+                                    syncedShop.add(shop_activity)
+
+                            } else {
+                                val shopDurationData = ShopDurationRequestData()
+                                shopDurationData.shop_id = shopActivity.shopid
+                                shopDurationData.spent_duration = shopActivity.duration_spent
+                                shopDurationData.visited_date = shopActivity.visited_date
+                                shopDurationData.visited_time = shopActivity.visited_date
+                                if (AppDatabase.getDBInstance()!!.addShopEntryDao().getShopByIdN(shopActivity.shopid) != null)
+                                    shopDurationData.total_visit_count = AppDatabase.getDBInstance()!!.addShopEntryDao().getShopByIdN(shopActivity.shopid).totalVisitCount
+                                else
+                                    shopDurationData.total_visit_count = "1"
+
+                                if (TextUtils.isEmpty(shopActivity.distance_travelled))
+                                    shopActivity.distance_travelled = "0.0"
+                                shopDurationData.distance_travelled = shopActivity.distance_travelled
+
+                                val currentShopVisitDateNumber = AppUtils.getTimeStampFromDateOnly(shopActivity.date!!)
+
+                                if (shopId == shopActivity.shopid && previousShopVisitDateNumber == currentShopVisitDateNumber)
+                                    continue
+
+                                shopId = shopActivity.shopid!!
+                                shopVisitDate = shopActivity.date!!
+                                previousShopVisitDateNumber = currentShopVisitDateNumber
+
+                                if (!TextUtils.isEmpty(shopActivity.feedback))
+                                    shopDurationData.feedback = shopActivity.feedback
+                                else
+                                    shopDurationData.feedback = ""
+
+                                shopDurationData.isFirstShopVisited = shopActivity.isFirstShopVisited
+                                shopDurationData.distanceFromHomeLoc = shopActivity.distance_from_home_loc
+
+                                shopDurationData.next_visit_date = shopActivity.next_visit_date
+
+                                if (!TextUtils.isEmpty(shopActivity.early_revisit_reason))
+                                    shopDurationData.early_revisit_reason = shopActivity.early_revisit_reason
+                                else
+                                    shopDurationData.early_revisit_reason = ""
+
+                                shopDurationData.device_model = shopActivity.device_model
+                                shopDurationData.android_version = shopActivity.android_version
+                                shopDurationData.battery = shopActivity.battery
+                                shopDurationData.net_status = shopActivity.net_status
+                                shopDurationData.net_type = shopActivity.net_type
+                                shopDurationData.in_time = shopActivity.in_time
+                                shopDurationData.out_time = shopActivity.out_time
+                                shopDurationData.start_timestamp = shopActivity.startTimeStamp
+                                shopDurationData.in_location = shopActivity.in_loc
+                                shopDurationData.out_location = shopActivity.out_loc
+                                shopDurationData.shop_revisit_uniqKey = shopActivity.shop_revisit_uniqKey!!
+
+                                shopDurationData.updated_by = Pref.user_id
+                                try{
+                                    shopDurationData.updated_on = shopActivity.updated_on!!
+                                }catch(ex:Exception){
+                                    shopDurationData.updated_on = ""
+                                }
+
+                                if (!TextUtils.isEmpty(shopActivity.pros_id) && shopActivity.pros_id!=null)
+                                    shopDurationData.pros_id = shopActivity.pros_id!!
+                                else
+                                    shopDurationData.pros_id = ""
+
+
+                                if (!TextUtils.isEmpty(shopActivity.agency_name) && shopActivity.agency_name!=null)
+                                    shopDurationData.agency_name =shopActivity.agency_name!!
+                                else
+                                    shopDurationData.agency_name = ""
+
+                                if (!TextUtils.isEmpty(shopActivity.approximate_1st_billing_value) && shopActivity.approximate_1st_billing_value!=null)
+                                    shopDurationData.approximate_1st_billing_value = shopActivity.approximate_1st_billing_value!!
+                                else
+                                    shopDurationData.approximate_1st_billing_value = ""
+
+                                //duration garbage fix
+                                try{
+                                    if(shopDurationData.spent_duration!!.contains("-") || shopDurationData.spent_duration!!.length != 8)
+                                    {
+                                        shopDurationData.spent_duration="00:00:10"
+                                    }
+                                }catch (ex:Exception){
+                                    shopDurationData.spent_duration="00:00:10"
+                                }
+
+                                shopDataList.add(shopDurationData)
+
+                                //////////////////////////
+                                var revisitStatusObj= ShopRevisitStatusRequestData()
+                                var data=AppDatabase.getDBInstance()?.shopVisitOrderStatusRemarksDao()!!.getSingleItem(shopDurationData.shop_revisit_uniqKey.toString())
+                                if(data != null ){
+                                    revisitStatusObj.shop_id=data.shop_id
+                                    revisitStatusObj.order_status=data.order_status
+                                    revisitStatusObj.order_remarks=data.order_remarks
+                                    revisitStatusObj.shop_revisit_uniqKey=data.shop_revisit_uniqKey
+                                    revisitStatusList.add(revisitStatusObj)
+                                }
+                            }
+                        }
+                        else {
+                            AppDatabase.getDBInstance()!!.shopActivityDao().updateDurationCalculatedStatusByShopID(syncedShopList[k].shop_id.toString(),true,AppUtils.getCurrentDateForShopActi())
+                            val shopActivity = AppDatabase.getDBInstance()!!.shopActivityDao().durationAvailableForShopList(syncedShopList[k].shop_id, true, false)
+
+                            shopActivity?.forEach {
+                                val shopDurationData = ShopDurationRequestData()
+                                shopDurationData.shop_id = it.shopid
+                                shopDurationData.spent_duration = it.duration_spent
+                                shopDurationData.visited_date = it.visited_date
+                                shopDurationData.visited_time = it.visited_date
+                                if (AppDatabase.getDBInstance()!!.addShopEntryDao().getShopByIdN(it.shopid) != null)
+                                    shopDurationData.total_visit_count = AppDatabase.getDBInstance()!!.addShopEntryDao().getShopByIdN(it.shopid).totalVisitCount
+                                else
+                                    shopDurationData.total_visit_count = "1"
+
+                                if (TextUtils.isEmpty(it.distance_travelled))
+                                    it.distance_travelled = "0.0"
+                                shopDurationData.distance_travelled = it.distance_travelled
+
+                                if (!TextUtils.isEmpty(it.feedback))
+                                    shopDurationData.feedback = it.feedback
+                                else
+                                    shopDurationData.feedback = ""
+
+                                shopDurationData.isFirstShopVisited = it.isFirstShopVisited
+                                shopDurationData.distanceFromHomeLoc = it.distance_from_home_loc
+
+                                shopDurationData.next_visit_date = it.next_visit_date
+
+                                if (!TextUtils.isEmpty(it.early_revisit_reason))
+                                    shopDurationData.early_revisit_reason = it.early_revisit_reason
+                                else
+                                    shopDurationData.early_revisit_reason = ""
+
+                                shopDurationData.device_model = it.device_model
+                                shopDurationData.android_version = it.android_version
+                                shopDurationData.battery = it.battery
+                                shopDurationData.net_status = it.net_status
+                                shopDurationData.net_type = it.net_type
+                                shopDurationData.in_time = it.in_time
+                                shopDurationData.out_time = it.out_time
+                                shopDurationData.start_timestamp = it.startTimeStamp
+                                shopDurationData.in_location = it.in_loc
+                                shopDurationData.out_location = it.out_loc
+                                shopDurationData.shop_revisit_uniqKey=it.shop_revisit_uniqKey!!
+
+                                shopDurationData.updated_by = Pref.user_id
+                                try {
+                                    shopDurationData.updated_on = it.updated_on!!
+                                }
+                                catch(ex:Exception){
+                                    shopDurationData.updated_on = ""
+                                }
+
+                                if (!TextUtils.isEmpty(it.pros_id!!))
+                                    shopDurationData.pros_id = it.pros_id!!
+                                else
+                                    shopDurationData.pros_id = ""
+
+                                if (!TextUtils.isEmpty(it.agency_name!!))
+                                    shopDurationData.agency_name =it.agency_name!!
+                                else
+                                    shopDurationData.agency_name = ""
+
+                                if (!TextUtils.isEmpty(it.approximate_1st_billing_value))
+                                    shopDurationData.approximate_1st_billing_value = it.approximate_1st_billing_value!!
+                                else
+                                    shopDurationData.approximate_1st_billing_value = ""
+
+                                //duration garbage fix
+                                try{
+                                    if(shopDurationData.spent_duration!!.contains("-") || shopDurationData.spent_duration!!.length != 8)
+                                    {
+                                        shopDurationData.spent_duration="00:00:10"
+                                    }
+                                }catch (ex:Exception){
+                                    shopDurationData.spent_duration="00:00:10"
+                                }
+
+                                shopDataList.add(shopDurationData)
+
+                                //////////////////////////
+                                var revisitStatusObj= ShopRevisitStatusRequestData()
+                                var data=AppDatabase.getDBInstance()?.shopVisitOrderStatusRemarksDao()!!.getSingleItem(shopDurationData.shop_revisit_uniqKey.toString())
+                                if(data != null ){
+                                    revisitStatusObj.shop_id=data.shop_id
+                                    revisitStatusObj.order_status=data.order_status
+                                    revisitStatusObj.order_remarks=data.order_remarks
+                                    revisitStatusObj.shop_revisit_uniqKey=data.shop_revisit_uniqKey
+                                    revisitStatusList.add(revisitStatusObj)
+                                }
+
+                            }
+                        }
+                    }
+
+                    uiThread {
+                        if (shopDataList.isEmpty()) {
+                            BaseActivity.isShopActivityUpdating = false
+                            simpleDialogProcess.dismiss()
+                            (mContext as DashboardActivity).loadFragment(FragType.LogoutSyncFragment, false, "")
+                        } else {
+                            val hashSet = HashSet<ShopDurationRequestData>()
+                            val newShopList = ArrayList<ShopDurationRequestData>()
+
+                            if (!Pref.isMultipleVisitEnable) {
+                                for (i in shopDataList.indices) {
+                                    if (hashSet.add(shopDataList[i]))
+                                        newShopList.add(shopDataList[i])
+                                }
+                            }
+
+                            val shopDurationApiReq = ShopDurationRequest()
+                            shopDurationApiReq.user_id = Pref.user_id
+                            shopDurationApiReq.session_token = Pref.session_token
+                            if (newShopList.size > 0) {
+                                XLog.e("Unique ShopData List size===> " + newShopList.size)
+                                shopDurationApiReq.shop_list = newShopList
+                            } else
+                                shopDurationApiReq.shop_list = shopDataList
+
+                            val repository = ShopDurationRepositoryProvider.provideShopDurationRepository()
+
+                            XLog.d("callShopDurationApi : REQUEST")
+
+                            compositeDisposable.add(
+                                repository.shopDuration(shopDurationApiReq)
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribeOn(Schedulers.io())
+                                    .subscribe({ result ->
+                                        XLog.d("callShopDurationApi : RESPONSE " + result.status)
+                                        if (result.status == NetworkConstant.SUCCESS) {
+
+                                            if(!revisitStatusList.isEmpty()){
+                                                callRevisitStatusUploadApi(revisitStatusList!!)
+                                            }
+
+
+                                            if (newShopList.size > 0) {
+                                                for (i in 0 until newShopList.size) {
+                                                    AppDatabase.getDBInstance()!!.shopActivityDao().updateisUploaded(true, newShopList[i].shop_id!!, AppUtils.changeAttendanceDateFormatToCurrent(newShopList[i].visited_date!!) /*AppUtils.getCurrentDateForShopActi()*/)
+                                                }
+                                                BaseActivity.isShopActivityUpdating = false
+                                                syncShopVisitImage(newShopList)
+                                            } else {
+
+                                                BaseActivity.isShopActivityUpdating = false
+
+                                                if (!Pref.isMultipleVisitEnable) {
+                                                    for (i in 0 until shopDataList.size) {
+                                                        AppDatabase.getDBInstance()!!.shopActivityDao().updateisUploaded(true, shopDataList[i].shop_id!!, AppUtils.changeAttendanceDateFormatToCurrent(shopDataList[i].visited_date!!) /*AppUtils.getCurrentDateForShopActi()*/)
+                                                    }
+
+                                                    syncShopVisitImage(shopDataList)
+                                                }
+                                                else {
+                                                    for (i in 0 until shopDataList.size) {
+                                                        AppDatabase.getDBInstance()!!.shopActivityDao().updateisUploaded(true, shopDataList[i].shop_id!!, AppUtils.changeAttendanceDateFormatToCurrent(shopDataList[i].visited_date!!), shopDataList[i].start_timestamp!!)
+                                                    }
+
+                                                     syncShopVisitImage(shopDataList)
+                                                }
+                                            }
+                                            BaseActivity.isShopActivityUpdating = false
+                                            simpleDialogProcess.dismiss()
+                                            (mContext as DashboardActivity).loadFragment(FragType.LogoutSyncFragment, false, "")
+                                        }else{
+                                            BaseActivity.isShopActivityUpdating = false
+                                            simpleDialogProcess.dismiss()
+                                            (mContext as DashboardActivity).loadFragment(FragType.LogoutSyncFragment, false, "")
+                                        }
+                                        BaseActivity.isShopActivityUpdating = false
+                                    }, { error ->
+                                        BaseActivity.isShopActivityUpdating = false
+                                        simpleDialogProcess.dismiss()
+                                        (mContext as DashboardActivity).loadFragment(FragType.LogoutSyncFragment, false, "")
+                                        if (error == null) {
+                                            XLog.d("callShopDurationApi : ERROR " + "UNEXPECTED ERROR IN SHOP ACTIVITY API")
+                                        } else {
+                                            XLog.d("callShopDurationApi : ERROR " + error.localizedMessage)
+                                            error.printStackTrace()
+                                        }
+                                    })
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private var mShopDataList: MutableList<ShopDurationRequestData>? = null
+    private fun syncShopVisitImage(shopDataList: MutableList<ShopDurationRequestData>) {
+        mShopDataList = shopDataList
+        val unSyncedList = ArrayList<ShopVisitImageModelEntity>()
+        for (i in shopDataList.indices) {
+            val unSyncedData = AppDatabase.getDBInstance()!!.shopVisitImageDao().getTodaysUnSyncedListAccordingToShopId(false, shopDataList[i].shop_id!!, shopDataList[i].visited_date!!)
+
+            if (unSyncedData != null && unSyncedData.isNotEmpty()) {
+                unSyncedList.add(unSyncedData[0])
+            }
+        }
+
+        if (unSyncedList.size > 0) {
+            i = 0
+            callShopVisitImageUploadApi(unSyncedList)
+        }
+    }
+
+    private fun callShopVisitImageUploadApi(unSyncedList: List<ShopVisitImageModelEntity>) {
+
+        try {
+            if (BaseActivity.isShopActivityUpdating)
+                return
+            BaseActivity.isShopActivityUpdating = true
+
+            val visitImageShop = ShopVisitImageUploadInputModel()
+            visitImageShop.session_token = Pref.session_token
+            visitImageShop.user_id = Pref.user_id
+            visitImageShop.shop_id = unSyncedList[i].shop_id
+            visitImageShop.visit_datetime = unSyncedList[i].visit_datetime
+
+            XLog.d("====UPLOAD REVISIT ALL IMAGE INPUT PARAMS (Logout Sync)======")
+            XLog.d("USER ID====> " + visitImageShop.user_id)
+            XLog.d("SESSION ID====> " + visitImageShop.session_token)
+            XLog.d("SHOP ID====> " + visitImageShop.shop_id)
+            XLog.d("VISIT DATE TIME=====> " + visitImageShop.visit_datetime)
+            XLog.d("IMAGE=====> " + unSyncedList[i].shop_image)
+            XLog.d("===============================================================")
+
+            val repository = ShopVisitImageUploadRepoProvider.provideAddShopRepository()
+
+            BaseActivity.compositeDisposable.add(
+                repository.visitShopWithImage(visitImageShop, unSyncedList[i].shop_image!!, mContext)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe({ result ->
+                        val logoutResponse = result as BaseResponse
+                        XLog.d("UPLOAD REVISIT ALL IMAGE : " + "RESPONSE : " + logoutResponse.status + "\n" + "Time : " + AppUtils.getCurrentDateTime() + ", USER :" + Pref.user_name + ",MESSAGE : " + logoutResponse.message)
+                        if (logoutResponse.status == NetworkConstant.SUCCESS) {
+                            AppDatabase.getDBInstance()!!.shopVisitImageDao().updateisUploaded(true, unSyncedList.get(i).shop_id!!)
+                            BaseActivity.isShopActivityUpdating = false
+                            i++
+                            if (i < unSyncedList.size)
+                                callShopVisitImageUploadApi(unSyncedList)
+                            else {
+                                i = 0
+                                //checkToCallAudioApi()
+                            }
+                        } else {
+                            progress_wheel.stopSpinning()
+                            BaseActivity.isShopActivityUpdating = false
+                            //checkToCallSyncOrder()
+                            //checkToRetryVisitButton()
+                        }
+
+                    }, { error ->
+                        progress_wheel.stopSpinning()
+                        XLog.d("UPLOAD REVISIT ALL IMAGE : " + "ERROR : " + "\n" + "Time : " + AppUtils.getCurrentDateTime() + ", USER :" + Pref.user_name + ",MESSAGE : " + error.localizedMessage)
+                        error.printStackTrace()
+                        BaseActivity.isShopActivityUpdating = false
+                        //checkToCallSyncOrder()
+                        //checkToRetryVisitButton()
+                    })
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            progress_wheel.stopSpinning()
+            BaseActivity.isShopActivityUpdating = false
+            //checkToCallSyncOrder()
+        }
+    }
+
+    private fun callRevisitStatusUploadApi(revisitStatusList : MutableList<ShopRevisitStatusRequestData>){
+        val revisitStatus = ShopRevisitStatusRequest()
+        revisitStatus.user_id=Pref.user_id
+        revisitStatus.session_token=Pref.session_token
+        revisitStatus.ordernottaken_list=revisitStatusList
+
+        val repository = ShopRevisitStatusRepositoryProvider.provideShopRevisitStatusRepository()
+        compositeDisposable.add(
+            repository.shopRevisitStatus(revisitStatus)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({ result ->
+                    XLog.d("callRevisitStatusUploadApi : RESPONSE " + result.status)
+                    if (result.status == NetworkConstant.SUCCESS){
+                        for(i in revisitStatusList.indices){
+                            AppDatabase.getDBInstance()?.shopVisitOrderStatusRemarksDao()!!.updateOrderStatus(revisitStatusList[i]!!.shop_revisit_uniqKey!!)
+                        }
+                    }
+                },{error ->
+                    if (error == null) {
+                        XLog.d("callRevisitStatusUploadApi : ERROR " + "UNEXPECTED ERROR IN SHOP ACTIVITY API")
+                    } else {
+                        XLog.d("callRevisitStatusUploadApi : ERROR " + error.localizedMessage)
+                        error.printStackTrace()
+                    }
+                })
+        )
+    }
+
 
 }

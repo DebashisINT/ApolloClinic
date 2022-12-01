@@ -1,5 +1,5 @@
 /*
-package com.Apolloclinicfsm.app.utils;
+package com.apolloclinicfsm.app.utils;
 
 import android.content.Context;
 import android.content.res.Resources;

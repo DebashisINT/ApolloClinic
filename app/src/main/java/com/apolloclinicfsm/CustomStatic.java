@@ -51,4 +51,7 @@ public class CustomStatic {
     public static String ShopFeedBachHisUserId="";
 
     public static Boolean IsCollectionViewFromTeam = false;
+    public static Boolean IsBreakageViewFromTeam = false;
+    public static String BreakageViewFromTeam_Name = "";
+
 }

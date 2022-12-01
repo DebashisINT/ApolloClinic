@@ -12,7 +12,6 @@
 
     <!--Map Key-->
     <!--<string name="MAP_ProjectAPIKey">AIzaSyBRrqsLZFqThqM8uxw_k94pZMbv3-3h0dM</string>-->
-<!--    <string name="MAP_ProjectAPIKey" translatable="false">AIzaSyCbYMZjnt8T6yivYfIa4_R9oy-L3SIYyrQ</string>-->
     <string name="MAP_ProjectAPIKey" translatable="false">AIzaSyBlPgFViU1yXKRfezaDFmI8dT6k6OZV7PU</string>
 
     <!--Login-->
@@ -34,6 +33,7 @@
     <string name="add_order" translatable="false">Add Order</string>
     <string name="photo_registration" translatable="false">Photo Registration</string>
     <string name="team_attendance" translatable="false">Team Attendance</string>
+    <string name="clear_attendance" translatable="false">Attendance clear</string>
     <string name="photo_attd" translatable="false">Photo Attendance</string>
     <string name="view_order" translatable="false">View Order</string>
     <string name="add" translatable="false">Add</string>
@@ -159,6 +159,7 @@
     <string name="add_shop" translatable="false">Add Shop</string>
     <string name="nearby_shops" translatable="false">Nearby Shops</string>
     <string name="share_log" translatable="false">Share Logs</string>
+    <string name="share_db" translatable="false">Share db</string>
     <string name="map_view" translatable="false">Map View</string>
     <string name="shops" translatable="false">Shops</string>
     <string name="my_orders" translatable="false">My Orders</string>
@@ -178,6 +179,8 @@
     <string name="owner_name1" translatable="false">Contact Name</string>
     <string name="owner_contact_number" translatable="false">Owner Contact Number</string>
     <string name="owner_contact_number1" translatable="false">Contact Number</string>
+    <string name="GSTIN" translatable="false">GSTIN Number</string>
+    <string name="pan" translatable="false">PAN Number</string>
     <string name="owner_email" translatable="false">Owner Email</string>
     <string name="owner_email1" translatable="false">Email</string>
     <string name="only_email" translatable="false">Email</string>
@@ -254,6 +257,7 @@
     <string name="error_enter_chemist_name" translatable="false">Please enter chemist name</string>
     <string name="error_enter_chemist_address" translatable="false">Please enter chemist address</string>
     <string name="error_enter_chemist_pincode" translatable="false">Please enter chemist pincode</string>
+    <string name="error_enter_beat" translatable="false">Please enter beat type</string>
     <string name="contact_email" translatable="false">Contact Email</string>
     <string name="confirm_revisit" translatable="false">Confirm Revisit</string>
     <string name="entity_type" translatable="false">Entity Type</string>
@@ -426,7 +430,7 @@
     <string name="email" translatable="false">Email ID</string>
 
 
-    <!--Apolloclinicfsm-->
+    <!--apolloclinicfsm-->
     <string name="apolloclinicfsm_user_name" translatable="false">Mr. Kinsuk Roy</string>
     <string name="apolloclinicfsm_login" translatable="false">Logged in at 10:55 AM</string>
     <string name="apolloclinicfsm_location" translatable="false">You have covered the distance of 3 KM in last hour </string>
@@ -575,6 +579,7 @@
     <string name="no_internet" translatable="false">Please check your internet connection.</string>
     <string name="alert_nolocation" translatable="false">Please enable your device location.</string>
     <string name="something_went_wrong" translatable="false">Something went wrong. Please try again later</string>
+    <string name="something_went_wrong_new" translatable="false">Something went wrong. Please try again later..</string>
     <string name="something_went_wrong1" translatable="false">Something went wrong. Please try again later...............</string>
     <string name="no_value" translatable="false">Please Insert Value</string>
     <string name="unable_to_sync" translatable="false">Unable to sync</string>
@@ -1497,6 +1502,7 @@
 
 
     <string name="error_message_remarks_manadatory" translatable="false">Please put the remarks</string>
+    <string name="error_message_feedback_manadatory" translatable="false">Please put the feedback</string>
 
 
     <string-array name="order_sort_gender">
@@ -1535,7 +1541,7 @@
     <string name="pro_name" translatable="false">Project Name</string>
     <string name="landline_contact_number" translatable="false">Landline Number</string>
 
-    <string name="name_filed_managenent_system" translatable="false">APOLLO CLINIC-FSM</string>
+    <string name="name_filed_managenent_system" translatable="false">FIELD SALES MANAGEMENT</string>
 
     <string name="alternate_number" translatable="false">Alternate Number</string>
     <string name="whatsapp" translatable="false">Whatsapp Number</string>
@@ -1565,5 +1571,7 @@
     <string name="historys" translatable="false">Historys</string>
     <string name="firebase_key" translatable="false">key=AAAAAI5h1F0:APA91bFp9u424RHYvIeZfTuf6nRjakiZtOW3-C98ndIc57UiKUcOHtCv99-C6LBDyFnOsk6hXDzcCW_ymWoLBGIVe1avR8e6uyqHc6qLhXlV3d9qSviNChs_opcpkNTiXaIA_Mb6ELnv</string>
 
+    <string name="GenderTextNewOrd" translatable="false">Gender</string>
+    <string name="ProductTextNewOrd" translatable="false">Product Type</string>
 
 </resources>

@@ -1,24 +1,11 @@
 package com.apolloclinicfsm.features.NewQuotation.api
 
-import android.content.Context
-import android.net.Uri
-import android.text.TextUtils
-import android.util.Log
-import com.apolloclinicfsm.app.FileUtils
 import com.apolloclinicfsm.base.BaseResponse
-import com.apolloclinicfsm.features.NewQuotation.model.*
-import com.apolloclinicfsm.features.addshop.model.AddShopRequestData
-import com.apolloclinicfsm.features.addshop.model.AddShopResponse
-import com.apolloclinicfsm.features.login.model.userconfig.UserConfigResponseModel
-import com.apolloclinicfsm.features.myjobs.model.WIPImageSubmit
-import com.apolloclinicfsm.features.photoReg.model.*
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.google.gson.Gson
+import com.apolloclinicfsm.features.NewQuotation.model.AddQuotRequestData
+import com.apolloclinicfsm.features.NewQuotation.model.EditQuotRequestData
+import com.apolloclinicfsm.features.NewQuotation.model.ViewDetailsQuotResponse
+import com.apolloclinicfsm.features.NewQuotation.model.ViewQuotResponse
 import io.reactivex.Observable
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import java.io.File
 
 class GetQuotListRegRepository(val apiService : GetQutoListApi) {
 
@@ -32,6 +19,10 @@ class GetQuotListRegRepository(val apiService : GetQutoListApi) {
 
     fun viewDetailsQuot(quotId: String): Observable<ViewDetailsQuotResponse> {
         return apiService.getQuotDetailsList(quotId)
+    }
+
+    fun viewDetailsDoc(docId: String): Observable<ViewDetailsQuotResponse> {
+        return apiService.getDocDetailsList(docId)
     }
 
     fun delQuot(quotId: String): Observable<BaseResponse>{

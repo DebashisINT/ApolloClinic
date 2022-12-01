@@ -2,10 +2,7 @@ package com.apolloclinicfsm.features.location.api
 
 import com.apolloclinicfsm.app.NetworkConstant
 import com.apolloclinicfsm.base.BaseResponse
-import com.apolloclinicfsm.features.location.model.AppInfoInputModel
-import com.apolloclinicfsm.features.location.model.AppInfoResponseModel
-import com.apolloclinicfsm.features.location.model.MeetingDurationInputParams
-import com.apolloclinicfsm.features.location.model.ShopDurationRequest
+import com.apolloclinicfsm.features.location.model.*
 import com.apolloclinicfsm.features.location.shopdurationapi.ShopDurationApi
 import io.reactivex.Observable
 import retrofit2.Retrofit
@@ -27,6 +24,9 @@ interface LocationApi {
     @FormUrlEncoded
     @POST("AppInfo/GetDeviceInformation")
     fun getAppInfo(@Field("session_token") session_token: String, @Field("user_id") user_id: String): Observable<AppInfoResponseModel>
+
+    @POST("AppInfo/UserWiseGPSNetStatus")
+    fun submitGpsNetInfo(@Body appInfo: GpsNetInputModel?): Observable<BaseResponse>
 
     /**
      * Companion object to create the ShopDurationApi

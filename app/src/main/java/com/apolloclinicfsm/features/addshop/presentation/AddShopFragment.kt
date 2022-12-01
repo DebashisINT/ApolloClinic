@@ -86,7 +86,6 @@ import com.apolloclinicfsm.widgets.AppCustomEditText
 import com.apolloclinicfsm.widgets.AppCustomTextView
 import com.elvishew.xlog.XLog
 import com.google.android.material.textfield.TextInputLayout
-import com.itextpdf.text.pdf.parser.Line
 import com.squareup.picasso.Picasso
 import com.themechangeapp.pickimage.PermissionHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -106,7 +105,6 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
     private lateinit var shopImage: RelativeLayout
     private lateinit var mContext: Context
     private lateinit var saveTV: AppCustomTextView
-    private lateinit var ll_feedback: LinearLayout
     private var imagePath: String = ""
     private var imagePathCompetitor: String = ""
     private var imagePathupload: String = ""
@@ -130,6 +128,9 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
     private lateinit var shop_name_TL: TextInputLayout
     private lateinit var rl_assign_to_dd: RelativeLayout
     private lateinit var tv_assign_to_dd: AppCustomTextView
+
+    private lateinit var GSTINNumberRL: RelativeLayout
+    private lateinit var PANNumberRL: RelativeLayout
 
     private var shopLongitude: Double = 0.0
     private var shopLatitude: Double = 0.0
@@ -248,6 +249,7 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
     private var visitRemarksPopupWindow: PopupWindow? = null
     private lateinit var rl_select_beat: RelativeLayout
     private lateinit var tv_select_beat: AppCustomTextView
+    private lateinit var tv_beat_asterisk_mark:AppCustomTextView
     private lateinit var assign_to_shop_rl: RelativeLayout
     private lateinit var assign_to_shop_tv: AppCustomTextView
 
@@ -328,6 +330,9 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
     private lateinit var alternate_number_EDT: AppCustomEditText
     private lateinit var whatsapp_number_EDT: AppCustomEditText
 
+    private lateinit var ll_feedback: LinearLayout
+    private lateinit var tv_feedback_asterisk_mark: AppCustomTextView
+
 
 
 
@@ -404,6 +409,9 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
         isApiCall = true
         initView(view)
         initTextChangeListener()
+
+        //Pref.ShopScreenAftVisitRevisit = false
+        //Pref.ShopScreenAftVisitRevisitGlobal = false
 
         /*if (AppUtils.mLocation != null) {
             if (AppUtils.mLocation!!.accuracy <= 100) {
@@ -560,7 +568,8 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initView(view: View) {
-        ll_feedback = view.findViewById(R.id.ll_feedback)
+        PANNumberRL = view.findViewById(R.id.PANNumberRL)
+        GSTINNumberRL = view.findViewById(R.id.GSTINNumberRL)
         assign_to_tv = view.findViewById(R.id.assign_to_tv)
         captureShopImage = view.findViewById(R.id.capture_shop_image_IV)
         shopImage = view.findViewById(R.id.shop_image_RL)
@@ -673,6 +682,7 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
         tv_select_purpose  = view.findViewById(R.id.tv_select_purpose)
         rl_select_beat = view.findViewById(R.id.rl_select_beat)
         tv_select_beat = view.findViewById(R.id.tv_select_beat)
+        tv_beat_asterisk_mark = view.findViewById(R.id.tv_beat_asterisk_mark)
         assign_to_shop_rl = view.findViewById(R.id.assign_to_shop_rl)
         assign_to_shop_tv = view.findViewById(R.id.assign_to_shop_tv)
 
@@ -713,8 +723,11 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
         alternate_number_EDT = view.findViewById(R.id.alternate_number_EDT)
         whatsapp_number_EDT =  view.findViewById(R.id.whatsapp_number_EDT)
 
+        ll_feedback =  view.findViewById(R.id.ll_feedback)
+        tv_feedback_asterisk_mark =  view.findViewById(R.id.tv_feedback_asterisk_mark)
 
 
+        tv_select_beat.hint = "Select " + "${Pref.beatText}"
 
 
         assign_to_shop_tv.hint = getString(R.string.assign_to_hint_text) + " ${Pref.shopText}"
@@ -781,6 +794,23 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
         }
         else {
             rl_select_purpose.visibility = View.GONE
+        }
+
+        if(Pref.isShowBeatGroup) {
+            if (Pref.IsDistributorSelectionRequiredinAttendance)
+                tv_beat_asterisk_mark.visibility = View.VISIBLE
+        }
+            else {
+            tv_beat_asterisk_mark.visibility = View.GONE
+        }
+
+        if(Pref.IsGSTINPANEnableInShop) {
+            PANNumberRL.visibility = View.VISIBLE
+            GSTINNumberRL.visibility = View.VISIBLE
+        }
+        else {
+            PANNumberRL.visibility = View.GONE
+            GSTINNumberRL.visibility = View.GONE
         }
 
 
@@ -1427,6 +1457,20 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
                 tv_assign_to_dd.text = ""
                 tv_dd_asterisk_mark.visibility = View.GONE
             }
+            /*IsFeedbackAvailableInShop Feature*/
+            if(Pref.IsFeedbackAvailableInShop){
+                ll_feedback.visibility = View.VISIBLE
+            }
+            else{
+                ll_feedback.visibility = View.GONE
+            }
+
+              if(Pref.IsFeedbackMandatoryforNewShop){
+                  tv_feedback_asterisk_mark.visibility = View.VISIBLE
+            }
+            else{
+                  tv_feedback_asterisk_mark.visibility = View.GONE
+            }
 
         }
 
@@ -1578,8 +1622,6 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
         else {
             til_no.hint = Pref.contactNumberText + " Number"
         }
-
-        ll_feedback.visibility = View.GONE
 
     }
 
@@ -1894,10 +1936,6 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
                                     voiceAttendanceMsg(getString(R.string.shop_added_successfully))
 //                                (mContext as DashboardActivity).showSnackMessage(getString(R.string.shop_added_successfully))
                                     (mContext as DashboardActivity).onBackPressed()
-                                    //(mContext as DashboardActivity).loadFragment(FragType.NearByShopsListFragment, false, "")
-//                                    Pref.ShopScreenAftVisitRevisit = true
-//                                    Pref.ShopScreenAftVisitRevisitGlobal = true
-
                                     if(Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal){
                                         (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
                                     }else{
@@ -1929,8 +1967,8 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
                                             }
                                         }
                                         (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment,true,"")
-                                    }
-                                 //   (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
+                                    } //(mContext as DashboardActivity).loadFragment(FragType.NearByShopsListFragment, false, "")
+//                                    (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
                                 }
                                 BaseActivity.isApiInitiated = false
 //                            isApiCall=true
@@ -1949,7 +1987,6 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
                                 (mContext as DashboardActivity).onBackPressed()
                                 (mContext as DashboardActivity).showSnackMessage(getString(R.string.shop_added_successfully))
                                 voiceAttendanceMsg(getString(R.string.shop_added_successfully))
-                                //(mContext as DashboardActivity).loadFragment(FragType.NearByShopsListFragment, false, "")
                                 if(Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal){
                                     (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
                                 }else{
@@ -1982,6 +2019,7 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
                                     }
                                     (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment,true,"")
                                 }
+                                //(mContext as DashboardActivity).loadFragment(FragType.NearByShopsListFragment, false, "")
 //                                (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
                                 if (error != null) {
                                     XLog.d("AddShop : " + ", SHOP: " + addShop.shop_name + ", ERROR: " + error.localizedMessage)
@@ -2049,7 +2087,6 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
 //                                (mContext as DashboardActivity).showSnackMessage(getString(R.string.shop_added_successfully))
                                     (mContext as DashboardActivity).onBackPressed()
                                     //(mContext as DashboardActivity).loadFragment(FragType.NearByShopsListFragment, false, "")
-//                                    (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
                                     if(Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal){
                                         (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
                                     }else{
@@ -2082,6 +2119,7 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
                                         }
                                         (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment,true,"")
                                     }
+//                                    (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
                                 }
                                 BaseActivity.isApiInitiated = false
 //                            isApiCall=true
@@ -2101,7 +2139,6 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
                                 (mContext as DashboardActivity).showSnackMessage(getString(R.string.shop_added_successfully))
                                 voiceAttendanceMsg(getString(R.string.shop_added_successfully))
                                 //(mContext as DashboardActivity).loadFragment(FragType.NearByShopsListFragment, false, "")
-//                                (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
                                 if(Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal){
                                     (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
                                 }else{
@@ -2134,6 +2171,7 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
                                     }
                                     (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment,true,"")
                                 }
+//                                (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, addShop.shop_id!!)
                                 if (error != null) {
                                     XLog.d("AddShop : " + ", SHOP: " + addShop.shop_name + ", ERROR: " + error.localizedMessage)
                                 }
@@ -2243,7 +2281,8 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
 
 
     private fun showShopVerificationDialog(shop_id: String) {
-
+//        Pref.ShopScreenAftVisitRevisit = false
+//        Pref.ShopScreenAftVisitRevisitGlobal = false
         if (!Pref.isShowOTPVerificationPopup) {
             (mContext as DashboardActivity).onBackPressed()
             if(Pref.ShopScreenAftVisitRevisit && Pref.ShopScreenAftVisitRevisitGlobal){
@@ -2251,31 +2290,32 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
             }else{
                 val shopList = AppDatabase.getDBInstance()!!.addShopEntryDao().getShopByIdN(shop_id)
                 if (!TextUtils.isEmpty(shopList.dateOfBirth)) {
-                    //if (AppUtils.getCurrentDateForShopActi() == AppUtils.changeAttendanceDateFormatToCurrent(it.dateOfBirth)) {
-                    if (AppUtils.getCurrentMonthDayForShopActi() == AppUtils.changeAttendanceDateFormatToMonthDay(shopList.dateOfBirth)) {
-                        val notification = NotificationUtils(getString(R.string.app_name), "", "", "")
-                        var body = ""
-                        body = if (TextUtils.isEmpty(shopList.ownerEmailId))
-                            "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + " for birthday today."
-                        else
-                            "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + ", Email: " + shopList.ownerEmailId + " for birthday today."
-                        (mContext as DashboardActivity).tv_noti_count.visibility=View.VISIBLE
-                        notification.sendLocNotification(mContext, body)
+                        //if (AppUtils.getCurrentDateForShopActi() == AppUtils.changeAttendanceDateFormatToCurrent(it.dateOfBirth)) {
+                        if (AppUtils.getCurrentMonthDayForShopActi() == AppUtils.changeAttendanceDateFormatToMonthDay(shopList.dateOfBirth)) {
+                            val notification = NotificationUtils(getString(R.string.app_name), "", "", "")
+                            var body = ""
+                            body = if (TextUtils.isEmpty(shopList.ownerEmailId))
+                                "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + " for birthday today."
+                            else
+                                "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + ", Email: " + shopList.ownerEmailId + " for birthday today."
+                            (mContext as DashboardActivity).tv_noti_count.visibility=View.VISIBLE
+                            notification.sendLocNotification(mContext, body)
+                        }
                     }
-                }
                 if (!TextUtils.isEmpty(shopList.dateOfAniversary)) {
-                    //if (AppUtils.getCurrentDateForShopActi() == AppUtils.changeAttendanceDateFormatToCurrent(it.dateOfAniversary)) {
-                    if (AppUtils.getCurrentMonthDayForShopActi() == AppUtils.changeAttendanceDateFormatToMonthDay(shopList.dateOfAniversary)) {
-                        val notification = NotificationUtils(getString(R.string.app_name), "", "", "")
-                        var body = ""
-                        body = if (TextUtils.isEmpty(shopList.ownerEmailId))
-                            "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + " for Anniversary today."
-                        else
-                            "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + ", Email: " + shopList.ownerEmailId + " for Anniversary today."
-                        (mContext as DashboardActivity).tv_noti_count.visibility=View.VISIBLE
-                        notification.sendLocNotification(mContext, body)
+                        //if (AppUtils.getCurrentDateForShopActi() == AppUtils.changeAttendanceDateFormatToCurrent(it.dateOfAniversary)) {
+                        if (AppUtils.getCurrentMonthDayForShopActi() == AppUtils.changeAttendanceDateFormatToMonthDay(shopList.dateOfAniversary)) {
+                            val notification = NotificationUtils(getString(R.string.app_name), "", "", "")
+                            var body = ""
+                            body = if (TextUtils.isEmpty(shopList.ownerEmailId))
+                                "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + " for Anniversary today."
+                            else
+                                "Please wish Mr. " + shopList.ownerName + " of " + shopList.shopName + ", Contact Number: " + shopList.ownerContactNumber + ", Email: " + shopList.ownerEmailId + " for Anniversary today."
+                            (mContext as DashboardActivity).tv_noti_count.visibility=View.VISIBLE
+                            notification.sendLocNotification(mContext, body)
+                        }
                     }
-                }
+
                 (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment,true,"")
             }
 //            (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, shop_id)
@@ -2325,6 +2365,7 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
                                 notification.sendLocNotification(mContext, body)
                             }
                         }
+
                         (mContext as DashboardActivity).loadFragment(FragType.DashboardFragment,true,"")
                     }
 //                    (mContext as DashboardActivity).loadFragment(FragType.ShopDetailFragment, true, shop_id)
@@ -2884,7 +2925,7 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
         shopActivityEntity.updated_by=Pref.user_id
         shopActivityEntity.updated_on= AppUtils.getCurrentDateForShopActi()
 
-//        shopActivityEntity.feedback =  feedbackValue
+        //shopActivityEntity.feedback =  feedbackValue
 
         AppDatabase.getDBInstance()!!.shopActivityDao().insertAll(shopActivityEntity)
 
@@ -4654,10 +4695,20 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun showBeatListDialog(list: ArrayList<BeatEntity>) {
-        BeatListDialog.newInstance(list) {
-            tv_select_beat.text = it.name
-            beatId = it.beat_id!!
-        }.show((mContext as DashboardActivity).supportFragmentManager, "")
+
+        if(Pref.IsAllBeatAvailableforParty){
+            BeatListDialog.newInstance(list) {
+                tv_select_beat.text = it.name
+                beatId = it.beat_id!!
+            }.show((mContext as DashboardActivity).supportFragmentManager, "")
+        }else{
+            var singleList = list.filter { Pref.SelectedBeatIDFromAttend.equals(it.beat_id) } as ArrayList
+
+            BeatListDialog.newInstance(singleList) {
+                tv_select_beat.text = it.name
+                beatId = it.beat_id!!
+            }.show((mContext as DashboardActivity).supportFragmentManager, "")
+        }
     }
 
     private var permissionUtils: PermissionUtils? = null
@@ -4960,7 +5011,6 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
             (mContext as DashboardActivity).startActivityForResult(intent, PermissionHelper.REQUEST_CODE_STORAGE)
 
         }
-
     }
     /*9-12-2021*/
     fun showPictureDialogImage() {
@@ -5027,7 +5077,7 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
                 (mContext as DashboardActivity).showSnackMessage("Please select any GPTPL/Distributor")
                 BaseActivity.isApiInitiated = false
                 return
-            } else if (TextUtils.isEmpty(assignedToDDId)) {
+            } else if (TextUtils.isEmpty(assignedToDDId) && Pref.AutoDDSelect==true) {
                 (mContext as DashboardActivity).showSnackMessage("Please select assigned to " + Pref.ddText)
                 BaseActivity.isApiInitiated = false
                 return
@@ -5062,7 +5112,7 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
                 (mContext as DashboardActivity).showSnackMessage("Please select assigned to " + Pref.ppText)
                 BaseActivity.isApiInitiated = false
                 return
-            } else if (TextUtils.isEmpty(assignedToDDId)) {
+            } else if (TextUtils.isEmpty(assignedToDDId) && Pref.AutoDDSelect==true) {
                 (mContext as DashboardActivity).showSnackMessage("Please select assigned to " + Pref.ddText)
                 BaseActivity.isApiInitiated = false
                 return
@@ -5085,7 +5135,7 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
             assignedToShopId = ""
 
             if (Pref.isDDMandatoryForMeeting) {
-                if (TextUtils.isEmpty(assignedToDDId)) {
+                if (TextUtils.isEmpty(assignedToDDId) && Pref.AutoDDSelect==true) {
                     (mContext as DashboardActivity).showSnackMessage("Please select assigned to " + Pref.ddText)
                     BaseActivity.isApiInitiated = false
                     return
@@ -5203,6 +5253,7 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
         }
 
 
+
         if(Pref.IsnewleadtypeforRuby && addShopData.type.equals("16")){
             ownerNumber.setText(leadContactNumber.text.toString())
             ownerName.setText(agency_name_EDT.text.toString())
@@ -5238,6 +5289,15 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
             (mContext as DashboardActivity).showSnackMessage(getString(R.string.error_enter_valid_phn_no), 3000)
             BaseActivity.isApiInitiated = false
             return
+        }
+
+        if (Pref.IsFeedbackMandatoryforNewShop){
+            if (TextUtils.isEmpty(feedback_EDT.text.toString().trim().toString()) && feedback_EDT.text!!.isBlank()) {
+                BaseActivity.isApiInitiated = false
+                openDialogPopup("Hi ${Pref.user_name} !","Please provide Feedback")
+                return
+            }
+
         }
 
         if (addShopData.type == "5") {
@@ -5396,6 +5456,8 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
 
 
 
+
+
             saveDataToDb()
             return
         }
@@ -5447,6 +5509,7 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
             return
         }
 
+
         if (Pref.willMoreVisitUpdateOptional)
             showAddMoreInfoAlertDialog()
         else {
@@ -5455,6 +5518,34 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun saveDataToDb() {
+        if(Pref.IsGSTINPANEnableInShop){
+            if (!(GSTINnumber_EDT.text!!.trim().isBlank())) {
+                if (AppUtils.isValidGSTINCardNo(GSTINnumber_EDT.text.toString())) {
+                    shopDataModel.gstN_Number = GSTINnumber_EDT.text!!.trim().toString()
+
+                } else {
+                    BaseActivity.isApiInitiated = false
+                    openDialogPopup("Hi ${Pref.user_name} !","Please provide a valid GSTIN number as per the below format\n" +
+                            "GSTIN Format : 19ABCDE1234E1ZT")
+//                    (mContext as DashboardActivity).showSnackMessage("Please use valid GSTIN Number")
+                    return
+                }
+            }
+            if (!(PANnumber_EDT.text!!.trim().isBlank())) {
+                if (AppUtils.isValidPanCardNo(PANnumber_EDT.text.toString())) {
+                    shopDataModel.shopOwner_PAN = PANnumber_EDT.text!!.trim().toString()
+
+                } else {
+                    BaseActivity.isApiInitiated = false
+                    openDialogPopup("Hi ${Pref.user_name} !","Please provide a valid PAN number as per the below format\n" +
+                            "PAN Format : ADBCE1234G")
+//                    (mContext as DashboardActivity).showSnackMessage("Please use valid PAN Number")
+                    return
+                }
+            }
+        }
+        
+
         if (shopLatitude != null && shopLongitude != null) {
             shopDataModel.shopLat = shopLatitude
             shopDataModel.shopLong = shopLongitude
@@ -5509,11 +5600,21 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
             return
         }
 
+        if(Pref.IsDistributorSelectionRequiredinAttendance){
+            if(Pref.isShowBeatGroup && TextUtils.isEmpty(tv_select_beat.text.toString().trim())) {
+                (mContext as DashboardActivity).showSnackMessage(getString(R.string.error_enter_beat))
+                BaseActivity.isApiInitiated = false
+                return
+            }
+        }
 
         shopDataModel.visited = false
         shopDataModel.timeStamp = System.currentTimeMillis().toString()
         shopDataModel.totalVisitCount = "1"
-        shopDataModel.shop_id = Pref.user_id + "_" + System.currentTimeMillis().toString()
+
+        val random = Random()
+
+        shopDataModel.shop_id = Pref.user_id + "_" + System.currentTimeMillis().toString() +  (random.nextInt(999 - 100) + 100).toString()
         shopDataModel.user_id = Pref.user_id
         shopDataModel.lastVisitedDate = AppUtils.getCurrentDateChanged()
 //        shopDataModel.lastVisitedDate
@@ -5556,11 +5657,14 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
         else
             shopDataModel.booking_amount = booking_amount_EDT.text.toString().trim()
 
-        if (AppDatabase.getDBInstance()!!.addShopEntryDao().getDuplicateShopData(ownerNumber.text.toString().trim()).size > 0) {
-            (mContext as DashboardActivity).showSnackMessage(getString(R.string.contact_number_exist))
-            BaseActivity.isApiInitiated = false
-            return
+        if(!Pref.IgnoreNumberCheckwhileShopCreation){
+            if (AppDatabase.getDBInstance()!!.addShopEntryDao().getDuplicateShopData(ownerNumber.text.toString().trim()).size > 0) {
+                (mContext as DashboardActivity).showSnackMessage(getString(R.string.contact_number_exist))
+                BaseActivity.isApiInitiated = false
+                return
+            }
         }
+
 
 
         val allShopList= AppDatabase.getDBInstance()?.addShopEntryDao()?.all
@@ -5583,6 +5687,7 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
         }
         //feeback shop_details table
         shopDataModel.purpose = feedbackValue
+
 
 
 
@@ -5835,6 +5940,11 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
         addShopData.isShopDuplicate=shopDataModel.isShopDuplicate
 
         addShopData.purpose=shopDataModel.purpose
+
+        /*GSTIN & PAN NUMBER*/
+        addShopData.GSTN_Number = shopDataModel.gstN_Number
+        addShopData.ShopOwner_PAN = shopDataModel.shopOwner_PAN
+
 
         addShopApi(addShopData, shopDataModel.shopImageLocalPath, shopDataModel.doc_degree)
     }
@@ -6631,12 +6741,25 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
                 (mContext as DashboardActivity). setTopBarTitle("Add " + Pref.shopText)
             }
 
+            /*IsFeedbackAvailableInShop Feature*/
+            if(Pref.IsFeedbackAvailableInShop){
+                ll_feedback.visibility = View.VISIBLE
+            }
+            else{
+                ll_feedback.visibility = View.GONE
+            }
+
+            if(Pref.IsFeedbackMandatoryforNewShop){
+                tv_feedback_asterisk_mark.visibility = View.VISIBLE
+            }
+            else{
+                tv_feedback_asterisk_mark.visibility = View.GONE
+            }
+
             if (Pref.isAreaVisible)
                 rl_area_main.visibility = View.VISIBLE
             else
                 rl_area_main.visibility = View.GONE
-
-            ll_feedback.visibility = View.GONE
 
             popup.dismiss()
         }
@@ -7099,6 +7222,22 @@ class AddShopFragment : BaseFragment(), View.OnClickListener {
                 visitRemarksPopupWindow?.showAsDropDown(tv_select_purpose, tv_select_purpose.width - visitRemarksPopupWindow?.width!!, 0)
             }
         }
+    }
+
+    fun openDialogPopup(header:String,text:String){
+        val simpleDialog = Dialog(mContext)
+        simpleDialog.setCancelable(false)
+        simpleDialog.getWindow()!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        simpleDialog.setContentView(R.layout.dialog_ok_imei)
+        val dialogHeader = simpleDialog.findViewById(R.id.dialog_yes_header) as AppCustomTextView
+        val dialogBody = simpleDialog.findViewById(R.id.dialog_yes_body) as AppCustomTextView
+        dialogHeader.text = header
+        dialogBody.text = text
+        val dialogYes = simpleDialog.findViewById(R.id.tv_dialog_yes) as AppCustomTextView
+        dialogYes.setOnClickListener({ view ->
+            simpleDialog.cancel()
+        })
+        simpleDialog.show()
     }
 
 }

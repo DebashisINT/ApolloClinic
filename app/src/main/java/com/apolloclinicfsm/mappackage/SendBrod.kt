@@ -21,6 +21,7 @@ class SendBrod {
                 //var notificationManager = context.getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
                 //notificationManager.cancel(monitorNotiID)
                 MonitorBroadcast.isSound=Pref.GPSAlertwithSound
+                MonitorBroadcast.isVibrator = Pref.GPSAlertwithVibration
                 val intent: Intent = Intent(context, MonitorBroadcast::class.java)
                 intent.putExtra("notiId", monitorNotiID)
                 intent.putExtra("fuzedLoc", "Fuzed Stop")

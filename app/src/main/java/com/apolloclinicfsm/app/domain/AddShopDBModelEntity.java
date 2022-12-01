@@ -277,15 +277,39 @@ public class AddShopDBModelEntity {
     @ColumnInfo(name = "isShopDuplicate")
     private boolean isShopDuplicate = false;
 
-    @ColumnInfo(name = "purpose")
-    private String purpose = null;
+    @ColumnInfo(name = "isOwnshop")
+    private boolean isOwnshop = true;
 
-    public String getPurpose() {
-        return purpose;
+    public String getGSTN_Number() {
+        return GSTN_Number;
     }
 
-    public void setPurpose(String purpose) {
-        this.purpose = purpose;
+
+
+    @ColumnInfo(name = "GSTN_Number")
+    private String GSTN_Number = null;
+
+    public void setGSTN_Number(String GSTN_Number) {
+        this.GSTN_Number = GSTN_Number;
+    }
+
+
+    public String getShopOwner_PAN() {
+        return ShopOwner_PAN;
+    }
+
+    public void setShopOwner_PAN(String shopOwner_PAN) {
+        ShopOwner_PAN = shopOwner_PAN;
+    }
+
+    @ColumnInfo(name = "ShopOwner_PAN")
+    private String ShopOwner_PAN =null;
+
+    public boolean isOwnshop() {
+        return isOwnshop;
+    }
+    public void setOwnshop(boolean ownshop) {
+        isOwnshop = ownshop;
     }
 
     public boolean getIsShopDuplicate() {
@@ -295,7 +319,16 @@ public class AddShopDBModelEntity {
         this.isShopDuplicate = isShopDuplicate;
     }
 
+    public String getPurpose() {
+        return purpose;
+    }
 
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
+    }
+
+    @ColumnInfo(name = "purpose")
+    private String purpose = null;
 
     public String getAlternateNoForCustomer() {
         return alternateNoForCustomer;

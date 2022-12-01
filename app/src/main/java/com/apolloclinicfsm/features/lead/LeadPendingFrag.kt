@@ -1,5 +1,6 @@
 package com.apolloclinicfsm.features.lead
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
@@ -132,6 +133,7 @@ class LeadPendingFrag : BaseFragment(), DatePickerDialog.OnDateSetListener, View
         }
     }
 
+    @SuppressLint("NewApi")
     override fun onClick(v: View?) {
         when (v?.id) {
 
@@ -156,6 +158,7 @@ class LeadPendingFrag : BaseFragment(), DatePickerDialog.OnDateSetListener, View
             R.id.frag_lead_pending_spinnerType->{
                 var List:ArrayList<String> = ArrayList()
                 List.add("IndiaMart")
+                List.add("IndiaMart (ARCHER)")
                 List.add("MccoyMart")
                 List.add("Website")
                 List.add("Direct Call")

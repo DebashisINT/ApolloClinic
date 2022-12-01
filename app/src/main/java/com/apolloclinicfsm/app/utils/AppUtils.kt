@@ -59,6 +59,7 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.*
 import java.util.concurrent.TimeUnit
+import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 
@@ -209,7 +210,7 @@ class AppUtils {
             //val storageDir = File(Environment.getExternalStorageDirectory().toString()
                     //+ File.separator + "fieldtrackingsystem" + File.separator)
             //27-09-2021
-            val storageDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "fieldtrackingsystem" + File.separator)
+            val storageDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + File.separator + "apolloclinicfsmApp/fieldtrackingsystem" + File.separator)
             storageDir.mkdirs()
 
             // Save a file: path for use with ACTION_VIEW intents
@@ -1025,6 +1026,30 @@ class AppUtils {
                     + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$").matcher(emailId).matches()
         }
 
+        fun isValidPanCardNo(panCardNo:String) : Boolean
+        {
+            var regex :String = "[A-Z]{5}[0-9]{4}[A-Z]{1}";
+            var p : Pattern = Pattern.compile(regex);
+            if (panCardNo == null)
+            {
+                return false;
+            }
+            var m : Matcher = p.matcher(panCardNo);
+            return m.matches();
+        }
+
+        fun isValidGSTINCardNo(panCardNo:String) : Boolean
+        {
+            var regex :String = "[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[A-Z,0-9]{3}";
+            var p : Pattern = Pattern.compile(regex);
+            if (panCardNo == null)
+            {
+                return false;
+            }
+            var m : Matcher = p.matcher(panCardNo);
+            return m.matches();
+        }
+
         /**
          * New Implementation
          */
@@ -1273,6 +1298,7 @@ class AppUtils {
             return networkType
         }
 
+        @SuppressLint("MissingPermission")
         fun mobNetType(context: Context): String {
             val netType = getNetworkType(context)
             if (TextUtils.isEmpty(netType) || netType.equals("WiFi", ignoreCase = true))
@@ -1376,20 +1402,6 @@ class AppUtils {
                 e.printStackTrace()
             }
             val f = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
-            return f.format(convertedDate)
-
-        }
-
-        fun changeAttendanceDateFormatToMonthDay(dateString: String): String {
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
-            var convertedDate = Date()
-            try {
-                convertedDate = dateFormat.parse(dateString) //"20130526160000"
-            } catch (e: ParseException) {
-                // TODO Auto-generated catch block
-                e.printStackTrace()
-            }
-            val f = SimpleDateFormat("MM-dd", Locale.ENGLISH)
             return f.format(convertedDate)
 
         }
@@ -1527,6 +1539,20 @@ class AppUtils {
 
         }
 
+        fun changeLocalDateFormatToAtte(dateString: String): String {
+            val dateFormat = SimpleDateFormat("dd-MMM-yy", Locale.ENGLISH)
+            var convertedDate = Date()
+            try {
+                convertedDate = dateFormat.parse(dateString) //"20130526160000"
+            } catch (e: ParseException) {
+                // TODO Auto-generated catch block
+                e.printStackTrace()
+            }
+            val f = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
+            return f.format(convertedDate)
+
+        }
+
         fun getTimeStampFromDate(dateString: String): String {
             val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:MM:SS", Locale.ENGLISH)
             var convertedDate = Date()
@@ -1657,6 +1683,19 @@ class AppUtils {
             return df.format(Date()).toString()
         }
 
+        fun changeAttendanceDateFormatToMonthDay(dateString: String): String {
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
+            var convertedDate = Date()
+            try {
+                convertedDate = dateFormat.parse(dateString) //"20130526160000"
+            } catch (e: ParseException) {
+                // TODO Auto-generated catch block
+                e.printStackTrace()
+            }
+            val f = SimpleDateFormat("MM-dd", Locale.ENGLISH)
+            return f.format(convertedDate)
+
+        }
 
         fun getCurrentDateMonth(): String {
             val df = SimpleDateFormat("ddMMyy", Locale.ENGLISH)
@@ -1948,6 +1987,7 @@ class AppUtils {
             return BitmapFactory.decodeStream(c.contentResolver.openInputStream(uri), null, o2)!!
         }
 
+
         fun getCompressImage(filePath: String): Long {
             val file = File(filePath)
 
@@ -2009,7 +2049,7 @@ class AppUtils {
                 //Convert bitmap to byte array
                 val bos = ByteArrayOutputStream()
                 //bitmap.compress(Bitmap.CompressFormat.PNG, 2, bos);
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 20, bos)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 10, bos)
                 val bitmapdata = bos.toByteArray()
 
                 //write the bytes in file
@@ -2724,4 +2764,5 @@ class AppUtils {
         }*/
              var isFromOrderToshowSchema = false
     }
+
 }

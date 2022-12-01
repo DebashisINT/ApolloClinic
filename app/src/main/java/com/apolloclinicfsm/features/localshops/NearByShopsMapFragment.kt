@@ -256,7 +256,7 @@ class NearByShopsMapFragment : BaseFragment(), View.OnClickListener, OnMapReadyC
 
 //        mGoogleMap!!.addCircle(circleOptions)
         mShopCircles.add(mGoogleMap!!.addCircle(circleOptions))
-        currentMarker = mGoogleMap!!.addMarker(markerOptions!!)!!
+        currentMarker = mGoogleMap!!.addMarker(markerOptions)!!
         mCurrLocationMarker.add(currentMarker)
 
         mGoogleMap!!.setInfoWindowAdapter(object : InfoWindowAdapter {

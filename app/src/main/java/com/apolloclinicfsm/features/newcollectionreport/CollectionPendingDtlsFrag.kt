@@ -138,7 +138,6 @@ class CollectionPendingDtlsFrag : BaseFragment(), View.OnClickListener {
                     }
                 }
 
-//                totalPendingAmt=(objPending.order_amt.toDouble()-totalCollAmt.toDouble()).toString()
                 totalPendingAmt=(objPending.order_amt.toDouble() - String.format("%.2f",totalCollAmt.toDouble()).toDouble()).toString()
 
                 var totalInvAmt ="0"
@@ -599,6 +598,9 @@ class CollectionPendingDtlsFrag : BaseFragment(), View.OnClickListener {
         addShopData.isShopDuplicate=mAddShopDBModelEntity.isShopDuplicate
 
         addShopData.purpose=mAddShopDBModelEntity.purpose
+
+        addShopData.GSTN_Number=mAddShopDBModelEntity.gstN_Number
+        addShopData.ShopOwner_PAN=mAddShopDBModelEntity.shopOwner_PAN
 
 
         callAddShopApi(addShopData, mAddShopDBModelEntity.shopImageLocalPath, shop_id, collection_id, amount, collection,

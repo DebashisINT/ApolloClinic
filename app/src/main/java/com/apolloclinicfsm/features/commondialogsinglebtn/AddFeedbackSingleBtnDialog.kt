@@ -285,8 +285,23 @@ class AddFeedbackSingleBtnDialog : DialogFragment(), View.OnClickListener {
                 }
             }
             R.id.iv_close_icon -> {
-                dismiss()
-                mListener.onCloseClick()
+
+                var str_remarks =  ""
+                str_remarks = tv_remarks_dropdown.text.toString().trim().toString()
+
+                var msg = ""
+                if(TextUtils.isEmpty(tv_remarks_dropdown.text.toString().trim()) && Pref.isShowVisitRemarks)
+                    msg =  "Please put the remarks"
+                else if(TextUtils.isEmpty(et_feedback.text.toString().trim()) && str_remarks.equals(""))
+                    msg = "Please put the feedback"
+
+                //if (Pref.RevisitRemarksMandatory && TextUtils.isEmpty(tv_remarks_dropdown.text.toString().trim()))
+                if (Pref.RevisitRemarksMandatory && !msg.equals(""))
+                    Toaster.msgShort(mContext, msg)
+                else{
+                    dismiss()
+                    mListener.onCloseClick(tv_remarks_dropdown.text.toString().trim())
+                }
             }
 
             R.id.et_next_visit_date -> {
@@ -462,7 +477,7 @@ class AddFeedbackSingleBtnDialog : DialogFragment(), View.OnClickListener {
     interface OnOkClickListener {
         fun onOkClick(feedback: String, nextVisitDate: String, filePath: String,approxValue:String,prosId:String)
 
-        fun onCloseClick()
+        fun onCloseClick(mfeedback: String)
 
         fun onClickCompetitorImg()
     }

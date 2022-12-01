@@ -34,6 +34,8 @@
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     -->
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -63,6 +65,7 @@
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
 
     <queries>
         <intent>
@@ -134,7 +137,8 @@
         <activity
             android:name=".mappackage.MapActivityWithoutPath"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:exported="true"/>
         <activity
             android:name=".features.micro_learning.presentation.ExoPlayerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -163,8 +167,8 @@
         <service
             android:name=".features.location.LocationFuzedService"
             android:enabled="true"
-            android:exported="true"
-            android:foregroundServiceType="location" >
+            android:foregroundServiceType="location"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.LOCATIONSERVICE" />
             </intent-filter>
@@ -239,7 +243,7 @@
         <receiver
             android:name=".features.location.GeofenceBroadcastReceiver"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
         <receiver
             android:name=".features.location.RestartBroadcast"
             android:enabled="true"

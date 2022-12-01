@@ -169,7 +169,9 @@ class NearByShopsListFragment : BaseFragment(), View.OnClickListener {
         (mContext as DashboardActivity).setSearchListener(object : SearchListener {
             override fun onSearchQueryListener(query: String) {
                 if (query.isBlank()) {
-                    val allShopList = AppDatabase.getDBInstance()!!.addShopEntryDao().all
+                    //val allShopList = AppDatabase.getDBInstance()!!.addShopEntryDao().all
+                    val allShopList = AppDatabase.getDBInstance()!!.addShopEntryDao().getAllOwn(true)
+
                     getOwnShop(allShopList)
 
                     if (beatId.isNotEmpty())
@@ -180,7 +182,10 @@ class NearByShopsListFragment : BaseFragment(), View.OnClickListener {
                     if (mNearByShopsListAdapter != null)
                         mNearByShopsListAdapter.updateAdapter(list)
                 } else {
-                    val searchedList = AppDatabase.getDBInstance()!!.addShopEntryDao().getShopBySearchData(query)
+//                    val searchedList = AppDatabase.getDBInstance()!!.addShopEntryDao().getShopBySearchData(query)
+                    var searchedList = AppDatabase.getDBInstance()!!.addShopEntryDao().getShopBySearchDataNew(query)
+                    searchedList = searchedList.filter { it.isOwnshop==true }
+
                     getOwnShop(searchedList)
 
                     if (beatId.isNotEmpty())
@@ -643,7 +648,8 @@ class NearByShopsListFragment : BaseFragment(), View.OnClickListener {
         /*noShopAvailable.visibility = View.GONE
         nearByShopsList.visibility = View.VISIBLE*/
 
-        val allShopList = AppDatabase.getDBInstance()!!.addShopEntryDao().all
+        //val allShopList = AppDatabase.getDBInstance()!!.addShopEntryDao().all
+        val allShopList = AppDatabase.getDBInstance()!!.addShopEntryDao().getAllOwn(true)
         getOwnShop(allShopList)
 //        ( list as ArrayList).set()
 
@@ -659,6 +665,39 @@ class NearByShopsListFragment : BaseFragment(), View.OnClickListener {
         tv_shop_count.text = "Total " + Pref.shopText + "(s): " + list.size
 
         mNearByShopsListAdapter = NearByShopsListAdapter(this.mContext!!, list, object : NearByShopsListClickListener {
+
+            override fun onDamageClick(shop_id: String) {
+                (mContext as DashboardActivity).loadFragment(FragType.ShopDamageProductListFrag, true, shop_id+"~"+Pref.user_id)
+            }
+
+            override fun onSurveyClick(shop_id: String) {
+               if(Pref.isAddAttendence){
+                   (mContext as DashboardActivity).loadFragment(FragType.SurveyViewFrag, true, shop_id)
+               }else{
+                   (mContext as DashboardActivity).checkToShowAddAttendanceAlert()
+               }
+            }
+
+            override fun onMultipleImageClick(shop: Any,position: Int) {
+                if (AppUtils.isOnline(mContext)) {
+                    var shopIsuploaded =AppDatabase.getDBInstance()!!.addShopEntryDao().getShopDetail(list[position].shop_id).isUploaded
+                    if(shopIsuploaded){
+                        if(Pref.IsMultipleImagesRequired){
+                            (mContext as DashboardActivity).loadFragment(FragType.MultipleImageFragment, true, shop)
+                        }
+                    }
+                    else{
+                        (this as DashboardActivity).showSnackMessage("Please snyc shop First..")
+                    }
+
+                }
+                else{
+                    (this as DashboardActivity).showSnackMessage(getString(R.string.no_internet))
+                }
+
+
+            }
+
             override fun onUpdateStageClick(position: Int) {
                 if (list[position].isUploaded) {
                     val stageList = AppDatabase.getDBInstance()?.stageDao()?.getAll() as ArrayList<StageEntity>
@@ -783,6 +822,9 @@ class NearByShopsListFragment : BaseFragment(), View.OnClickListener {
                     if (!Pref.isAddAttendence)
                         (mContext as DashboardActivity).checkToShowAddAttendanceAlert()
                     else {
+                        if(Pref.IsCollectionOrderWise){
+                            (mContext as DashboardActivity).loadFragment(FragType.NewOrderListFragment, true, "")
+                        }else{
                         collectionDialog = AddCollectionDialog.getInstance(list[position], true, list[position].shopName!!, "", "", "", object : AddCollectionDialog.AddCollectionClickLisneter {
                             override fun onClick(collection: String, date: String, paymentId: String, instrument: String, bank: String, filePath: String, feedback: String, patientName: String, patientAddress: String, patinetNo: String,
                             hospital:String,emailAddress:String,order_id:String) {
@@ -848,6 +890,7 @@ class NearByShopsListFragment : BaseFragment(), View.OnClickListener {
                             }
                         })
                         collectionDialog?.show((mContext as DashboardActivity).supportFragmentManager, "AddCollectionDialog")
+                        }
                     }
 
                 } catch (e: java.lang.Exception) {
@@ -1064,6 +1107,9 @@ class NearByShopsListFragment : BaseFragment(), View.OnClickListener {
                     addShopData.isShopDuplicate=mAddShopDBModelEntity.isShopDuplicate
 
                     addShopData.purpose=mAddShopDBModelEntity.purpose
+
+                    addShopData.GSTN_Number=mAddShopDBModelEntity.gstN_Number
+                    addShopData.ShopOwner_PAN=mAddShopDBModelEntity.shopOwner_PAN
 
 
                     callAddShopApi(addShopData, mAddShopDBModelEntity.shopImageLocalPath, null, true,
@@ -1391,6 +1437,9 @@ class NearByShopsListFragment : BaseFragment(), View.OnClickListener {
 
         addShopData.purpose=mAddShopDBModelEntity.purpose
 
+        addShopData.GSTN_Number=mAddShopDBModelEntity.gstN_Number
+        addShopData.ShopOwner_PAN=mAddShopDBModelEntity.shopOwner_PAN
+
 
         callAddShopApi(addShopData, mAddShopDBModelEntity.shopImageLocalPath, shop_id, order_id, amount, collection,
                 currentDateForShopActi, desc, billId, mAddShopDBModelEntity.doc_degree, collectionDetails)
@@ -1693,7 +1742,15 @@ class NearByShopsListFragment : BaseFragment(), View.OnClickListener {
                 shopDurationData.approximate_1st_billing_value = shopActivity.approximate_1st_billing_value!!
             else
                 shopDurationData.approximate_1st_billing_value = ""
-
+            //duration garbage fix
+            try{
+                if(shopDurationData.spent_duration!!.contains("-") || shopDurationData.spent_duration!!.length != 8)
+                {
+                    shopDurationData.spent_duration="00:00:10"
+                }
+            }catch (ex:Exception){
+                shopDurationData.spent_duration="00:00:10"
+            }
             shopDataList.add(shopDurationData)
         }
         else {
@@ -1775,7 +1832,15 @@ class NearByShopsListFragment : BaseFragment(), View.OnClickListener {
                     shopDurationData.approximate_1st_billing_value = shopActivity.approximate_1st_billing_value!!
                 else
                     shopDurationData.approximate_1st_billing_value = ""
-
+                //duration garbage fix
+                try{
+                    if(shopDurationData.spent_duration!!.contains("-") || shopDurationData.spent_duration!!.length != 8)
+                    {
+                        shopDurationData.spent_duration="00:00:10"
+                    }
+                }catch (ex:Exception){
+                    shopDurationData.spent_duration="00:00:10"
+                }
                 shopDataList.add(shopDurationData)
             }
         }
@@ -2107,6 +2172,11 @@ class NearByShopsListFragment : BaseFragment(), View.OnClickListener {
         addShopReqData.beat_id = addShopData.beat_id
         addShopReqData.assigned_to_shop_id = addShopData.assigned_to_shop_id
         addShopReqData.actual_address = addShopData.actual_address
+
+
+        addShopReqData.GSTN_Number = addShopData.gstN_Number
+        addShopReqData.ShopOwner_PAN = addShopData.shopOwner_PAN
+
 
         callEditShopApi(addShopReqData, addShopData.shopImageLocalPath, false, isAddressUpdated, addShopData.doc_degree)
     }
@@ -3218,6 +3288,9 @@ class NearByShopsListFragment : BaseFragment(), View.OnClickListener {
 
         addShopData.purpose=mAddShopDBModelEntity.purpose
 
+        addShopData.GSTN_Number=mAddShopDBModelEntity.gstN_Number
+        addShopData.ShopOwner_PAN=mAddShopDBModelEntity.shopOwner_PAN
+
 
         callAddShopApi(addShopData, mAddShopDBModelEntity.shopImageLocalPath, shopList, true,
                 mAddShopDBModelEntity.doc_degree)
@@ -3362,7 +3435,6 @@ class NearByShopsListFragment : BaseFragment(), View.OnClickListener {
 
             // duplicate shop api call
             addShopData.isShopDuplicate=mAddShopDBModelEntity.isShopDuplicate
-
             addShopData.purpose=mAddShopDBModelEntity.purpose
 
 

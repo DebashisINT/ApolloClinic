@@ -24,16 +24,14 @@ class NetworkConstant {
         /*var BASE_URL = "http://10.0.8.251:9099/API/"
         var ADD_SHOP_BASE_URL = "http://10.0.8.251:9099/"*/
 
-        
-     //   var BASE_URL = "http://fts.indusnettechnologies.com:8094/API/"
-      //  var ADD_SHOP_BASE_URL = "http://fts.indusnettechnologies.com:8094/"
+        var BASE_URL = "http://fts.indusnettechnologies.com:7015/API/"
+        var ADD_SHOP_BASE_URL = "http://fts.indusnettechnologies.com:7015/"
 
+//        var BASE_URL = "http://3.7.30.86:82/API/"
+//        var ADD_SHOP_BASE_URL = "http://3.7.30.86:82/"
 
-       //var BASE_URL = "http://fts.indusnettechnologies.com:7015/API/"
-       //var ADD_SHOP_BASE_URL = "http://fts.indusnettechnologies.com:7015/"
-
-        var BASE_URL = "http://3.7.30.86:82/API/"
-        var ADD_SHOP_BASE_URL = "http://3.7.30.86:82/"
+        //var BASE_URL = "http://fts.indusnettechnologies.com:7034/API/"
+        //var ADD_SHOP_BASE_URL = "http://fts.indusnettechnologies.com:7034/"
 
 
 
@@ -62,7 +60,7 @@ class NetworkConstant {
 //         var BASE_URL="http://hrms.indusnettechnologies.com:8085/API/"
 //         var ADD_SHOP_BASE_URL="http://hrms.indusnettechnologies.com:8085"
 
-        /*Apolloclinicfsm INTERNAL*/
+        /*apolloclinicfsm INTERNAL*/
 //        var BASE_URL="http://geapl.breezeerp.in:8083/API/"
 //        var ADD_SHOP_BASE_URL="http://geapl.breezeerp.in:8083/"
 

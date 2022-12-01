@@ -89,6 +89,20 @@ class ConfigFetchResponseModel : BaseResponse() {
     var dobText: String = ""
     var dateOfAnniversaryText: String = ""
     var ShopScreenAftVisitRevisit:Boolean? = null
+    var IsSurveyRequiredforNewParty:Boolean? = null
+    var IsSurveyRequiredforDealer:Boolean? = null
+    var IsShowHomeLocationMap:Boolean? = null
+
+    var IsBeatRouteAvailableinAttendance:Boolean? = null
+    var IsAllBeatAvailable:Boolean? = null
+    var BeatText: String = ""
+    var TodaysTaskText:String = ""
+    var IsDistributorSelectionRequiredinAttendance:Boolean? = null
+    var IsAllowNearbyshopWithBeat:Boolean? = null
+    var IsGSTINPANEnableInShop:Boolean? = null
+    var IsMultipleImagesRequired:Boolean? = null
+    var IsALLDDRequiredforAttendance:Boolean? = null
+
 
 
 
