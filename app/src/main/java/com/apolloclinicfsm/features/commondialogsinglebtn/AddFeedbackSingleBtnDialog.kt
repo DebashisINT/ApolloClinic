@@ -274,7 +274,11 @@ class AddFeedbackSingleBtnDialog : DialogFragment(), View.OnClickListener {
                     dialogOk.isSelected = true
                     dismiss()
                     if (Pref.RevisitRemarksMandatory){
-                        mListener.onOkClick(tv_remarks_dropdown.text.toString().trim(), nextVisitDate, filePath,et_approxvalue_name.text.toString(),ProsId)
+                        //mListener.onOkClick(tv_remarks_dropdown.text.toString().trim(), nextVisitDate, filePath,et_approxvalue_name.text.toString(),ProsId)
+                        if (!Pref.isShowVisitRemarks)
+                            mListener.onOkClick(et_feedback.text.toString().trim(), nextVisitDate, filePath,et_approxvalue_name.text.toString(),ProsId)
+                        else
+                            mListener.onOkClick(tv_remarks_dropdown.text.toString().trim(), nextVisitDate, filePath,et_approxvalue_name.text.toString(),ProsId)
                     }
                     else{
                         if (!Pref.isShowVisitRemarks)
