@@ -11,6 +11,9 @@ import com.apolloclinicfsm.base.BaseResponse
 import com.apolloclinicfsm.features.addshop.model.*
 import com.apolloclinicfsm.features.addshop.model.assigntopplist.AddShopUploadImg
 import com.apolloclinicfsm.features.addshop.model.assigntopplist.AddshopImageMultiReqbody1
+import com.apolloclinicfsm.features.addshop.presentation.ShopListSubmitResponse
+import com.apolloclinicfsm.features.addshop.presentation.multiContactRequestData
+import com.apolloclinicfsm.features.beatCustom.BeatGetStatusModel
 import com.apolloclinicfsm.features.dashboard.presentation.DashboardActivity
 import com.google.gson.Gson
 import io.reactivex.Observable
@@ -34,6 +37,18 @@ class AddShopRepository(val apiService: AddShopApi) {
 
     fun addShop(shop: AddShopRequestData): Observable<AddShopResponse> {
         return apiService.getAddShop(shop)
+    }
+
+    // 2.0 NearByShopsListFragment AppV 4.0.6   Contact Multi Api called Add & Update
+    fun addMutiContact(multiContact: multiContactRequestData): Observable<BaseResponse> {
+        return apiService.getMutiContact(multiContact)
+    }
+    fun updateMutiContact(multiContact: multiContactRequestData): Observable<BaseResponse> {
+        return apiService.updateMutiContact(multiContact)
+    }
+
+    fun fetchMultiContactData(user_id: String,session_token: String): Observable<ShopListSubmitResponse>{
+        return apiService.fetchMultiContactData(user_id,session_token)
     }
 
     fun fetchData(shop_id:String): Observable<imageListResponse> {

@@ -374,6 +374,8 @@
                     android:textSize="@dimen/_11sdp"
                     android:textColor="@color/color_deep_blue" />
 
+
+
                 <ImageView
                     android:id="@+id/icon_internet"
                     android:src="@drawable/ic_info_interenet"
@@ -403,6 +405,7 @@
         android:textColor="@color/white"
         android:textSize="@dimen/_10sdp"
         android:visibility="visible" />
+
 
     <com.pnikosis.materialishprogress.ProgressWheel
         android:id="@+id/progress_wheel"

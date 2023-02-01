@@ -256,6 +256,9 @@ public interface AddShopDao {
     @Query("Select GSTN_Number from shop_detail where shop_id=:shopId")
     String getGSTINNumber(String shopId);
 
+    @Query("update shop_detail set shopStatusUpdate=:shopStatusUpdate where shop_id=:shop_id")
+    void updateShopStatus(String shop_id, String shopStatusUpdate);
+
 
 //    @Query("INSERT OR REPLACE INTO SHOP_TABLE (shopId,shopName,address,pinCode,ownerName,isVisited) VALUES (:id, :title, :url, COALESCE((SELECT isSubscribed FROM articles WHERE id = :id), 0));")
 //    void insertOrUpdateShop(long id, String title, String url);

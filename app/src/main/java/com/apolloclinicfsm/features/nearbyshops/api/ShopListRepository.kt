@@ -1,6 +1,7 @@
 package com.apolloclinicfsm.features.nearbyshops.api
 
 import com.apolloclinicfsm.app.Pref
+import com.apolloclinicfsm.base.BaseResponse
 import com.apolloclinicfsm.features.login.model.GetQtsAnsSubmitDtlsResponseModel
 import com.apolloclinicfsm.features.login.model.GetSecImageUploadResponseModel
 import com.apolloclinicfsm.features.login.model.productlistmodel.ModelListResponse
@@ -71,4 +72,10 @@ class ShopListRepository(val apiService: ShopListApi) {
     fun getQuestionList(): Observable<QuesListResponseModel> {
         return apiService.getQuesList(Pref.session_token!!, Pref.user_id!!)
     }
+
+    fun deleteImei(): Observable<BaseResponse> {
+        return apiService.deleteImeiAPI(Pref.session_token!!, Pref.user_id!!)
+    }
+
+
 }

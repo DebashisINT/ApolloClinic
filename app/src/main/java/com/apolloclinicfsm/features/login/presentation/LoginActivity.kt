@@ -7,6 +7,7 @@ import android.annotation.TargetApi
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
@@ -28,6 +29,7 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
@@ -44,6 +46,7 @@ import com.apolloclinicfsm.features.activities.api.ActivityRepoProvider
 import com.apolloclinicfsm.features.activities.model.*
 import com.apolloclinicfsm.features.addAttendence.FingerprintDialog
 import com.apolloclinicfsm.features.addAttendence.SelfieDialog
+import com.apolloclinicfsm.features.addshop.api.AddShopRepositoryProvider
 import com.apolloclinicfsm.features.addshop.api.areaList.AreaListRepoProvider
 import com.apolloclinicfsm.features.addshop.api.assignToPPList.AssignToPPListRepoProvider
 import com.apolloclinicfsm.features.addshop.api.assignedToDDList.AssignToDDListRepoProvider
@@ -52,6 +55,7 @@ import com.apolloclinicfsm.features.addshop.model.*
 import com.apolloclinicfsm.features.addshop.model.TypeListResponseModel
 import com.apolloclinicfsm.features.addshop.model.assigntoddlist.AssignToDDListResponseModel
 import com.apolloclinicfsm.features.addshop.model.assigntopplist.AssignToPPListResponseModel
+import com.apolloclinicfsm.features.addshop.presentation.ShopListSubmitResponse
 import com.apolloclinicfsm.features.alarm.model.AlarmData
 import com.apolloclinicfsm.features.beatCustom.BeatGetStatusModel
 import com.apolloclinicfsm.features.beatCustom.api.GetBeatRegProvider
@@ -143,6 +147,13 @@ import java.util.concurrent.ExecutionException
 /**Permission NameDISABLE KEYGUARD Status
  * Created by Pratishruti on 26-10-2017.
  */
+//Revision History
+// 1.0 LoginActivity  AppV 4.0.6  Saheli    30/12/2022 Delete imei work
+// 2.0  AppV 4.0.6  Saheli    06/01/2023  DashboardFragment Addquot work
+// 3.0 LoginActivity AppV 4.0.6  Saheli    10/01/2023  Data fetch multiple contact
+// 4.0 LoginActivity AppV 4.0.6  Saheli    11/01/2023  IsAllowShopStatusUpdate
+// 5.0 LoginActivity AppV 4.0.6  Saheli    25/01/2023  mantis 25623
+
 class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
 
     override fun onLocationChanged(location: Location) {
@@ -225,6 +236,12 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
             getLocation();
         }
 
+        Pref.latitude = ""
+        Pref.longitude = ""
+        Pref.current_latitude = ""
+        Pref.current_longitude = ""
+        AppUtils.mLocation = null
+
         initView()
 
         if (AppUtils.getSharedPreferenceslogShareinLogin(this)) {
@@ -269,6 +286,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
         //getConfigFetchApi()
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun getConfigFetchApi() {
 
         /*if (!AppUtils.isOnline(this)) {
@@ -444,7 +462,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
                                 if (configResponse.IsnewleadtypeforRuby != null)
                                     Pref.IsnewleadtypeforRuby = configResponse.IsnewleadtypeforRuby!!
 
-
                                 /*16-12-2021*/
                                 if (configResponse.IsReturnActivatedforPP != null)
                                     Pref.IsReturnActivatedforPP = configResponse.IsReturnActivatedforPP!!
@@ -532,6 +549,49 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
                                 if (configResponse.IsALLDDRequiredforAttendance != null)
                                     Pref.IsALLDDRequiredforAttendance = configResponse.IsALLDDRequiredforAttendance!!
 
+                                if (configResponse.IsShowNewOrderCart != null)
+                                    Pref.IsShowNewOrderCart = configResponse.IsShowNewOrderCart!!
+
+                                if (configResponse.IsmanualInOutTimeRequired != null)
+                                    Pref.IsmanualInOutTimeRequired = configResponse.IsmanualInOutTimeRequired!!
+
+                                if (!TextUtils.isEmpty(configResponse.surveytext))
+                                    Pref.surveytext = configResponse.surveytext
+
+                                if (configResponse.IsDiscountInOrder != null)
+                                    Pref.IsDiscountInOrder = configResponse.IsDiscountInOrder!!
+
+                                if (configResponse.IsViewMRPInOrder != null)
+                                    Pref.IsViewMRPInOrder = configResponse.IsViewMRPInOrder!!
+
+                                if (configResponse.IsShowStateInTeam != null)
+                                    Pref.IsShowStateInTeam = configResponse.IsShowStateInTeam!!
+
+                                if (configResponse.IsShowBranchInTeam != null)
+                                    Pref.IsShowBranchInTeam = configResponse.IsShowBranchInTeam!!
+
+                                if (configResponse.IsShowDesignationInTeam != null)
+                                    Pref.IsShowDesignationInTeam = configResponse.IsShowDesignationInTeam!!
+
+                                if (configResponse.IsShowInPortalManualPhotoRegn != null)
+                                    Pref.IsShowInPortalManualPhotoRegn = configResponse.IsShowInPortalManualPhotoRegn!!
+
+                                if (configResponse.IsAttendVisitShowInDashboard != null) // 2.0 DashboardFragment  AppV 4.0.6
+                                    Pref.IsAttendVisitShowInDashboardGlobal = configResponse.IsAttendVisitShowInDashboard!!
+
+                                if (configResponse.Show_App_Logout_Notification != null)//2.0 LocationFuzedService  AppV 4.0.6
+                                    Pref.Show_App_Logout_Notification_Global = configResponse.Show_App_Logout_Notification!!
+
+                                if (configResponse.IsBeatAvailable != null)
+                                    Pref.IsBeatAvailable = configResponse.IsBeatAvailable!!
+
+                                // 5.0 LoginActivity AppV 4.0.6 mantis 25623
+                                if (configResponse.IsDiscountEditableInOrder != null)
+                                    Pref.IsDiscountEditableInOrder = configResponse.IsDiscountEditableInOrder!!
+
+                                // 6.0 LoginActivity AppV 4.0.6 mantis 25607
+                                if (configResponse.isExpenseFeatureAvailable != null)
+                                    Pref.isExpenseFeatureAvailable = configResponse.isExpenseFeatureAvailable!!
 
                                 /*if (configResponse.willShowUpdateDayPlan != null)
                                     Pref.willShowUpdateDayPlan = configResponse.willShowUpdateDayPlan!!
@@ -545,6 +605,16 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
                             isApiInitiated = false
                             /*API_Optimization 02-03-2022*/
                             //checkToCallAlarmConfigApi()   // calling instead of checkToCallAlarmConfigApi()
+
+                            if(Pref.IsBeatAvailable==false){
+                                Pref.IsAllBeatAvailableforParty = false
+                                Pref.IsBeatRouteAvailableinAttendance = false
+                                Pref.IsBeatRouteReportAvailableinTeam = false
+                                Pref.isShowShopBeatWise = false
+                                Pref.isShowBeatGroup = false
+                                Pref.IsShowBeatInMenu = false
+                            }
+
                             isStartOrEndDay()
 
                         }, { error ->
@@ -3289,10 +3359,17 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
                     if (fingerprintDialog != null && fingerprintDialog?.isVisible!!) {
                         fingerprintDialog?.dismiss()
 
-                        if (Pref.isSelfieMandatoryForAttendance)
-                            showSelfieDialog()
-                        else
+                        if (Pref.isSelfieMandatoryForAttendance){
+                            if(Pref.IsLoginSelfieRequired){
+                                showSelfieDialog()
+                            }else{
+                                prapareLogin(this@LoginActivity)
+                            }
+                        }
+                        else{
                             prapareLogin(this@LoginActivity)
+                        }
+
                     }
                 }
 
@@ -3324,6 +3401,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
 
     @SuppressLint("MissingPermission")
     private fun getIMEI() {
+
         //if (PermissionHelper.checkPhoneStatePermisssion(this)) {
         /*Save device default IMEI*/
         try {
@@ -3778,15 +3856,28 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
                                             fingerprintDialog = FingerprintDialog()
                                             fingerprintDialog?.show(supportFragmentManager, "")
                                         } else {
-                                            if (Pref.isSelfieMandatoryForAttendance)
-                                                showSelfieDialog()
-                                            else
+                                            if (Pref.isSelfieMandatoryForAttendance){
+                                                if(Pref.IsLoginSelfieRequired){
+                                                    showSelfieDialog()
+                                                }else{
+                                                    prapareLogin(this@LoginActivity)
+                                                }
+                                            }
+                                            else{
                                                 prapareLogin(this@LoginActivity)
+                                            }
                                         }
-                                    } else if (Pref.isSelfieMandatoryForAttendance)
-                                        showSelfieDialog()
-                                    else
+                                    }
+                                    else if (Pref.isSelfieMandatoryForAttendance){
+                                        if(Pref.IsLoginSelfieRequired){
+                                            showSelfieDialog()
+                                        }else{
+                                            prapareLogin(this@LoginActivity)
+                                        }
+                                    }
+                                    else {
                                         prapareLogin(this@LoginActivity)
+                                    }
                                 } else
                                     prapareLogin(this@LoginActivity)
 
@@ -3883,15 +3974,28 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
         isApiInitiated = true
         XLog.d("LoginLocationRequest : " + "\n, IMEI :" + Pref.imei + ", Time :" + AppUtils.getCurrentDateTime() + ", Version :" + AppUtils.getVersionName(this))
 //        progress_wheel.spin()
+
+        try{
+            XLog.d("lat ${Pref.latitude} lon ${Pref.longitude} " + AppUtils.getVersionName(this))
+        }catch (ex:Exception){
+            ex.printStackTrace()
+            XLog.d("lat ${ex.message} lon ${ex.message} " + AppUtils.getVersionName(this))
+        }
+
         if (Pref.latitude != null && Pref.latitude!!.trim() != "") {
             println("xyz - callApi started" + AppUtils.getCurrentDateTime());
             callApi(username_EDT.text.toString().trim(), password_EDT.text.toString())
         } else {
             val gpsTracker = GPSTracker(this)
+            XLog.d("gpsTracker ${gpsTracker.isGPSTrackingEnabled} " + AppUtils.getVersionName(this))
             if (gpsTracker.isGPSTrackingEnabled) {
                 Pref.latitude = gpsTracker.getLatitude().toString()
                 Pref.longitude = gpsTracker.getLongitude().toString()
                 println("xyz - callApi started" + AppUtils.getCurrentDateTime());
+                callApi(username_EDT.text.toString().trim(), password_EDT.text.toString().trim())
+            }else{
+                Pref.latitude = Pref.current_latitude
+                Pref.longitude = Pref.current_longitude
                 callApi(username_EDT.text.toString().trim(), password_EDT.text.toString().trim())
             }
 //            SingleShotLocationProvider.requestSingleUpdate(context,
@@ -4506,22 +4610,26 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
                                     if (shopList.status == NetworkConstant.SUCCESS) {
                                         convertToShopListTeamSetAdapter(shopList.data!!.shop_list!!)
                                     }  else {
-                                        gotoHomeActivity()
+//                                        gotoHomeActivity()
+                                        deleteImei()  //1.0 LoginActivity  AppV 4.0.6
                                     }
                                 }, { error ->
                                     error.printStackTrace()
                                     progress_wheel.stopSpinning()
-                                    gotoHomeActivity()
+//                                    gotoHomeActivity()
+                                    deleteImei()//1.0 LoginActivity  AppV 4.0.6
                                 })
                 )
             }
             catch(ex:Exception){
                 ex.printStackTrace()
-                gotoHomeActivity()
+//                gotoHomeActivity()
+                deleteImei()//1.0 LoginActivity  AppV 4.0.6
             }
         }
         else{
-            gotoHomeActivity()
+//            gotoHomeActivity()
+            deleteImei()//1.0 LoginActivity  AppV 4.0.6
         }
 
 
@@ -4747,6 +4855,17 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
                                                     if (!TextUtils.isEmpty(order_details_list[i].product_list?.get(j)?.total_scheme_price)) {
                                                         val finalTotalScPrice = String.format("%.2f", order_details_list[i].product_list?.get(j)?.total_scheme_price?.toFloat())
                                                         productOrderList.total_scheme_price = finalTotalScPrice
+                                                    }
+                                                    // mantis 25601
+                                                    if (!TextUtils.isEmpty(order_details_list[i].product_list?.get(j)?.order_mrp)) {
+                                                        productOrderList.order_mrp = order_details_list[i].product_list?.get(j)?.order_mrp
+                                                    } else {
+                                                        productOrderList.order_mrp = ""
+                                                    }
+                                                    if (!TextUtils.isEmpty(order_details_list[i].product_list?.get(j)?.order_discount)) {
+                                                        productOrderList.order_discount = order_details_list[i].product_list?.get(j)?.order_discount
+                                                    } else {
+                                                        productOrderList.order_discount = ""
                                                     }
 
                                                     productOrderList.shop_id = order_details_list[i].shop_id
@@ -5224,11 +5343,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
                                                 if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
                                                     Pref.currentLocationNotificationMins = response.getconfigure!![i].Value!!
                                                 }
-                                            } else if (response.getconfigure!![i].Key.equals("isMultipleVisitEnable", ignoreCase = true)) {
+                                            }
+                                            else if (response.getconfigure!![i].Key.equals("isMultipleVisitEnable", ignoreCase = true)) {
                                                 if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
                                                     Pref.isMultipleVisitEnable = response.getconfigure!![i].Value!! == "1"
                                                 }
-                                            } else if (response.getconfigure!![i].Key.equals("isShowVisitRemarks", ignoreCase = true)) {
+                                            }
+                                            else if (response.getconfigure!![i].Key.equals("isShowVisitRemarks", ignoreCase = true)) {
                                                 if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
                                                     Pref.isShowVisitRemarks = response.getconfigure!![i].Value!! == "1"
                                                 }
@@ -5787,6 +5908,12 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
                                                 }
                                             }
 
+                                            else if (response.getconfigure!![i].Key.equals("IsLoginSelfieRequired", ignoreCase = true)) {
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.IsLoginSelfieRequired = response.getconfigure!![i].Value == "1"
+                                                }
+                                            }
+
                                             else if (response.getconfigure!![i].Key.equals("IsAllowBreakageTracking", ignoreCase = true)) {
                                                 if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
                                                     Pref.IsAllowBreakageTracking = response.getconfigure!![i].Value == "1"
@@ -5843,9 +5970,142 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
                                                     Pref.GPSNetworkIntervalMins = "0"
                                                 }
                                             }
+                                            else if (response.getconfigure?.get(i)?.Key.equals("OfflineShopAccuracy")) {
+                                                try {
+                                                    Pref.OfflineShopAccuracy = response.getconfigure!![i].Value!!
+                                                    if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                        Pref.OfflineShopAccuracy = response.getconfigure?.get(i)?.Value!!
+                                                    }
+                                                    if (Pref.OfflineShopAccuracy.length == 0 || Pref.OfflineShopAccuracy.equals("")) {
+                                                        Pref.OfflineShopAccuracy = "700"
+                                                    }
+                                                } catch (e: Exception) {
+                                                    e.printStackTrace()
+                                                    Pref.OfflineShopAccuracy = "700"
+                                                }
+                                            }
+                                            else if (response.getconfigure!![i].Key.equals("IsJointVisitEnable", ignoreCase = true)) {
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.IsJointVisitEnable = response.getconfigure!![i].Value == "1"
+                                                }
+                                            }
+                                            else if (response.getconfigure!![i].Key.equals("IsShowAllEmployeeforJointVisit", ignoreCase = true)) {
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.IsShowAllEmployeeforJointVisit = response.getconfigure!![i].Value == "1"
+                                                }
+                                            }
+                                            else if (response.getconfigure?.get(i)?.Key.equals("ShowAutoRevisitInAppMenu", ignoreCase = true)) {
+                                                Pref.ShowAutoRevisitInAppMenu = response.getconfigure!![i].Value == "1"
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.ShowAutoRevisitInAppMenu = response.getconfigure?.get(i)?.Value == "1"
+                                                }
+                                            }
 
+                                            else if (response.getconfigure!![i].Key.equals("IsAllowClickForVisit", ignoreCase = true)) {
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.IsAllowClickForVisit = response.getconfigure!![i].Value == "1"
+                                                }
+                                            }
 
+                                            else if (response.getconfigure?.get(i)?.Key.equals("IsShowTypeInRegistration", ignoreCase = true)) {
+                                                Pref.IsShowTypeInRegistration = response.getconfigure!![i].Value == "1"
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.IsShowTypeInRegistration = response.getconfigure?.get(i)?.Value == "1"
+                                                }
+                                            }
+                                            else if (response.getconfigure?.get(i)?.Key.equals("UpdateUserName", ignoreCase = true)) {
+                                                Pref.UpdateUserName =
+                                                    response.getconfigure!![i].Value == "1"
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.UpdateUserName =
+                                                        response.getconfigure?.get(i)?.Value == "1"
+                                                }
+                                            }
+                                                else if (response.getconfigure?.get(i)?.Key.equals("IsAllowClickForPhotoRegister", ignoreCase = true)) {
+                                                Pref.IsAllowClickForPhotoRegister =
+                                                    response.getconfigure!![i].Value == "1"
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.IsAllowClickForPhotoRegister =
+                                                        response.getconfigure?.get(i)?.Value == "1"
+                                                }
+                                            }else if (response.getconfigure?.get(i)?.Key.equals("IsFaceRecognitionOnEyeblink", ignoreCase = true)) {
+                                                Pref.IsFaceRecognitionOnEyeblink = response.getconfigure!![i].Value == "1"
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.IsFaceRecognitionOnEyeblink = response.getconfigure?.get(i)?.Value == "1"
+                                                }
+                                                CustomStatic.IsFaceRecognitionOnEyeblink = Pref.IsFaceRecognitionOnEyeblink
+                                            }else if (response.getconfigure!![i].Key.equals("PartyUpdateAddrMandatory", ignoreCase = true)) { // 2.0 AppV 4.0.6
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.PartyUpdateAddrMandatory = response.getconfigure!![i].Value == "1"
+                                                }
+                                            }else if (response.getconfigure?.get(i)?.Key.equals("IsAttendVisitShowInDashboard", ignoreCase = true)) { // 2.0 DashboardFragment  AppV 4.0.6
+                                                Pref.IsAttendVisitShowInDashboard = response.getconfigure!![i].Value == "1"
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.IsAttendVisitShowInDashboard = response.getconfigure?.get(i)?.Value == "1"
+                                                }
+                                            }else if (response.getconfigure?.get(i)?.Key.equals("CommonAINotification", ignoreCase = true)) {// 1.0  AppV 4.0.6 LocationFuzedService
+                                                Pref.CommonAINotification = response.getconfigure!![i].Value == "1"
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.CommonAINotification = response.getconfigure?.get(i)?.Value == "1"
+                                                }
+                                            }
+                                            else if (response.getconfigure?.get(i)?.Key.equals("IsIMEICheck", ignoreCase = true)) {//1.0 LoginActivity  AppV 4.0.6
+                                                Pref.IsIMEICheck = response.getconfigure!![i].Value == "1"
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.IsIMEICheck = response.getconfigure?.get(i)?.Value == "1"
+                                                }
+                                            }
 
+                                            else if (response.getconfigure?.get(i)?.Key.equals("Show_App_Logout_Notification", ignoreCase = true)) {//2.0 LocationFuzedService  AppV 4.0.6
+                                                Pref.Show_App_Logout_Notification = response.getconfigure!![i].Value == "1"
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.Show_App_Logout_Notification = response.getconfigure?.get(i)?.Value == "1"
+                                                }
+                                            }else if (response.getconfigure!![i].Key.equals("AllowProfileUpdate", ignoreCase = true)) {// 1.0 MyProfileFragment  AppV 4.0.6
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.AllowProfileUpdate = response.getconfigure!![i].Value == "1"
+                                                }
+                                            }else if (response.getconfigure?.get(i)?.Key.equals("ShowAutoRevisitInDashboard", ignoreCase = true)) {
+                                                Pref.ShowAutoRevisitInDashboard = response.getconfigure!![i].Value == "1"
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.ShowAutoRevisitInDashboard = response.getconfigure?.get(i)?.Value == "1"
+                                                }
+                                            }
+                                            // 3.0  AppV 4.0.6  DashboardActivity
+                                            else if (response.getconfigure!![i].Key.equals("ShowTotalVisitAppMenu", ignoreCase = true)) {
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.ShowTotalVisitAppMenu = response.getconfigure!![i].Value == "1"
+                                                }
+                                            }
+
+                                            else if (response.getconfigure!![i].Key.equals("IsMultipleContactEnableforShop", ignoreCase = true)) {
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.IsMultipleContactEnableforShop = response.getconfigure!![i].Value == "1"
+                                                }
+                                            }
+                                            else if (response.getconfigure!![i].Key.equals("IsContactPersonSelectionRequiredinRevisit", ignoreCase = true)) {
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.IsContactPersonSelectionRequiredinRevisit = response.getconfigure!![i].Value == "1"
+                                                }
+                                            }
+                                              // // 2.0  AppV 4.0.6  Addquot work
+                                               else if (response.getconfigure!![i].Key.equals("IsContactPersonRequiredinQuotation", ignoreCase = true)) {
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.IsContactPersonRequiredinQuotation = response.getconfigure!![i].Value == "1"
+                                                }
+                                            }
+
+                                            // 4.0 LoginActivity AppV 4.0.6 IsAllowShopStatusUpdate
+                                            else if (response.getconfigure!![i].Key.equals("IsAllowShopStatusUpdate", ignoreCase = true)) {
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.IsAllowShopStatusUpdate = response.getconfigure!![i].Value == "1"
+                                                }
+                                            }
+                                            else if (response.getconfigure!![i].Key.equals("IsShowBeatInMenu", ignoreCase = true)) {
+                                                if (!TextUtils.isEmpty(response.getconfigure?.get(i)?.Value)) {
+                                                    Pref.IsShowBeatInMenu = response.getconfigure!![i].Value == "1"
+                                                }
+                                            }
 
 
 
@@ -5895,6 +6155,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
                         .subscribe({ result ->
                             val response = result as SelectedRouteListResponseModel
                             if (response.status == NetworkConstant.SUCCESS) {
+
+                                Pref.JointVisitSelectedUserName = response.JointVisitSelectedUserName
+
                                 val workTypeList = response.worktype
 
                                 if (workTypeList != null && workTypeList.isNotEmpty()) {
@@ -6374,7 +6637,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
         }
         progress_wheel.stopSpinning()
 
-        gotoHomeActivity()
+//        gotoHomeActivity()
+        deleteImei()//1.0 LoginActivity  AppV 4.0.6
 //
 //        val stockList = AppDatabase.getDBInstance()!!.stockListDao().getAll()
 //        if (stockList == null || stockList.isEmpty()) {
@@ -7601,6 +7865,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
                                                     date_time=feedList.get(j).date_time
                                                     if(feedback.equals(""))
                                                         feedback="N/A"
+                                                    multi_contact_name = feedList.get(j).multi_contact_name
+                                                    multi_contact_number = feedList.get(j).multi_contact_number
                                                 }
 
                                                 AppDatabase.getDBInstance()?.shopFeedbackDao()?.insert(ob)
@@ -7694,5 +7960,157 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LocationListener {
         })
         simpleDialog.show()
     }
+
+    //1.0 LoginActivity  AppV 4.0.6
+    private fun deleteImei(){
+        if(Pref.IsIMEICheck){
+            XLog.d("deleteImei IsIMEICheck : " + Pref.IsIMEICheck.toString() + "Time : " + AppUtils.getCurrentDateTime())
+//            gotoHomeActivity() // 3.0 LoginActivity AppV 4.0.6 Data fetch multiple contact
+            fetchMultiContactDetails()
+        }else{
+            try {
+                val repository = ShopListRepositoryProvider.provideShopListRepository()
+                BaseActivity.compositeDisposable.add(
+                    repository.deleteImei()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.io())
+                        .subscribe({ result ->
+                            val response = result as BaseResponse
+                            XLog.d("deleteImei " + "RESPONSE : " + response.status + "\n" + "Time : " + AppUtils.getCurrentDateTime() + ", USER :" + Pref.user_name + ",MESSAGE : " + response.message)
+                            if (response.status == NetworkConstant.SUCCESS) {
+//                                gotoHomeActivity()
+                                fetchMultiContactDetails()
+                            } else {
+//                                gotoHomeActivity() // 3.0 LoginActivity AppV 4.0.6 Data fetch multiple contact
+                                fetchMultiContactDetails()
+                            }
+                        }, { error ->
+                            progress_wheel.stopSpinning()
+//                            gotoHomeActivity() // 3.0 LoginActivity AppV 4.0.6 Data fetch multiple contact
+                            fetchMultiContactDetails()
+                        })
+                )
+            } catch (ex: Exception) {
+                ex.printStackTrace()
+//                gotoHomeActivity() // 3.0 LoginActivity AppV 4.0.6 Data fetch multiple contact
+                fetchMultiContactDetails()
+            }
+        }
+    }
+    // 3.0 LoginActivity AppV 4.0.6 Data fetch multiple contact
+    fun fetchMultiContactDetails(){
+        try{
+            var existingL = AppDatabase.getDBInstance()?.shopExtraContactDao()?.getExtraContList()
+            if(existingL!!.size == 0  && Pref.IsMultipleContactEnableforShop){
+                val repository = AddShopRepositoryProvider.provideAddShopWithoutImageRepository()
+                BaseActivity.compositeDisposable.add(
+                    repository.fetchMultiContactData(Pref.user_id!!,Pref.session_token!!)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.io())
+                        .subscribe({ result ->
+                            val viewResult = result as ShopListSubmitResponse
+                            if (viewResult!!.status == NetworkConstant.SUCCESS) {
+                                if(viewResult.shop_list.size>0){
+                                    doAsync {
+                                        for(b in 0..viewResult.shop_list.size-1){
+//                                        val ShopExtraContactEntity = ShopExtraContactEntity()
+                                            if(viewResult.shop_list.get(b).contact_serial1.toString().equals("1") && !viewResult.shop_list.get(b).contact_name1.toString().equals("")){
+                                                val shopExtraContactEntity = ShopExtraContactEntity()
+                                                shopExtraContactEntity.shop_id = viewResult.shop_list.get(b).shop_id.toString()
+                                                shopExtraContactEntity.contact_serial = viewResult.shop_list.get(b).contact_serial1.toString()
+                                                shopExtraContactEntity.contact_name = viewResult.shop_list.get(b).contact_name1.toString()
+                                                shopExtraContactEntity.contact_number = viewResult.shop_list.get(b).contact_number1.toString()
+                                                shopExtraContactEntity.contact_email = if(viewResult.shop_list.get(b).contact_email1 == null) "" else viewResult.shop_list.get(b).contact_email1.toString()
+                                                shopExtraContactEntity.contact_dob = if(viewResult.shop_list.get(b).contact_dob1==null) "" else AppUtils.getFormatedDateNew(viewResult.shop_list.get(b).contact_dob1.toString(), "dd-mm-yyyy","yyyy-mm-dd")
+                                                shopExtraContactEntity.contact_doa = if(viewResult.shop_list.get(b).contact_doa1==null) "" else AppUtils.getFormatedDateNew(viewResult.shop_list.get(b).contact_doa1.toString(), "dd-mm-yyyy","yyyy-mm-dd")
+                                                shopExtraContactEntity.isUploaded = true
+                                                AppDatabase.getDBInstance()?.shopExtraContactDao()?.insert(shopExtraContactEntity)
+                                            }
+                                            if(viewResult.shop_list.get(b).contact_serial2.toString().equals("2") && !viewResult.shop_list.get(b).contact_name2.toString().equals("")){
+                                                val shopExtraContactEntity = ShopExtraContactEntity()
+                                                shopExtraContactEntity.shop_id = viewResult.shop_list.get(b).shop_id.toString()
+                                                shopExtraContactEntity.contact_serial = viewResult.shop_list.get(b).contact_serial2.toString()
+                                                shopExtraContactEntity.contact_name = viewResult.shop_list.get(b).contact_name2.toString()
+                                                shopExtraContactEntity.contact_number = viewResult.shop_list.get(b).contact_number2.toString()
+                                                shopExtraContactEntity.contact_email = if(viewResult.shop_list.get(b).contact_email2 == null) "" else viewResult.shop_list.get(b).contact_email2.toString()
+                                                shopExtraContactEntity.contact_dob = if(viewResult.shop_list.get(b).contact_dob2==null) "" else AppUtils.getFormatedDateNew(viewResult.shop_list.get(b).contact_dob2.toString(), "dd-mm-yyyy","yyyy-mm-dd")
+                                                shopExtraContactEntity.contact_doa = if(viewResult.shop_list.get(b).contact_doa2==null) "" else AppUtils.getFormatedDateNew(viewResult.shop_list.get(b).contact_doa2.toString(), "dd-mm-yyyy","yyyy-mm-dd")
+                                                shopExtraContactEntity.isUploaded = true
+                                                AppDatabase.getDBInstance()?.shopExtraContactDao()?.insert(shopExtraContactEntity)
+                                            }
+                                            if(viewResult.shop_list.get(b).contact_serial3.toString().equals("3") && !viewResult.shop_list.get(b).contact_name3.toString().equals("")){
+                                                val shopExtraContactEntity = ShopExtraContactEntity()
+                                                shopExtraContactEntity.shop_id = viewResult.shop_list.get(b).shop_id.toString()
+                                                shopExtraContactEntity.contact_serial = viewResult.shop_list.get(b).contact_serial3.toString()
+                                                shopExtraContactEntity.contact_name = viewResult.shop_list.get(b).contact_name3.toString()
+                                                shopExtraContactEntity.contact_number = viewResult.shop_list.get(b).contact_number3.toString()
+                                                shopExtraContactEntity.contact_email = if(viewResult.shop_list.get(b).contact_email3 == null) "" else viewResult.shop_list.get(b).contact_email3.toString()
+                                                shopExtraContactEntity.contact_dob = if(viewResult.shop_list.get(b).contact_dob3==null) "" else AppUtils.getFormatedDateNew(viewResult.shop_list.get(b).contact_dob3.toString(), "dd-mm-yyyy","yyyy-mm-dd")
+                                                shopExtraContactEntity.contact_doa = if(viewResult.shop_list.get(b).contact_doa3==null) "" else AppUtils.getFormatedDateNew(viewResult.shop_list.get(b).contact_doa3.toString(), "dd-mm-yyyy","yyyy-mm-dd")
+                                                shopExtraContactEntity.isUploaded = true
+                                                AppDatabase.getDBInstance()?.shopExtraContactDao()?.insert(shopExtraContactEntity)
+                                            }
+                                            if(viewResult.shop_list.get(b).contact_serial4.toString().equals("4")&& !viewResult.shop_list.get(b).contact_name4.toString().equals("")){
+                                                val shopExtraContactEntity = ShopExtraContactEntity()
+                                                shopExtraContactEntity.shop_id = viewResult.shop_list.get(b).shop_id.toString()
+                                                shopExtraContactEntity.contact_serial = viewResult.shop_list.get(b).contact_serial4.toString()
+                                                shopExtraContactEntity.contact_name = viewResult.shop_list.get(b).contact_name4.toString()
+                                                shopExtraContactEntity.contact_number = viewResult.shop_list.get(b).contact_number4.toString()
+                                                shopExtraContactEntity.contact_email = if(viewResult.shop_list.get(b).contact_email4 == null) "" else viewResult.shop_list.get(b).contact_email4.toString()
+                                                shopExtraContactEntity.contact_dob = if(viewResult.shop_list.get(b).contact_dob4==null) "" else AppUtils.getFormatedDateNew(viewResult.shop_list.get(b).contact_dob4.toString(), "dd-mm-yyyy","yyyy-mm-dd")
+                                                shopExtraContactEntity.contact_doa = if(viewResult.shop_list.get(b).contact_doa4==null) "" else AppUtils.getFormatedDateNew(viewResult.shop_list.get(b).contact_doa4.toString(), "dd-mm-yyyy","yyyy-mm-dd")
+                                                shopExtraContactEntity.isUploaded = true
+                                                AppDatabase.getDBInstance()?.shopExtraContactDao()?.insert(shopExtraContactEntity)
+                                            }
+                                            if(viewResult.shop_list.get(b).contact_serial5.toString().equals("5") && !viewResult.shop_list.get(b).contact_name5.toString().equals("")){
+                                                val shopExtraContactEntity = ShopExtraContactEntity()
+                                                shopExtraContactEntity.shop_id = viewResult.shop_list.get(b).shop_id.toString()
+                                                shopExtraContactEntity.contact_serial = viewResult.shop_list.get(b).contact_serial5.toString()
+                                                shopExtraContactEntity.contact_name = viewResult.shop_list.get(b).contact_name5.toString()
+                                                shopExtraContactEntity.contact_number = viewResult.shop_list.get(b).contact_number5.toString()
+                                                shopExtraContactEntity.contact_email = if(viewResult.shop_list.get(b).contact_email5 == null) "" else viewResult.shop_list.get(b).contact_email5.toString()
+                                                shopExtraContactEntity.contact_dob = if(viewResult.shop_list.get(b).contact_dob5==null) "" else AppUtils.getFormatedDateNew(viewResult.shop_list.get(b).contact_dob5.toString(), "dd-mm-yyyy","yyyy-mm-dd")
+                                                shopExtraContactEntity.contact_doa = if(viewResult.shop_list.get(b).contact_doa5==null) "" else AppUtils.getFormatedDateNew(viewResult.shop_list.get(b).contact_doa5.toString(), "dd-mm-yyyy","yyyy-mm-dd")
+                                                shopExtraContactEntity.isUploaded = true
+                                                AppDatabase.getDBInstance()?.shopExtraContactDao()?.insert(shopExtraContactEntity)
+                                            }
+                                            if(viewResult.shop_list.get(b).contact_serial6.toString().equals("6") && !viewResult.shop_list.get(b).contact_name6.toString().equals("")){
+                                                val shopExtraContactEntity = ShopExtraContactEntity()
+                                                shopExtraContactEntity.shop_id = viewResult.shop_list.get(b).shop_id.toString()
+                                                shopExtraContactEntity.contact_serial = viewResult.shop_list.get(b).contact_serial6.toString()
+                                                shopExtraContactEntity.contact_name = viewResult.shop_list.get(b).contact_name6.toString()
+                                                shopExtraContactEntity.contact_number = viewResult.shop_list.get(b).contact_number6.toString()
+                                                shopExtraContactEntity.contact_email = if(viewResult.shop_list.get(b).contact_email6 == null) "" else viewResult.shop_list.get(b).contact_email6.toString()
+                                                shopExtraContactEntity.contact_dob = if(viewResult.shop_list.get(b).contact_dob6==null) "" else AppUtils.getFormatedDateNew(viewResult.shop_list.get(b).contact_dob6.toString(), "dd-mm-yyyy","yyyy-mm-dd")
+                                                shopExtraContactEntity.contact_doa = if(viewResult.shop_list.get(b).contact_doa6==null) "" else AppUtils.getFormatedDateNew(viewResult.shop_list.get(b).contact_doa6.toString(), "dd-mm-yyyy","yyyy-mm-dd")
+                                                shopExtraContactEntity.isUploaded = true
+                                                AppDatabase.getDBInstance()?.shopExtraContactDao()?.insert(shopExtraContactEntity)
+                                            }
+                                        }
+                                        uiThread {
+                                            gotoHomeActivity()
+                                        }
+                                    }
+
+                                }else{
+                                    gotoHomeActivity()
+                                }
+                            } else {
+                                gotoHomeActivity()
+                            }
+                        }, { error ->
+                            gotoHomeActivity()
+                        })
+                )
+            }else{
+                gotoHomeActivity()
+            }
+        }
+        catch (ex:Exception){
+            ex.printStackTrace()
+            gotoHomeActivity()
+        }
+    }
+    
 
 }

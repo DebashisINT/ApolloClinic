@@ -6,6 +6,9 @@ import com.apolloclinicfsm.features.addshop.model.AddQuestionSubmitRequestData
 import com.apolloclinicfsm.features.addshop.model.AddShopRequestData
 import com.apolloclinicfsm.features.addshop.model.AddShopResponse
 import com.apolloclinicfsm.features.addshop.model.imageListResponse
+import com.apolloclinicfsm.features.addshop.presentation.ShopListSubmitResponse
+import com.apolloclinicfsm.features.addshop.presentation.multiContactRequestData
+import com.apolloclinicfsm.features.beatCustom.BeatGetStatusModel
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import retrofit2.Retrofit
@@ -33,6 +36,17 @@ interface AddShopApi {
 
     @POST("Shoplist/AddShop")
     fun getAddShop(@Body addShop: AddShopRequestData?): Observable<AddShopResponse>
+
+    // 2.0 NearByShopsListFragment AppV 4.0.6   Contact Multi Api called Add & Update
+    @POST("ShopMultipleContactMap/AddShopMultiContact")
+    fun getMutiContact(@Body multiContact: multiContactRequestData?): Observable<BaseResponse>
+
+    @POST("ShopMultipleContactMap/EditShopMultiContact")
+    fun updateMutiContact(@Body multiContact: multiContactRequestData?): Observable<BaseResponse>
+    @FormUrlEncoded
+    @POST("ShopMultipleContactMap/FetchShopMultiContact")
+    fun fetchMultiContactData(@Field("user_id") user_id: String,@Field("session_token") session_token: String): Observable<ShopListSubmitResponse>
+
 
     @FormUrlEncoded
     @POST("Shoplist/ShopAttachmentImagesList")
