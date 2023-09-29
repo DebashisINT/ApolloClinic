@@ -5,10 +5,14 @@ import com.apolloclinicfsm.base.BaseResponse
 import com.apolloclinicfsm.features.addshop.model.AddQuestionSubmitRequestData
 import com.apolloclinicfsm.features.addshop.model.AddShopRequestData
 import com.apolloclinicfsm.features.addshop.model.AddShopResponse
+import com.apolloclinicfsm.features.addshop.model.ImagestockwiseListResponse
 import com.apolloclinicfsm.features.addshop.model.imageListResponse
 import com.apolloclinicfsm.features.addshop.presentation.ShopListSubmitResponse
 import com.apolloclinicfsm.features.addshop.presentation.multiContactRequestData
 import com.apolloclinicfsm.features.beatCustom.BeatGetStatusModel
+import com.apolloclinicfsm.features.nearbyshops.presentation.ShopModifiedListResponse
+import com.apolloclinicfsm.features.nearbyshops.presentation.ShopModifiedUpdateList
+import com.apolloclinicfsm.features.taskManagement.PriorityTaskSel
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import retrofit2.Retrofit
@@ -19,11 +23,23 @@ import retrofit2.http.*
 /**
  * Created by Pratishruti on 22-11-2017.
  */
+// Revision History
+// 1.0 AddShopApi rev mantis 26013 saheli v 4.0.8 15-05-2023
+// 2.0 AddShopApi rev mantis  26121 saheli v 4.0.8 15-05-2023
 interface AddShopApi {
 
 
     @POST("RubyFoodLead/QuestionListSave")
     fun getAddQuestionSubmit(@Body addQuestion:AddQuestionSubmitRequestData?): Observable<BaseResponse>
+
+    // 5.0 NearByShopsListFragment AppV 4.0.6 Suman 03-02-2023 updateModifiedShop + sendModifiedShopList  for shop update mantis 25624
+    @FormUrlEncoded
+    @POST("Shoplist/ModifiedShopLists")
+    fun getModifiedShopList(@Field("user_id") user_id: String,@Field("session_token") session_token: String): Observable<ShopModifiedListResponse>
+
+    // 5.0 NearByShopsListFragment AppV 4.0.6 Suman 03-02-2023 updateModifiedShop + sendModifiedShopList  for shop update mantis 25624
+    @POST("Shoplist/EditModifiedShop")
+    fun getModifiedShopListApi(@Body addQuestion: ShopModifiedUpdateList?): Observable<BaseResponse>
 
     @POST("RubyFoodLead/QuestionListEdit")
     fun getAddQuestionUpdateSubmit(@Body addQuestion:AddQuestionSubmitRequestData?): Observable<BaseResponse>
@@ -47,6 +63,12 @@ interface AddShopApi {
     @POST("ShopMultipleContactMap/FetchShopMultiContact")
     fun fetchMultiContactData(@Field("user_id") user_id: String,@Field("session_token") session_token: String): Observable<ShopListSubmitResponse>
 
+    // start 2.0 rev mantis 26121 saheli v 4.0.8 15-05-2023
+    @FormUrlEncoded
+    @POST("Task/TaskPriorityList")
+    fun fetchpriorityData(@Field("session_token") session_token: String): Observable<PriorityTaskSel>
+
+    // end  2.0 rev mantis 26121 saheli v 4.0.8 15-05-2023
 
     @FormUrlEncoded
     @POST("Shoplist/ShopAttachmentImagesList")
@@ -85,6 +107,21 @@ interface AddShopApi {
     @Multipart
     @POST("ShopRegistration/ShopAttachmentImage4")
     fun UploadAttachImage4(@Query("data") addImageupload: String, @Part competitor_img: MultipartBody.Part?): Observable<BaseResponse>
+
+    // start 1.0 AddShopApi rev mantis 26013 saheli v 4.0.8 15-05-2023
+    @Multipart
+    @POST("CurrentStockImageInfo/SaveCurrentStockImage1")
+    fun UploadStockAttachImage1(@Query("data") addImageupload: String, @Part competitor_img: MultipartBody.Part?): Observable<BaseResponse>
+
+    @Multipart
+    @POST("CurrentStockImageInfo/SaveCurrentStockImage2")
+    fun UploadStockAttachImage2(@Query("data") addImageupload: String, @Part competitor_img: MultipartBody.Part?): Observable<BaseResponse>
+
+    @FormUrlEncoded
+    @POST("Stock/CurrentStockImageLink")
+    fun getStockWiseimagelist(@Field("stock_id") shop_id: String,@Field("user_id") user_id: String,@Field("session_token") session_token: String): Observable<ImagestockwiseListResponse>
+
+    // end 1.0 AddShopApi rev mantis 26013 saheli v 4.0.8 15-05-2023
 
     @Multipart
     @POST("ShopRegistration/RegisterShop")

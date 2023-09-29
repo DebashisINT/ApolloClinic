@@ -291,10 +291,41 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/rl_party_status"
+                    android:id="@+id/rl_retailer_entity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rl_entity_type">
+
+                    <com.apolloclinicfsm.widgets.AppCustomTextView
+                        android:id="@+id/tv_retailer_entity_headerr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:singleLine="true"
+                        android:text="Party Category"
+                        android:textColor="@color/light_gray"
+                        android:textSize="@dimen/_11sdp" />
+
+                    <com.apolloclinicfsm.widgets.AppCustomTextView
+                        android:id="@+id/tv_retailer_entity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/_2sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_toRightOf="@id/tv_retailer_entity_headerr"
+                        android:singleLine="true"
+                        android:text="N.A."
+                        android:textColor="@color/login_txt_color"
+                        android:textSize="@dimen/_11sdp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_party_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rl_retailer_entity">
 
                     <com.apolloclinicfsm.widgets.AppCustomTextView
                         android:id="@+id/tv_party_status_header"

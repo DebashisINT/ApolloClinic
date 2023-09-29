@@ -34,7 +34,7 @@ import com.apolloclinicfsm.features.shopdetail.presentation.model.addcollection.
 import com.apolloclinicfsm.features.viewAllOrder.api.addorder.AddOrderRepoProvider
 import com.apolloclinicfsm.features.viewAllOrder.model.AddOrderInputParamsModel
 import com.apolloclinicfsm.features.viewAllOrder.model.AddOrderInputProductList
-import com.elvishew.xlog.XLog
+
 import com.pnikosis.materialishprogress.ProgressWheel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

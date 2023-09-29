@@ -5,6 +5,8 @@ import com.apolloclinicfsm.base.BaseResponse
 import com.apolloclinicfsm.features.addshop.model.AddShopRequestData
 import com.apolloclinicfsm.features.addshop.model.AddShopResponse
 import com.apolloclinicfsm.features.addshop.model.LogFileResponse
+import com.apolloclinicfsm.features.login.model.WhatsappApiData
+import com.apolloclinicfsm.features.login.model.WhatsappApiFetchData
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import retrofit2.Retrofit
@@ -19,6 +21,13 @@ interface EditShopApi {
 
     @POST("Shoplist/EditShop")
     fun editShop(@Body addShop: AddShopRequestData?): Observable<AddShopResponse>
+
+    @POST("WhatsAppMessageInfo/WhatsAppMsgSave")
+    fun whatsAppStatusSyncApi(@Body addShop: WhatsappApiData?): Observable<BaseResponse>
+
+    @FormUrlEncoded
+    @POST("WhatsAppMessageInfo/WhatsAppMsgList")
+    fun whatsAppStatusFetchApi(@Field("user_id") user_id: String): Observable<WhatsappApiFetchData>
 
     @Multipart
     @POST("ShopRegistration/NewShopEdit")

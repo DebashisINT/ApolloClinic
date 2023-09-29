@@ -21,11 +21,11 @@
         android:layout_below="@+id/logo_new"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/_10sdp"
         android:gravity="center|center_horizontal"
         android:text="@string/name_filed_managenent_system"
         android:textColor="#287fb2"
-        android:visibility="gone"
         android:textSize="@dimen/_12sdp"
         android:textStyle="bold" />
 

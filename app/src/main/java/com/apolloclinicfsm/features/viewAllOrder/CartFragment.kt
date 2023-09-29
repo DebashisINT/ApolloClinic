@@ -681,10 +681,9 @@ class CartFragment : BaseFragment(), View.OnClickListener {
                 } else
                     saveData()
             }
-
+            
             override fun onRightClick(editableData: String) {
             }
-
         }).show((mContext as DashboardActivity).supportFragmentManager, "")
     }
 
@@ -692,7 +691,6 @@ class CartFragment : BaseFragment(), View.OnClickListener {
         AddRemarksSignDialog.getInstance(remarks, imagePath, { remark, imgPath ->
             remarks = remark
             imagePath = imgPath
-
             saveData()
         }, {
             saveData()

@@ -15,6 +15,8 @@ import com.apolloclinicfsm.features.lead.model.LeadActivityEntity
 import com.apolloclinicfsm.features.location.UserLocationDataDao
 import com.apolloclinicfsm.features.location.UserLocationDataEntity
 import com.apolloclinicfsm.features.login.*
+import com.apolloclinicfsm.features.taskManagement.model.TaskManagementDao
+import com.apolloclinicfsm.features.taskManagement.model.TaskManagmentEntity
 
 
 /*
@@ -37,6 +39,7 @@ import com.apolloclinicfsm.features.login.*
 // 2.0   AppV 4.0.6  Saheli    06/01/2023 shop_activity and tbl_shop_deefback migration
 // 3.0   AppV 4.0.6  Saheli    11/01/2023  shopStatusUpdate migration
 // 4.0   AppV 4.0.6  Saheli    20/01/2023  order_product_list order_mrp & order_discount  migration mantis 25601
+// 5.0   AppV 4.0.6  Saheli    01/02/2023  product_list   migration changes
 
 @Database(entities = arrayOf(AddShopDBModelEntity::class, UserLocationDataEntity::class, UserLoginDataEntity::class, ShopActivityEntity::class,
         StateListEntity::class, CityListEntity::class, MarketingDetailEntity::class, MarketingDetailImageEntity::class, MarketingCategoryMasterEntity::class,
@@ -62,8 +65,9 @@ import com.apolloclinicfsm.features.login.*
         NewOrderGenderEntity::class, NewOrderProductEntity::class, NewOrderColorEntity::class, NewOrderSizeEntity::class, NewOrderScrOrderEntity::class, ProspectEntity::class,
         QuestionEntity::class, QuestionSubmitEntity::class, AddShopSecondaryImgEntity::class, ReturnDetailsEntity::class, ReturnProductListEntity::class, UserWiseLeaveListEntity::class, ShopFeedbackEntity::class, ShopFeedbackTempEntity::class, LeadActivityEntity::class,
         ShopDtlsTeamEntity::class, CollDtlsTeamEntity::class, BillDtlsTeamEntity::class, OrderDtlsTeamEntity::class,
-        TeamAllShopDBModelEntity::class, DistWiseOrderTblEntity::class, NewGpsStatusEntity::class,ShopExtraContactEntity::class),
-        version = 3, exportSchema = false)
+        TeamAllShopDBModelEntity::class, DistWiseOrderTblEntity::class, NewGpsStatusEntity::class,ShopExtraContactEntity::class,ProductOnlineRateTempEntity::class, TaskManagmentEntity::class,
+    VisitRevisitWhatsappStatus::class),
+        version = 4, exportSchema = false)
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun addShopEntryDao(): AddShopDao
@@ -199,6 +203,12 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun newGpsStatusDao(): NewGpsStatusDao
     abstract fun shopExtraContactDao(): ShopExtraContactDao
 
+    abstract fun productOnlineRateTempDao(): ProductOnlineRateTempDao
+
+
+    abstract fun taskManagementDao(): TaskManagementDao
+    abstract fun visitRevisitWhatsappStatusDao(): VisitRevisitWhatsappStatusDao
+
 
     companion object {
         var INSTANCE: AppDatabase? = null
@@ -209,7 +219,7 @@ abstract class AppDatabase : RoomDatabase() {
                         // allow queries on the main thread.
                         // Don't do this on a real app! See PersistenceBasicSample for an example.
                         .allowMainThreadQueries()
-                        .addMigrations(MIGRATION_1_2,MIGRATION_2_3)
+                        .addMigrations(MIGRATION_1_2,MIGRATION_2_3,MIGRATION_3_4)
 //                        .fallbackToDestructiveMigration()
                         .build()
             }
@@ -223,9 +233,6 @@ abstract class AppDatabase : RoomDatabase() {
         fun destroyInstance() {
             INSTANCE = null
         }
-
-
-
 
         val MIGRATION_1_2: Migration = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
@@ -259,6 +266,23 @@ abstract class AppDatabase : RoomDatabase() {
                 database.execSQL("alter table order_product_list ADD COLUMN order_discount TEXT")
             }
         }
+        val MIGRATION_3_4: Migration = object : Migration(3, 4) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("CREATE TABLE shop_visit_revisit_whatsapp_status (sl_no INTEGER NOT NULL PRIMARY KEY, shop_id TEXT NOT NULL, shop_name TEXT NOT NULL, contactNo TEXT NOT NULL, " +        "isNewShop INTEGER NOT NULL , " +        "date TEXT NOT NULL, time TEXT NOT NULL,isWhatsappSent INTEGER NOT NULL ,whatsappSentMsg TEXT NOT NULL,isUploaded INTEGER NOT NULL,transactionId TEXT NOT NULL  )")
+
+                database.execSQL("create TABLE product_online_rate_temp_table  (id INTEGER NOT NULL PRIMARY KEY , product_id  TEXT , rate TEXT, stock_amount TEXT , stock_unit TEXT , isStockShow INTEGER NOT NULL DEFAULT 0 , " +
+                        "isRateShow INTEGER NOT NULL DEFAULT 0,Qty_per_Unit REAL,Scheme_Qty REAL,Effective_Rate REAL) ")
+
+                database.execSQL("alter table shop_activity ADD COLUMN distFromProfileAddrKms TEXT")
+                database.execSQL("alter table shop_activity ADD COLUMN stationCode TEXT")
+
+                database.execSQL("CREATE TABLE task_activity (id INTEGER NOT NULL PRIMARY KEY, task_status_id TEXT, task_date TEXT, task_time TEXT, task_status TEXT, " +
+                        "task_details TEXT, other_remarks TEXT,task_next_date TEXT)")
+
+
+            }
+        }
+
 
 
     }

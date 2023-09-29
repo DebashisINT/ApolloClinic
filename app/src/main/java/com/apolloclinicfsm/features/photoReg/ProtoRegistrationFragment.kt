@@ -9,7 +9,6 @@ import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Context.ACTIVITY_SERVICE
-import android.content.Context.CONNECTIVITY_SERVICE
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -17,12 +16,15 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.net.Uri
-import android.os.*
+import android.os.Build
 import android.os.Build.VERSION.SDK_INT
+import android.os.Bundle
+import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
+import android.speech.RecognizerIntent
 import android.speech.tts.TextToSpeech
 import android.text.Editable
 import android.text.InputType
@@ -41,25 +43,39 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.apolloclinicfsm.CustomStatic
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.apolloclinicfsm.MySingleton
 import com.apolloclinicfsm.R
-import com.apolloclinicfsm.app.*
-import com.apolloclinicfsm.app.domain.ShopExtraContactEntity
+import com.apolloclinicfsm.app.AppDatabase
+import com.apolloclinicfsm.app.MaterialSearchView
+import com.apolloclinicfsm.app.NetworkConstant
+import com.apolloclinicfsm.app.NewFileUtils
+import com.apolloclinicfsm.app.Pref
+import com.apolloclinicfsm.app.SearchListener
+import com.apolloclinicfsm.app.domain.VisitRevisitWhatsappStatus
 import com.apolloclinicfsm.app.types.FragType
 import com.apolloclinicfsm.app.uiaction.IntentActionable
-import com.apolloclinicfsm.app.utils.*
+import com.apolloclinicfsm.app.utils.AppUtils
+import com.apolloclinicfsm.app.utils.FTStorageUtils
+import com.apolloclinicfsm.app.utils.PermissionUtils
+import com.apolloclinicfsm.app.utils.ProcessImageUtils_v1
 import com.apolloclinicfsm.base.BaseResponse
 import com.apolloclinicfsm.base.presentation.BaseActivity
 import com.apolloclinicfsm.base.presentation.BaseFragment
-import com.apolloclinicfsm.features.addshop.presentation.ShopExtraContactReq
-import com.apolloclinicfsm.features.addshop.presentation.multiContactRequestData
 import com.apolloclinicfsm.features.dashboard.presentation.DashboardActivity
-import com.apolloclinicfsm.features.login.model.userconfig.UserConfigResponseModel
 import com.apolloclinicfsm.features.myjobs.model.WIPImageSubmit
 import com.apolloclinicfsm.features.photoReg.adapter.AdapterUserList
 import com.apolloclinicfsm.features.photoReg.adapter.PhotoRegUserListner
 import com.apolloclinicfsm.features.photoReg.api.GetUserListPhotoRegProvider
-import com.apolloclinicfsm.features.photoReg.model.*
+import com.apolloclinicfsm.features.photoReg.model.AadhaarSubmitData
+import com.apolloclinicfsm.features.photoReg.model.DeleteUserPicResponse
+import com.apolloclinicfsm.features.photoReg.model.GetAllAadhaarResponse
+import com.apolloclinicfsm.features.photoReg.model.GetUserListResponse
+import com.apolloclinicfsm.features.photoReg.model.UpdateUserNameModel
+import com.apolloclinicfsm.features.photoReg.model.UpdateUserNameResponse
+import com.apolloclinicfsm.features.photoReg.model.UserListResponseModel
 import com.apolloclinicfsm.features.photoReg.present.UpdateDSTypeStatusDialog
 import com.apolloclinicfsm.features.reimbursement.presentation.FullImageDialog
 import com.apolloclinicfsm.widgets.AppCustomEditText
@@ -67,17 +83,30 @@ import com.apolloclinicfsm.widgets.AppCustomTextView
 import com.downloader.Error
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
-import com.elvishew.xlog.XLog
-import com.squareup.picasso.*
+import com.google.gson.JsonParser
+import com.itextpdf.text.pdf.PdfName.XML
+import com.squareup.picasso.Cache
+import com.squareup.picasso.LruCache
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.NetworkPolicy
+import com.squareup.picasso.Picasso
 import com.squareup.picasso.Picasso.RequestTransformer
 import com.themechangeapp.pickimage.PermissionHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_photo_registration.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
+import org.json.JSONArray
+import org.json.JSONObject
+import timber.log.Timber
 import java.io.File
 import java.io.FileInputStream
+import java.util.Locale
 
 
 class ProtoRegistrationFragment : BaseFragment(), View.OnClickListener {
@@ -127,6 +156,7 @@ class ProtoRegistrationFragment : BaseFragment(), View.OnClickListener {
         initView(view)
 
 
+
         (mContext as DashboardActivity).setSearchListener(object : SearchListener {
             override fun onSearchQueryListener(query: String) {
                 if (query.isBlank()) {
@@ -142,10 +172,32 @@ class ProtoRegistrationFragment : BaseFragment(), View.OnClickListener {
             }
         })
 
+        // 1.0 MemberListFragment AppV 4.0.7 mantis 0025683 start
+        (mContext as DashboardActivity).searchView.setVoiceIcon(R.drawable.ic_mic)
+        (mContext as DashboardActivity).searchView.setOnVoiceClickedListener({ startVoiceInput() })
+        // 1.0 MemberListFragment AppV 4.0.7 mantis 0025683 end
+
         return view
     }
 
     private fun initView(view: View) {
+
+        //extra code
+        /*var chart:PieChartView = view.findViewById(R.id.chart)
+        val pieData: ArrayList<SliceValue> = ArrayList()
+        pieData.add(SliceValue(15f, Color.BLUE).setLabel("A"))
+        pieData.add(SliceValue(25f, Color.GRAY).setLabel("B"))
+        pieData.add(SliceValue(10f, Color.RED).setLabel("C"))
+        pieData.add(SliceValue(60f, Color.MAGENTA).setLabel("D : 60%"))
+        val pieChartData = PieChartData(pieData)
+        pieChartData.setHasLabels(true)
+        pieChartData.valueLabelTextSize = 15
+        pieChartData.setHasCenterCircle(true)
+        pieChartData.centerText1 = "Center"
+        pieChartData.slicesSpacing = 5
+        chart.setPieChartData(pieChartData);*/
+
+
         et_attachment = view.findViewById(R.id.et_attachment)
         et_photo = view.findViewById(R.id.et_photo)
         mRv_userList = view.findViewById(R.id.rv_frag_photo_reg)
@@ -162,7 +214,30 @@ class ProtoRegistrationFragment : BaseFragment(), View.OnClickListener {
             callUSerListApi()
         }, 3000)
 
+        //startVoiceInput()
+
     }
+    // 1.0 MemberListFragment AppV 4.0.7 mantis 0025683 start
+
+
+
+
+    private fun startVoiceInput() {
+        val intent: Intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        intent.putExtra(
+            RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+        )
+        //intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,"hi")
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,Locale.ENGLISH)
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Hello, How can I help you?")
+        try {
+            startActivityForResult(intent, 7009)
+        } catch (a: ActivityNotFoundException) {
+            a.printStackTrace()
+        }
+    }
+    // 1.0 MemberListFragment AppV 4.0.7 mantis 0025683 end
 
     fun loadUpdateList(){
         Handler(Looper.getMainLooper()).postDelayed({
@@ -172,8 +247,21 @@ class ProtoRegistrationFragment : BaseFragment(), View.OnClickListener {
 
     private var permissionUtils: PermissionUtils? = null
     private fun initPermissionCheck() {
+        //begin mantis id 26741 Storage permission updation Suman 22-08-2023
+        var permissionList = arrayOf<String>( Manifest.permission.CAMERA)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            permissionList += Manifest.permission.READ_MEDIA_IMAGES
+            permissionList += Manifest.permission.READ_MEDIA_AUDIO
+            permissionList += Manifest.permission.READ_MEDIA_VIDEO
+        }else{
+            permissionList += Manifest.permission.WRITE_EXTERNAL_STORAGE
+            permissionList += Manifest.permission.READ_EXTERNAL_STORAGE
+        }
+        //end mantis id 26741 Storage permission updation Suman 22-08-2023
         permissionUtils = PermissionUtils(mContext as Activity, object : PermissionUtils.OnPermissionListener {
             override fun onPermissionGranted() {
+                var grant = true
                 /*if(SDK_INT >= 30){
                     if (!Environment.isExternalStorageManager()){
                         requestPermission()
@@ -190,8 +278,8 @@ class ProtoRegistrationFragment : BaseFragment(), View.OnClickListener {
             override fun onPermissionNotGranted() {
                 (mContext as DashboardActivity).showSnackMessage(getString(R.string.accept_permission))
             }
-
-        }, arrayOf<String>(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+            // mantis id 26741 Storage permission updation Suman 22-08-2023
+        },permissionList)// arrayOf<String>(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE))
     }
 
     fun onRequestPermission(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -292,7 +380,7 @@ class ProtoRegistrationFragment : BaseFragment(), View.OnClickListener {
 
     private fun getBytesForMemCache(percent: Int): Int {
         val mi: ActivityManager.MemoryInfo = ActivityManager.MemoryInfo()
-        val activityManager: ActivityManager = context!!.getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        val activityManager: ActivityManager = mContext!!.getSystemService(ACTIVITY_SERVICE) as ActivityManager
         activityManager.getMemoryInfo(mi)
         val availableMemory: Double = mi.availMem.toDouble()
         return (percent * availableMemory / 100).toInt()
@@ -1285,7 +1373,7 @@ class ProtoRegistrationFragment : BaseFragment(), View.OnClickListener {
             newFile = processImage.ProcessImageSelfie()
             uiThread {
                 if (newFile != null) {
-                    XLog.e("=========Image from new technique==========")
+                    Timber.e("=========Image from new technique==========")
                     val fileSize = AppUtils.getCompressImage(filePath)
                     var tyy = filePath
 
@@ -1344,7 +1432,7 @@ class ProtoRegistrationFragment : BaseFragment(), View.OnClickListener {
 
              uiThread {
                  if (newFile != null) {
-                     XLog.e("=========Image from new technique==========")
+                     Timber.e("=========Image from new technique==========")
                      //reimbursementEditPic(newFile!!.length(), newFile?.absolutePath!!)
                  } else {
                      // Image compression
@@ -1528,6 +1616,25 @@ class ProtoRegistrationFragment : BaseFragment(), View.OnClickListener {
                 }
             }
         }
+        /* if(requestCode == 7009){
+             val result = data!!.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+             var t= result!![0]
+             Toaster.msgShort(mContext,t)
+         }*/
+
+         if(requestCode == MaterialSearchView.REQUEST_VOICE){
+             try {
+                 val result = data!!.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                 var t= result!![0]
+                 (mContext as DashboardActivity).searchView.setQuery(t,false)
+             }
+             catch (ex:Exception) {
+                 ex.printStackTrace()
+             }
+
+//            tv_search_frag_order_type_list.setText(t)
+//            tv_search_frag_order_type_list.setSelection(t.length);
+         }
     }
 
 

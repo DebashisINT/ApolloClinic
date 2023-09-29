@@ -8,7 +8,7 @@ import com.apolloclinicfsm.app.utils.AppUtils
 import com.apolloclinicfsm.base.BaseResponse
 import com.apolloclinicfsm.base.presentation.BaseActivity
 import com.apolloclinicfsm.fcm.api.UpdateDeviceTokenRepoProvider
-import com.elvishew.xlog.XLog
+
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.doAsync
